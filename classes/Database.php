@@ -75,8 +75,8 @@ class Database{
 		 expires BIGINT comment 'timestamp when to clean up this log entry',
 		 
 		 changed_data_field VARCHAR(255),
-		 changed_data_value_old TEXT,
-		 changed_data_value_new TEXT,
+		 changed_data_values_old TEXT,
+		 changed_data_values_new TEXT,
 		 
 		 variables text,
 		 

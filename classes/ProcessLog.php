@@ -34,8 +34,8 @@ class ProcessLog {
 	var $expires = 0;
 
 	var $changed_data_field = NULL;
-	var $changed_data_value_old = NULL;
-	var $changed_data_value_new = NULL;
+	var $changed_data_values_old = NULL;
+	var $changed_data_values_new = NULL;
 
 	var $variables = NULL;
 	var $blobdata = NULL;
@@ -223,14 +223,14 @@ class ProcessLog {
 	/**
 	 * @return null|string
 	 */
-	public function getChangedDataValueOld() {
+	public function getChangedDataValuesOld() {
 		return $this->changed_data_value_old;
 	}
 
 	/**
 	 * @return null|string
 	 */
-	public function getChangedDataValueNew() {
+	public function getChangedDataValuesNew() {
 		return $this->changed_data_value_new;
 	}
 
@@ -469,23 +469,23 @@ class ProcessLog {
 	}
 
 	/**
-	 * @param null $changed_data_value_old
+	 * @param string|int $values
 	 *
 	 * @return ProcessLog
 	 */
-	public function setChangedDataValueOld( $changed_data_value_old ) {
-		$this->changed_data_value_old = $changed_data_value_old;
+	public function setChangedDataValuesOld( $values ) {
+		$this->changed_data_values_old = $values;
 
 		return $this;
 	}
 
 	/**
-	 * @param null $changed_data_value_new
+	 * @param string|int $values
 	 *
 	 * @return ProcessLog
 	 */
-	public function setChangedDataValueNew( $changed_data_value_new ) {
-		$this->changed_data_value_new = $changed_data_value_new;
+	public function setChangedDataValuesNew( $values ) {
+		$this->changed_data_values_new = $values;
 
 		return $this;
 	}
