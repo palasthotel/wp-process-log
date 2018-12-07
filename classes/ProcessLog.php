@@ -1,0 +1,514 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: edward
+ * Date: 07.12.18
+ * Time: 12:21
+ */
+
+namespace Palasthotel\ProcessLog;
+
+
+class ProcessLog {
+
+	var $id = NULL;
+	var $process_id = NULL;
+	var $created = NULL;
+
+	var $type = "event";
+	var $active_user = 0;
+	var $message = "";
+	var $note = "";
+	var $comment = "";
+	var $severity = "info";
+	var $link_url = NULL;
+	var $location_url = NULL;
+	var $location_path = NULL;
+	var $referer_url = NULL;
+	var $hostname = NULL;
+	var $affected_post = NULL;
+	var $affected_term = NULL;
+	var $affected_user = NULL;
+	var $affected_comment = NULL;
+
+	var $expires = 0;
+
+	var $changed_data_field = NULL;
+	var $changed_data_value_old = NULL;
+	var $changed_data_value_new = NULL;
+
+	var $variables = NULL;
+	var $blobdata = NULL;
+
+	public function __construct() {
+		$this->expires = time() + 60 * 60 * 24 * 14;
+
+		$user = wp_get_current_user();
+		if ( $user instanceof \WP_User ) {
+			$this->active_user = $user->ID;
+		}
+
+		if ( isset( $_SERVER ) && is_array( $_SERVER ) ) {
+			$this->location_url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$this->referer_url  = isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : NULL;
+			$this->hostname     = isset( $_SERVER['REMOTE_HOST'] ) ? $_SERVER['REMOTE_HOST'] : NULL;
+		}
+
+
+	}
+
+	/**
+	 * @return array
+	 */
+	public function insertArgs() {
+		$args = array();
+		foreach ( $this as $key => $value ) {
+			// let database decide the created time
+			if ( $key == "created" ) {
+				continue;
+			}
+			$args[ $key ] = $value;
+		}
+
+		return $args;
+	}
+
+	/**
+	 * @return ProcessLog
+	 */
+	public static function build() {
+		return new ProcessLog();
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function getProcessId() {
+		return $this->id;
+	}
+
+	/**
+	 * @return null
+	 */
+	public function getCreated() {
+		return $this->created;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getType(): string {
+		return $this->type;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getActiveUser(): int {
+		return $this->active_user;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMessage(): string {
+		return $this->message;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNote(): string {
+		return $this->note;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getComment(): string {
+		return $this->comment;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSeverity(): string {
+		return $this->severity;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getLinkUrl() {
+		return $this->link_url;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getLocationUrl() {
+		return $this->location_url;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getLocationPath() {
+		return $this->location_path;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getRefererUrl() {
+		return $this->referer_url;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getHostname() {
+		return $this->hostname;
+	}
+
+	/**
+	 * @return null|int
+	 */
+	public function getAffectedPost() {
+		return $this->affected_post;
+	}
+
+	/**
+	 * @return null|int
+	 */
+	public function getAffectedTerm() {
+		return $this->affected_term;
+	}
+
+	/**
+	 * @return null|int
+	 */
+	public function getAffectedUser() {
+		return $this->affected_user;
+	}
+
+	/**
+	 * @return null|int
+	 */
+	public function getAffectedComment() {
+		return $this->affected_comment;
+	}
+
+	/**
+	 * @return null|int
+	 */
+	public function getExpires() {
+		return $this->expires;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getChangedDataField() {
+		return $this->changed_data_field;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getChangedDataValueOld() {
+		return $this->changed_data_value_old;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getChangedDataValueNew() {
+		return $this->changed_data_value_new;
+	}
+
+	/**
+	 * @return object|null
+	 */
+	public function getVariables() {
+		return $this->variables;
+	}
+
+	/**
+	 * @return null|object
+	 */
+	public function getBlobdata() {
+		return $this->blobdata;
+	}
+
+	/**
+	 * @param int $id
+	 *
+	 * @return ProcessLog
+	 */
+	public function setId( $id ) {
+		$this->id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * @param int|null $id
+	 *
+	 * @return ProcessLog
+	 */
+	public function setProcessId( $id ) {
+		$this->process_id = $id;
+
+		return $this;
+	}
+
+	/**
+	 * @param int $created
+	 *
+	 * @return ProcessLog
+	 */
+	public function setCreated( $created ) {
+		$this->created = $created;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $type
+	 *
+	 * @return ProcessLog
+	 */
+	public function setType( string $type ) {
+		$this->type = $type;
+
+		return $this;
+	}
+
+	/**
+	 * @param int $active_user
+	 *
+	 * @return ProcessLog
+	 */
+	public function setActiveUser( int $active_user ) {
+		$this->active_user = $active_user;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $message
+	 *
+	 * @return ProcessLog
+	 */
+	public function setMessage( string $message ) {
+		$this->message = $message;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $note
+	 *
+	 * @return ProcessLog
+	 */
+	public function setNote( string $note ) {
+		$this->note = $note;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $comment
+	 *
+	 * @return ProcessLog
+	 */
+	public function setComment( string $comment ) {
+		$this->comment = $comment;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $severity
+	 *
+	 * @return ProcessLog
+	 */
+	public function setSeverity( string $severity ) {
+		$this->severity = $severity;
+
+		return $this;
+	}
+
+	/**
+	 * @param string|null $link_url
+	 *
+	 * @return ProcessLog
+	 */
+	public function setLinkUrl( $link_url ) {
+		$this->link_url = $link_url;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $location_url
+	 *
+	 * @return ProcessLog
+	 */
+	public function setLocationUrl( $location_url ) {
+		$this->location_url = $location_url;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $location_path
+	 *
+	 * @return ProcessLog
+	 */
+	public function setLocationPath( $location_path ) {
+		$this->location_path = $location_path;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $referer_url
+	 *
+	 * @return ProcessLog
+	 */
+	public function setRefererUrl( $referer_url ) {
+		$this->referer_url = $referer_url;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $hostname
+	 *
+	 * @return ProcessLog
+	 */
+	public function setHostname( $hostname ) {
+		$this->hostname = $hostname;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $affected_post
+	 *
+	 * @return ProcessLog
+	 */
+	public function setAffectedPost( $affected_post ) {
+		$this->affected_post = $affected_post;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $affected_term
+	 *
+	 * @return ProcessLog
+	 */
+	public function setAffectedTerm( $affected_term ) {
+		$this->affected_term = $affected_term;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $affected_user
+	 *
+	 * @return ProcessLog
+	 */
+	public function setAffectedUser( $affected_user ) {
+		$this->affected_user = $affected_user;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $affected_comment
+	 *
+	 * @return ProcessLog
+	 */
+	public function setAffectedComment( $affected_comment ) {
+		$this->affected_comment = $affected_comment;
+
+		return $this;
+	}
+
+	/**
+	 * @param float|int $expires
+	 *
+	 * @return ProcessLog
+	 */
+	public function setExpires( $expires ) {
+		$this->expires = $expires;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $changed_data_field
+	 *
+	 * @return ProcessLog
+	 */
+	public function setChangedDataField( $changed_data_field ) {
+		$this->changed_data_field = $changed_data_field;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $changed_data_value_old
+	 *
+	 * @return ProcessLog
+	 */
+	public function setChangedDataValueOld( $changed_data_value_old ) {
+		$this->changed_data_value_old = $changed_data_value_old;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $changed_data_value_new
+	 *
+	 * @return ProcessLog
+	 */
+	public function setChangedDataValueNew( $changed_data_value_new ) {
+		$this->changed_data_value_new = $changed_data_value_new;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $variables
+	 *
+	 * @return ProcessLog
+	 */
+	public function setVariables( $variables ) {
+		$this->variables = $variables;
+
+		return $this;
+	}
+
+	/**
+	 * @param null $blobdata
+	 *
+	 * @return ProcessLog
+	 */
+	public function setBlobdata( $blobdata ) {
+		$this->blobdata = $blobdata;
+
+		return $this;
+	}
+}
