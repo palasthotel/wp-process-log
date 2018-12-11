@@ -1,8 +1,11 @@
+@charset "UTF-8";
 .process-log .process-log__row--process td, .process-log .process-log__row--logs td { border-bottom: 1px solid #1A237E; }
 
 .process-log .process-log__item { border-bottom: 1px solid #efefef; }
 
 .process-log thead th { border-color: #1A237E; }
+
+.process-log thead tr:nth-child(1) th { background: white; position: -webkit-sticky; position: sticky; top: 30px; z-index: 10; }
 
 .process-log .process-log__row--process.is-open td { border-bottom: none; }
 
@@ -10,11 +13,27 @@
 
 .process-log .process-log__row--logs td { padding-top: 0; }
 
-.process-log .process-log__logs { margin: 0 12px; padding: 0; }
+.process-log .process-log__logs { margin: 10px 0; padding: 0; }
 
 .process-log .process-log__item { padding: 6px 0; margin: 0; }
 
 .process-log .process-log__item:last-child { border: none; }
 
 .process-log .process-log__item--attr { margin-left: 4px; }
+
+.process-log .process-log__second-line { color: #546E7A; font-size: 0.7rem; }
+
+.process-log .is-loading { font-style: italic; }
+
+.process-log .is-loading:after { margin-left: 4px; content: "."; -webkit-animation-name: loading; animation-name: loading; -webkit-animation-duration: .6s; animation-duration: .6s; -webkit-animation-iteration-count: infinite; animation-iteration-count: infinite; -webkit-animation-direction: normal; animation-direction: normal; }
+
+@-webkit-keyframes loading { 0% { content: "…"; }
+  30% { content: "⋰"; }
+  60% { content: "⋮"; }
+  100% { content: "⋱"; } }
+
+@keyframes loading { 0% { content: "…"; }
+  30% { content: "⋰"; }
+  60% { content: "⋮"; }
+  100% { content: "⋱"; } }
 /*# sourceMappingURL=menu-page.css.map */

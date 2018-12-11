@@ -74,6 +74,7 @@ class MenuPage {
 			<table class="widefat">
 				<thead>
 					<tr>
+						<th scope="col" title="Process ID">PID</th>
 						<th scope="col">
 							<?php _e( 'Created', Plugin::DOMAIN ); ?>
 						</th>

@@ -10,6 +10,12 @@
 		th{
 			border-color: #1A237E;
 		}
+		tr:nth-child(1) th{
+			background: white;
+			position: sticky;
+			top: 30px;
+			z-index: 10;
+		}
 	}
 	.process-log__row--process{
 		td{
@@ -30,7 +36,7 @@
 	}
 
 	.process-log__logs{
-		margin: 0 12px;
+		margin: 10px 0;
 		padding: 0;
 
 	}
@@ -45,5 +51,36 @@
 	.process-log__item--attr{
 		margin-left: 4px;
 	}
+
+	.process-log__second-line{
+		color: #546E7A;
+		font-size: 0.7rem;
+	}
+
+	.is-loading{
+		font-style: italic;
+		&:after{
+			margin-left: 4px;
+			content:".";
+			animation-name: loading;
+			animation-duration: .6s;
+			animation-iteration-count: infinite;
+			animation-direction: normal;
+		}
+	}
 }
 
+@keyframes loading {
+	0% {
+		content: "…";
+	}
+	30% {
+		content: "⋰";
+	}
+	60% {
+		content: "⋮"
+	}
+	100%{
+		content: "⋱"
+	}
+}
