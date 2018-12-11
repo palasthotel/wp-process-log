@@ -25,6 +25,8 @@ namespace Palasthotel\ProcessLog;
  * @property Writer writer
  * @property Database database
  * @property Process process
+ * @property MenuPage menuPage
+ * @property Ajax ajax
  */
 class Plugin {
 
@@ -62,6 +64,8 @@ class Plugin {
 		$this->database = new Database();
 		$this->writer = new Writer($this);
 		$this->process = new Process($this);
+		$this->menuPage = new MenuPage($this);
+		$this->ajax = new Ajax($this);
 
 		/**
 		 * on activate or deactivate plugin

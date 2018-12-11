@@ -12,23 +12,61 @@ namespace Palasthotel\ProcessLog;
 /**
  *
  */
-class Database{
+class Database {
+
+	/**
+	 * @return \wpdb
+	 */
+	public function wpdb() {
+		global $wpdb;
+
+		return $wpdb;
+	}
+
+	/**
+	 * @param int $pid
+	 *
+	 * @return array
+	 */
+	public function getProcessLogs( $pid ) {
+		return $this->wpdb()->get_results(
+			$this->wpdb()->prepare(
+				"SELECT * FROM " . $this->tablename() . " WHERE process_id = %d",
+				array( $pid )
+			)
+		);
+	}
+
+	/**
+	 * @param int $page
+	 *
+	 * @return array
+	 */
+	public function getProcessesList( $page = 1 ) {
+		$limit  = 25;
+		$offset = ( $page - 1 ) * $limit;
+
+		return $this->wpdb()->get_results(
+			"SELECT *, count(id) as logs_count FROM " . $this->tablename() . " GROUP BY process_id  ORDER BY created DESC LIMIT $limit OFFSET $offset"
+		);
+	}
 
 	/**
 	 * @return int
 	 */
-	public function getNextProcessId(){
-		global $wpdb;
+	public function getNextProcessId() {
 		$tablename = $this->tablename();
-		$id = $wpdb->get_var(
+		$id        = $this->wpdb()->get_var(
 			"SELECT max(process_id) FROM $tablename GROUP BY process_id ORDER BY process_id DESC LIMIT 1"
 		);
-		return intval($id)+1;
+
+		return intval( $id ) + 1;
 	}
 
-	public function tablename(){
+	public function tablename() {
 		global $wpdb;
-		return $wpdb->prefix."process_log";
+
+		return $this->wpdb()->prefix . "process_log";
 	}
 
 
@@ -37,9 +75,8 @@ class Database{
 	 *
 	 * @return false|int
 	 */
-	function addLog(ProcessLog $log){
-		global $wpdb;
-		return $wpdb->insert(
+	function addLog( ProcessLog $log ) {
+		return $this->wpdb()->insert(
 			$this->tablename(),
 			$log->insertArgs()
 		);
@@ -48,10 +85,10 @@ class Database{
 	/**
 	 * create the tables if not exist
 	 */
-	function createTables(){
+	function createTables() {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		$tablename = $this->tablename();
-		dbDelta("CREATE TABLE IF NOT EXISTS $tablename
+		dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
 		(
 		 id bigint(20) unsigned auto_increment,
 		 process_id bigint(20) unsigned,
@@ -96,9 +133,8 @@ class Database{
 		 key (expires),
 		 key (changed_data_field)
 		 
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
 	}
-
 
 
 }
