@@ -23,9 +23,25 @@ class Ajax {
 
 	public function processes_list(){
 		$page = (isset($_GET["page"]))? intval($_GET["page"]): 1;
+		$list = $this->plugin->database->getProcessesList($page);
+		$active_users = array();
+		foreach ($list as $item){
+			if(!isset($active_users[$item->active_user]) && intval($item->active_user) > 0){
+				$user = get_user_by("ID", $item->active_user);
+				if($user instanceof \WP_User){
+					$active_users[$item->active_user] = array(
+						"ID" => $user->ID,
+						"display_name" => $user->display_name,
+						"edit_link" => get_edit_user_link($user->ID),
+					);
+				}
+
+			}
+		}
 		wp_send_json(array(
 			"page" => $page,
-			"list" => $this->plugin->database->getProcessesList($page),
+			"list" => $list,
+			"users" => $active_users,
 		));
 
 	}

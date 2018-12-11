@@ -1,14 +1,49 @@
-.process-log__row{
-	.load-more{
-		//display: block;
-		//border: 1px solid #0073aa;
-		//border-radius: 10px;
-		//width: 16px;
-		//height: 16px;
-		//text-align: center;
-		//&:hover{
-		//	background: #0073aa;
-		//	color: white;
-		//}
+%border-primary{
+	border-bottom: 1px solid #1A237E;
+}
+%border-secondary{
+	border-bottom: 1px solid #efefef;
+}
+
+.process-log{
+	thead{
+		th{
+			border-color: #1A237E;
+		}
+	}
+	.process-log__row--process{
+		td{
+			@extend %border-primary;
+		}
+		&.is-open td{
+			border-bottom: none;
+		}
+		.toggle{
+			cursor: pointer;
+		}
+	}
+	.process-log__row--logs{
+		td{
+			@extend %border-primary;
+			padding-top: 0;
+		}
+	}
+
+	.process-log__logs{
+		margin: 0 12px;
+		padding: 0;
+
+	}
+	.process-log__item{
+		padding: 6px 0;
+		margin: 0;
+		@extend %border-secondary;
+		&:last-child{
+			border: none;
+		}
+	}
+	.process-log__item--attr{
+		margin-left: 4px;
 	}
 }
+

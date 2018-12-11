@@ -1,0 +1,20 @@
+.process-log .process-log__row--process td, .process-log .process-log__row--logs td { border-bottom: 1px solid #1A237E; }
+
+.process-log .process-log__item { border-bottom: 1px solid #efefef; }
+
+.process-log thead th { border-color: #1A237E; }
+
+.process-log .process-log__row--process.is-open td { border-bottom: none; }
+
+.process-log .process-log__row--process .toggle { cursor: pointer; }
+
+.process-log .process-log__row--logs td { padding-top: 0; }
+
+.process-log .process-log__logs { margin: 0 12px; padding: 0; }
+
+.process-log .process-log__item { padding: 6px 0; margin: 0; }
+
+.process-log .process-log__item:last-child { border: none; }
+
+.process-log .process-log__item--attr { margin-left: 4px; }
+/*# sourceMappingURL=menu-page.css.map */

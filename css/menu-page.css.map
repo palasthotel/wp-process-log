@@ -1,9 +1,1 @@
-{
-	"version": 3,
-	"file": "menu-page.css",
-	"sources": [
-		"../scss/menu-page.scss"
-	],
-	"mappings": "",
-	"names": []
-}
+{"version":3,"sources":["../scss/menu-page.scss"],"names":[],"mappings":"AAAA,sFACC,iCAAiC,EACjC;;AACD,kCACC,iCAAiC,EACjC;;AAED,wBAGG,sBAAsB,EACtB;;AAJH,qDAWG,oBAAoB,EACpB;;AAZH,kDAcG,gBAAgB,EAChB;;AAfH,0CAoBG,eAAe,EACf;;AArBH,kCAyBE,eAAe,CACf,WAAW,EAEX;;AA5BF,kCA8BE,eAAe,CACf,UAAU,EAKV;;AApCF,6CAkCG,aAAa,EACb;;AAnCH,wCAsCE,iBAAiB,EACjB","file":"menu-page.css"}

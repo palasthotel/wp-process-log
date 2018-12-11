@@ -69,9 +69,9 @@ class MenuPage {
 		);
 
 		?>
-		<div class="wrap">
+		<div class="wrap process-log">
 			<h2>Process logs</h2>
-			<table class="widefat striped">
+			<table class="widefat">
 				<thead>
 					<tr>
 						<th scope="col">
