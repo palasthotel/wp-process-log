@@ -68,7 +68,7 @@ class ProcessLog {
 				( strpos($file, ABSPATH."wp-content") === 0 && strpos($file, PROCESS_LOG_DIR) === false )
 			){
 				$docroot_relative_file = "/".str_replace(ABSPATH, "", $trace["file"]);
-				$this->location_path = $docroot_relative_file;
+				$this->location_path = $docroot_relative_file." Line ".$trace["line"];
 				break;
 			}
 

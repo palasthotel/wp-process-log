@@ -51,11 +51,13 @@ $color-border-secondary: #efefef;
 
 	}
 	.process-log__item{
+		position: relative;
 		padding: 15px 0;
 		margin: 0;
 		@extend %border-secondary;
 		&:last-child{
 			border: none;
+			padding-bottom: 0;
 		}
 	}
 	.process-log__item--attr{
@@ -97,6 +99,23 @@ $color-border-secondary: #efefef;
 			content:"L#";
 		}
 	}
+	.log__message{
+		&:before{
+			content: "»";
+		}
+		&:after{
+			content: "«";
+		}
+		border-left: 1px solid $color-border-secondary;
+		padding-left: 8px;
+		margin-right: 8px;
+	}
+	.log__location-path{
+		border-left: 1px solid $color-border-secondary;
+		padding-left: 8px;
+		margin-right: 8px;
+	}
+
 	.log__type{
 		margin-right: 6px;
 		//font-weight: bold;
@@ -109,6 +128,8 @@ $color-border-secondary: #efefef;
 		right: 0;
 	}
 	.log__header{
+		color: $color-text-secondary;
+		font-size: 0.7rem;
 		margin-bottom: 10px;
 		.log__id{
 			margin-right: 10px;

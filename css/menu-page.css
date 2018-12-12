@@ -17,9 +17,9 @@
 
 .process-log .process-log__logs { margin: 10px 0 10px 10px; padding: 0; }
 
-.process-log .process-log__item { padding: 15px 0; margin: 0; }
+.process-log .process-log__item { position: relative; padding: 15px 0; margin: 0; }
 
-.process-log .process-log__item:last-child { border: none; }
+.process-log .process-log__item:last-child { border: none; padding-bottom: 0; }
 
 .process-log .process-log__item--attr { margin-left: 4px; }
 
@@ -37,13 +37,21 @@
 
 .process-log .log__id:before { content: "L#"; }
 
+.process-log .log__message { border-left: 1px solid #efefef; padding-left: 8px; margin-right: 8px; }
+
+.process-log .log__message:before { content: "»"; }
+
+.process-log .log__message:after { content: "«"; }
+
+.process-log .log__location-path { border-left: 1px solid #efefef; padding-left: 8px; margin-right: 8px; }
+
 .process-log .log__type { margin-right: 6px; }
 
 .process-log .process-log__second-line { position: relative; }
 
 .process-log .log__expires { position: absolute; right: 0; }
 
-.process-log .log__header { margin-bottom: 10px; }
+.process-log .log__header { color: #546E7A; font-size: 0.7rem; margin-bottom: 10px; }
 
 .process-log .log__header .log__id { margin-right: 10px; }
 

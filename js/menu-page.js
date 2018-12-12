@@ -77,6 +77,13 @@
 		$header.append(
 			$('<span></span>').addClass('log__message').text(log.message));
 
+		if(log.location_path){
+			$header.append(
+				$('<span></span>').addClass('log__location-path').text(`in ${log.location_path}`)
+			);
+		}
+
+
 		$header.appendTo($item);
 
 		if (log.changed_data_field != null) {
