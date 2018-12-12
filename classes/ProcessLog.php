@@ -51,9 +51,28 @@ class ProcessLog {
 		if ( isset( $_SERVER ) && is_array( $_SERVER ) ) {
 			$this->location_url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 			$this->referer_url  = isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : NULL;
-			$this->hostname     = isset( $_SERVER['REMOTE_HOST'] ) ? $_SERVER['REMOTE_HOST'] : NULL;
+			if(!empty( $_SERVER['REMOTE_HOST'] )){
+				$this->hostname     =  $_SERVER['REMOTE_HOST'];
+			} else if(!empty($_SERVER['HTTP_HOST'])){
+				$this->hostname = $_SERVER['HTTP_HOST'];
+			}
+
 		}
 
+		$bt = debug_backtrace();
+		foreach ($bt as $trace){
+			$file = $trace["file"];
+			if(
+				strpos($file, PROCESS_LOG_HANDLERS_DIR) === 0
+				||
+				( strpos($file, ABSPATH."wp-content") === 0 && strpos($file, PROCESS_LOG_DIR) === false )
+			){
+				$docroot_relative_file = "/".str_replace(ABSPATH, "", $trace["file"]);
+				$this->location_path = $docroot_relative_file;
+				break;
+			}
+
+		}
 
 	}
 
@@ -376,7 +395,6 @@ class ProcessLog {
 	 */
 	public function setLocationPath( $location_path ) {
 		$this->location_path = $location_path;
-
 		return $this;
 	}
 

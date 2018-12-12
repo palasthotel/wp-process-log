@@ -12,7 +12,9 @@ namespace Palasthotel\ProcessLog;
 class MenuPage {
 
 	const API_HANDLE = "process-log-api";
+
 	const APP_HANDLE = "process-log-app";
+
 	const STYLE_HANDLE = "process-log-app-style";
 
 
@@ -59,13 +61,19 @@ class MenuPage {
 			"ProcessLogApp",
 			array(
 				'selectors' => array(
-					"root" => "#process-logs-table-body"
-				)
+					"root" => "#process-logs-table-body",
+				),
+				'i18n'    => array(
+					"affected_user" => __( "Affected user", Plugin::DOMAIN ),
+					"affected_post" => __( "Affected post", Plugin::DOMAIN ),
+					"affected_term" => __( "Affected term", Plugin::DOMAIN ),
+					"affected_comment" => __( "Affected comment", Plugin::DOMAIN ),
+				),
 			)
 		);
 		wp_enqueue_style(
 			self::STYLE_HANDLE,
-			$this->plugin->url."/css/menu-page.css"
+			$this->plugin->url . "/css/menu-page.css"
 		);
 
 		?>
@@ -73,27 +81,27 @@ class MenuPage {
 			<h2>Process logs</h2>
 			<table class="widefat">
 				<thead>
-					<tr>
-						<th scope="col" title="Process ID">PID</th>
-						<th scope="col">
-							<?php _e( 'Created', Plugin::DOMAIN ); ?>
-						</th>
-						<th scope="col">Active User</th>
-						<th scope="col">Logs</th>
-						<th scope="col"><?php _e( 'Location URL', Plugin::DOMAIN ); ?></th>
-					</tr>
+				<tr>
+					<th scope="col" title="Process ID">PID</th>
+					<th scope="col">
+						<?php _e( 'Created', Plugin::DOMAIN ); ?>
+					</th>
+					<th scope="col">Active User</th>
+					<th scope="col">Logs</th>
+					<th scope="col"><?php _e( 'Location URL', Plugin::DOMAIN ); ?></th>
+				</tr>
 				</thead>
 				<tbody id="process-logs-table-body">
 
 				</tbody>
 				<?php
-				$list = $this->plugin->database->getProcessesList(1);
+				$list = $this->plugin->database->getProcessesList( 1 );
 				$list = array();
 				foreach ( $list as $process ) {
 					?>
 					<tr class="process-log__row">
 						<td id="process-<?php echo $process->id; ?>">
-							<a	href="#process-<?php echo $process->id; ?>">
+							<a href="#process-<?php echo $process->id; ?>">
 								+ <?php echo $process->created; ?>
 							</a>
 						</td>

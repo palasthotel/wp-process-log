@@ -13,15 +13,49 @@
 
 .process-log .process-log__row--logs td { padding-top: 0; }
 
-.process-log .process-log__logs { margin: 10px 0; padding: 0; }
+.process-log .process-log__process-id:before { content: "P#"; }
 
-.process-log .process-log__item { padding: 6px 0; margin: 0; }
+.process-log .process-log__logs { margin: 10px 0 10px 10px; padding: 0; }
+
+.process-log .process-log__item { padding: 15px 0; margin: 0; }
 
 .process-log .process-log__item:last-child { border: none; }
 
 .process-log .process-log__item--attr { margin-left: 4px; }
 
+.process-log .log__changed-data .label { display: none; }
+
+.process-log .log__changed-data .log__changed-data--field { font-weight: bold; }
+
+.process-log .log__changed-data .log__changed-data--field:after { content: ":"; }
+
+.process-log .log__changed-data .log__changed-data--value { margin-left: 6px; }
+
+.process-log .log__changed-data .log__changed-data--value-old:last-child:after { color: #546E7A; content: "→"; margin-left: 4px; }
+
+.process-log .log__changed-data .log__changed-data--value-new:before { color: #546E7A; content: "→"; margin-right: 4px; }
+
+.process-log .log__id:before { content: "L#"; }
+
+.process-log .log__type { margin-right: 6px; }
+
+.process-log .process-log__second-line { position: relative; }
+
+.process-log .log__expires { position: absolute; right: 0; }
+
+.process-log .log__header { margin-bottom: 10px; }
+
+.process-log .log__header .log__id { margin-right: 10px; }
+
+.process-log .process-log__first-line { margin-bottom: 10px; }
+
 .process-log .process-log__second-line { color: #546E7A; font-size: 0.7rem; }
+
+.process-log .process-log__second-line span + span { border-left: 1px solid #efefef; padding-left: 8px; margin-right: 8px; }
+
+.process-log .process-log__second-line .log__expires { border: none; }
+
+.process-log .process-log__raw { opacity: 0.4; margin-top: 20px; display: none; }
 
 .process-log .is-loading { font-style: italic; }
 

@@ -11,8 +11,8 @@
 		return fetch(url).then(res => res.json());
 	};
 
-	api.fetchProcessList = ()=> {
-		return apiFetch("processes_list");
+	api.fetchProcessList = (page)=> {
+		return apiFetch("processes_list",{page});
 	};
 	api.fetchProcessLogs = (pid) => {
 		return apiFetch("process_logs",{pid});

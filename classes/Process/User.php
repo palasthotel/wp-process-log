@@ -11,6 +11,9 @@ namespace Palasthotel\ProcessLog\Process;
 use Palasthotel\ProcessLog\Plugin;
 use Palasthotel\ProcessLog\ProcessLog;
 
+/**
+ * @property \Palasthotel\ProcessLog\Writer writer
+ */
 class User {
 
 	/**
@@ -18,7 +21,7 @@ class User {
 	 *
 	 * @param \Palasthotel\ProcessLog\Plugin $plugin
 	 */
-	public function __construct(Plugin $plugin) {
+	public function __construct( Plugin $plugin ) {
 		$this->writer = $plugin->writer;
 		add_action( 'user_register', array( $this, 'user_register' ) );
 		add_action( 'profile_update', array( $this, 'profile_update' ), 10, 2 );
@@ -26,7 +29,8 @@ class User {
 			$this,
 			'update_user_meta',
 		), 10, 4 );
-		add_action('delete_user', array($this, 'delete_user'));
+		add_action( 'delete_user', array( $this, 'delete_user' ) );
+		// TODO: create, save, delete user
 	}
 
 	/**
@@ -79,10 +83,12 @@ class User {
 	 * @param $meta_value
 	 *
 	 */
-	public function update_user_meta( $meta_id, $user_id, $meta_key, $meta_value) {
-		$old_value = get_user_meta($user_id, $meta_key, true);
+	public function update_user_meta( $meta_id, $user_id, $meta_key, $meta_value ) {
+		$old_value = get_user_meta( $user_id, $meta_key, true );
 
-		if($old_value == $meta_value) return;
+		if ( $old_value == $meta_value ) {
+			return;
+		}
 
 		$this->writer->addLog(
 			ProcessLog::build()
@@ -98,7 +104,7 @@ class User {
 	/**
 	 * @param $user_id
 	 */
-	public function delete_user($user_id){
+	public function delete_user( $user_id ) {
 		$this->writer->addLog(
 			ProcessLog::build()
 			          ->setMessage( "user delete" )

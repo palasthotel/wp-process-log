@@ -1,14 +1,18 @@
+$color-text-secondary: #546E7A;
+$color-border-primary: #1A237E;
+$color-border-secondary: #efefef;
+
 %border-primary{
-	border-bottom: 1px solid #1A237E;
+	border-bottom: 1px solid $color-border-primary;
 }
 %border-secondary{
-	border-bottom: 1px solid #efefef;
+	border-bottom: 1px solid $color-border-secondary;
 }
 
 .process-log{
 	thead{
 		th{
-			border-color: #1A237E;
+			border-color: $color-border-primary;
 		}
 		tr:nth-child(1) th{
 			background: white;
@@ -35,13 +39,19 @@
 		}
 	}
 
+	.process-log__process-id{
+		&:before{
+			content:"P#"
+		}
+	}
+
 	.process-log__logs{
-		margin: 10px 0;
+		margin: 10px 0 10px 10px;
 		padding: 0;
 
 	}
 	.process-log__item{
-		padding: 6px 0;
+		padding: 15px 0;
 		margin: 0;
 		@extend %border-secondary;
 		&:last-child{
@@ -52,9 +62,79 @@
 		margin-left: 4px;
 	}
 
+	.log__changed-data{
+
+		.label{
+			display: none;
+		}
+		.log__changed-data--field{
+			font-weight: bold;
+			&:after{
+				content:":";
+			}
+		}
+		.log__changed-data--value{
+			margin-left: 6px;
+		}
+		.log__changed-data--value-old:last-child{
+			&:after{
+				color: $color-text-secondary;
+				content: "→";
+				margin-left: 4px;
+			}
+		}
+		.log__changed-data--value-new{
+			&:before{
+				color: $color-text-secondary;
+				content:"→";
+				margin-right: 4px;
+			}
+		}
+	}
+
+	.log__id{
+		&:before{
+			content:"L#";
+		}
+	}
+	.log__type{
+		margin-right: 6px;
+		//font-weight: bold;
+	}
 	.process-log__second-line{
-		color: #546E7A;
+		position: relative;
+	}
+	.log__expires{
+		position: absolute;
+		right: 0;
+	}
+	.log__header{
+		margin-bottom: 10px;
+		.log__id{
+			margin-right: 10px;
+		}
+	}
+	.process-log__first-line{
+		margin-bottom: 10px;
+	}
+
+	.process-log__second-line{
+		color: $color-text-secondary;
 		font-size: 0.7rem;
+		span + span{
+			border-left: 1px solid $color-border-secondary;
+			padding-left: 8px;
+			margin-right: 8px;
+		}
+		.log__expires{
+			border:none;
+		}
+	}
+
+	.process-log__raw{
+		opacity: 0.4;
+		margin-top: 20px;
+		display: none;
 	}
 
 	.is-loading{
