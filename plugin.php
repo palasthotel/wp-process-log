@@ -24,7 +24,8 @@ namespace Palasthotel\ProcessLog;
  * @property string basename
  * @property Writer writer
  * @property Database database
- * @property Process process
+ * @property Request $request
+ * @property SettingsPage settings_page
  */
 class Plugin {
 
@@ -34,6 +35,7 @@ class Plugin {
 	 * @var Plugin|null
 	 */
 	private static $instance = null;
+
 	/**
 	 * @return Plugin
 	 */
@@ -59,15 +61,17 @@ class Plugin {
 
 		require_once dirname(__FILE__)."/vendor/autoload.php";
 
-		$this->database = new Database();
-		$this->writer = new Writer($this);
-		$this->process = new Process($this);
+		$this->database      = new Database();
+		$this->writer        = new Writer($this);
+		$this->request       = new Request($this);
+		$this->settings_page = new SettingsPage($this);
 
 		/**
 		 * on activate or deactivate plugin
 		 */
 		register_activation_hook( __FILE__, array( $this, "activation" ) );
 		if(WP_DEBUG){
+			// for development purpose
 			add_action('init', array($this, 'activation'));
 		}
 	}

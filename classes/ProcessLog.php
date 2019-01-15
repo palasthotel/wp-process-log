@@ -9,23 +9,20 @@
 namespace Palasthotel\ProcessLog;
 
 
-class ProcessLog {
+class ProcessLog extends DatabaseItem {
 
 	var $id = NULL;
 	var $process_id = NULL;
 	var $created = NULL;
 
-	var $type = "event";
+	var $event_type = "event";
 	var $active_user = 0;
 	var $message = "";
 	var $note = "";
 	var $comment = "";
 	var $severity = "info";
 	var $link_url = NULL;
-	var $location_url = NULL;
 	var $location_path = NULL;
-	var $referer_url = NULL;
-	var $hostname = NULL;
 	var $affected_post = NULL;
 	var $affected_term = NULL;
 	var $affected_user = NULL;
@@ -40,43 +37,24 @@ class ProcessLog {
 	var $variables = NULL;
 	var $blobdata = NULL;
 
-	public function __construct() {
+	public function __construct( ) {
+
 		$this->expires = time() + 60 * 60 * 24 * 14;
 
 		$user = wp_get_current_user();
 		if ( $user instanceof \WP_User ) {
 			$this->active_user = $user->ID;
 		}
-
-		if ( isset( $_SERVER ) && is_array( $_SERVER ) ) {
-			$this->location_url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-			$this->referer_url  = isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : NULL;
-			$this->hostname     = isset( $_SERVER['REMOTE_HOST'] ) ? $_SERVER['REMOTE_HOST'] : NULL;
-		}
-
-
 	}
 
-	/**
-	 * @return array
-	 */
-	public function insertArgs() {
-		$args = array();
-		foreach ( $this as $key => $value ) {
-			// let database decide the created time
-			if ( $key == "created" ) {
-				continue;
-			}
-			$args[ $key ] = $value;
-		}
-
-		return $args;
+	public function isArg( $key ) {
+		return ( $key != "created" );
 	}
 
 	/**
 	 * @return ProcessLog
 	 */
-	public static function build() {
+	public static function build(){
 		return new ProcessLog();
 	}
 
@@ -91,7 +69,7 @@ class ProcessLog {
 	 * @return int|null
 	 */
 	public function getProcessId() {
-		return $this->id;
+		return $this->process_id;
 	}
 
 	/**
@@ -104,8 +82,8 @@ class ProcessLog {
 	/**
 	 * @return string
 	 */
-	public function getType(): string {
-		return $this->type;
+	public function getEventType(): string {
+		return $this->event_type;
 	}
 
 	/**
@@ -150,32 +128,12 @@ class ProcessLog {
 		return $this->link_url;
 	}
 
-	/**
-	 * @return null|string
-	 */
-	public function getLocationUrl() {
-		return $this->location_url;
-	}
 
 	/**
 	 * @return null|string
 	 */
 	public function getLocationPath() {
 		return $this->location_path;
-	}
-
-	/**
-	 * @return null|string
-	 */
-	public function getRefererUrl() {
-		return $this->referer_url;
-	}
-
-	/**
-	 * @return null|string
-	 */
-	public function getHostname() {
-		return $this->hostname;
 	}
 
 	/**
@@ -282,12 +240,12 @@ class ProcessLog {
 	}
 
 	/**
-	 * @param string $type
+	 * @param string $event_type
 	 *
 	 * @return ProcessLog
 	 */
-	public function setType( string $type ) {
-		$this->type = $type;
+	public function setEventType( string $event_type ) {
+		$this->event_type = $event_type;
 
 		return $this;
 	}
@@ -359,45 +317,12 @@ class ProcessLog {
 	}
 
 	/**
-	 * @param null $location_url
-	 *
-	 * @return ProcessLog
-	 */
-	public function setLocationUrl( $location_url ) {
-		$this->location_url = $location_url;
-
-		return $this;
-	}
-
-	/**
 	 * @param null $location_path
 	 *
 	 * @return ProcessLog
 	 */
 	public function setLocationPath( $location_path ) {
 		$this->location_path = $location_path;
-
-		return $this;
-	}
-
-	/**
-	 * @param null $referer_url
-	 *
-	 * @return ProcessLog
-	 */
-	public function setRefererUrl( $referer_url ) {
-		$this->referer_url = $referer_url;
-
-		return $this;
-	}
-
-	/**
-	 * @param null $hostname
-	 *
-	 * @return ProcessLog
-	 */
-	public function setHostname( $hostname ) {
-		$this->hostname = $hostname;
 
 		return $this;
 	}

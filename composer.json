@@ -1,8 +1,5 @@
 {
     "autoload": {
-		"files": [
-			"classes/Database.php"
-		],
         "classmap": [
             "classes"
         ],

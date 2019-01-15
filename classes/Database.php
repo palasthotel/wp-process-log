@@ -9,38 +9,85 @@
 namespace Palasthotel\ProcessLog;
 
 
+use mysql_xdevapi\Exception;
+
 /**
  *
  */
-class Database{
+class Database {
 
 	/**
-	 * @return int
+	 * @return \QM_DB|\wpdb
 	 */
-	public function getNextProcessId(){
+	public static function wpdb() {
 		global $wpdb;
-		$tablename = $this->tablename();
-		$id = $wpdb->get_var(
-			"SELECT max(process_id) FROM $tablename GROUP BY process_id ORDER BY process_id DESC LIMIT 1"
+		return $wpdb;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getProcessList( $count = 10, $page = 1 ) {
+
+		$fields = array("process_id", "active_user", );
+		$tablename = $this->tablenameProcesses();
+		$offset    = $count * ( $page - 1 );
+
+		return self::wpdb()->get_results( self::wpdb()->prepare(
+			"SELECT id, created, finished, location_url, hostname FROM $tablename ORDER BY process_id DESC LIMIT %d, %d", array($offset, $count)
+		) );
+	}
+
+	/**
+	 * @return Process
+	 */
+	public function nextProcess(){
+		$process = new Process();
+		$result = self::wpdb()->insert(
+			$this->tablenameProcesses(),
+			$process->insertArgs()
 		);
-		return intval($id)+1;
+		if(!$result){
+			throw new Exception("Could not start new process");
+		}
+		$process->id = self::wpdb()->insert_id;
+		return $process;
 	}
 
-	public function tablename(){
-		global $wpdb;
-		return $wpdb->prefix."process_log";
+	/**
+	 * @return string
+	 */
+	public function tablenameProcesses(){
+		return self::wpdb()->prefix . "process_logs";
 	}
 
+	/**
+	 * @return string
+	 */
+	public function tablenameItems() {
+		return self::wpdb()->prefix . "process_log_items";
+	}
 
 	/**
 	 * @param \Palasthotel\ProcessLog\ProcessLog $log
 	 *
 	 * @return false|int
 	 */
-	function addLog(ProcessLog $log){
-		global $wpdb;
-		return $wpdb->insert(
-			$this->tablename(),
+	function startProcess(ProcessLog $log){
+		return self::wpdb()->insert(
+			$this->tablenameProcesses(),
+			$log->insertArgs()
+		);
+	}
+
+	/**
+	 * @param \Palasthotel\ProcessLog\ProcessLog $log
+	 *
+	 * @return false|int
+	 */
+	function addLog( ProcessLog $log ) {
+		return self::wpdb()->insert(
+			$this->tablenameItems(),
 			$log->insertArgs()
 		);
 	}
@@ -48,26 +95,42 @@ class Database{
 	/**
 	 * create the tables if not exist
 	 */
-	function createTables(){
+	function createTables() {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-		$tablename = $this->tablename();
-		dbDelta("CREATE TABLE IF NOT EXISTS $tablename
+
+		$process = $this->tablenameProcesses();
+		dbDelta( "CREATE TABLE IF NOT EXISTS $process
+		(
+		 id bigint(20) unsigned auto_increment,
+		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
+		 finished DATETIME DEFAULT NULL,
+	
+		 location_url varchar(255) comment 'where the event happend, url',
+		 referer_url varchar(255),
+		 hostname varchar(255),
+		
+		 primary key (id),
+		 key (created),
+		 key (hostname),
+		 key (location_url),
+		 key (referer_url)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
+
+		$tablename = $this->tablenameItems();
+		dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
 		(
 		 id bigint(20) unsigned auto_increment,
 		 process_id bigint(20) unsigned,
 		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
 		 
-		 type varchar(100) NOT NULL,
+		 event_type varchar(100) NOT NULL,
 		 active_user BIGINT,
 		 message TEXT comment 'Message from code',
 		 note TEXT comment 'Comment from user that triggered event. Comparable to git commit message',
 		 comment TEXT comment 'after creation comments in backend',
 		 severity varchar(100) NOT NULL,
 		 link_url varchar(255) comment 'link to the result of the event',
-		 location_url varchar(255) comment 'where the event happend, url',
 		 location_path varchar(255) comment 'where the event happend, file system path',
-		 referer_url varchar(255),
-		 hostname varchar(255),
 		 affected_post BIGINT comment 'post id that was affected by the event',
 		 affected_term BIGINT comment 'term id that was affected by the event',
 		 affected_user BIGINT comment 'user id that was affected by the event',
@@ -83,12 +146,11 @@ class Database{
 		 blobdata BLOB,	
 		 	 
 		 primary key (id),
-		 key (process_id),
+		 foreign key (process_id) REFERENCES $process(id) ,
 		 key (created),
-		 key (type),
+		 key (event_type),
 		 key (active_user),
 		 key (severity),
-		 key (hostname),
 		 key (affected_post),
 		 key (affected_term),
 		 key (affected_user),
@@ -96,9 +158,8 @@ class Database{
 		 key (expires),
 		 key (changed_data_field)
 		 
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
 	}
-
 
 
 }

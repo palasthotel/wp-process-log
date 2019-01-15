@@ -8,7 +8,6 @@ class ComposerStaticInit2950cf92a8b27d4532ea00c998f68911
 {
     public static $files = array (
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
-        '0afa32d5edef9ee12d3ac156f05ac291' => __DIR__ . '/../..' . '/classes/Database.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -435,8 +434,11 @@ class ComposerStaticInit2950cf92a8b27d4532ea00c998f68911
         'PHP_Token_YIELD' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_YIELD_FROM' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'Palasthotel\\ProcessLog\\Database' => __DIR__ . '/../..' . '/classes/Database.php',
+        'Palasthotel\\ProcessLog\\DatabaseItem' => __DIR__ . '/../..' . '/classes/DatabaseItem.php',
         'Palasthotel\\ProcessLog\\Process' => __DIR__ . '/../..' . '/classes/Process.php',
         'Palasthotel\\ProcessLog\\ProcessLog' => __DIR__ . '/../..' . '/classes/ProcessLog.php',
+        'Palasthotel\\ProcessLog\\Request' => __DIR__ . '/../..' . '/classes/Request.php',
+        'Palasthotel\\ProcessLog\\SettingsPage' => __DIR__ . '/../..' . '/classes/SettingsPage.php',
         'Palasthotel\\ProcessLog\\Writer' => __DIR__ . '/../..' . '/classes/Writer.php',
         'PharIo\\Manifest\\Application' => __DIR__ . '/..' . '/phar-io/manifest/src/values/Application.php',
         'PharIo\\Manifest\\ApplicationName' => __DIR__ . '/..' . '/phar-io/manifest/src/values/ApplicationName.php',

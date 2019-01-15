@@ -3,100 +3,73 @@
  * Created by PhpStorm.
  * User: edward
  * Date: 07.12.18
- * Time: 13:35
+ * Time: 12:21
  */
 
 namespace Palasthotel\ProcessLog;
 
 
-/**
- * @property \Palasthotel\ProcessLog\Writer writer
- */
-class Process {
+class Process extends DatabaseItem {
 
-	public function __construct( Plugin $plugin ) {
-		$this->writer = $plugin->writer;
-		add_action( 'save_post', array( $this, 'save_post' ) );
-		add_action( 'post_updated', array( $this, 'post_updated' ), 10, 3 );
-		add_action('profile_update', array($this, 'profile_update'), 10, 2);
-		// TODO: create, save, delete post
-		// TODO: create, save, delete user
-		// TODO: create, save, delete taxonomy
-		// TODO: comments
-		//		add_action('shutdown', array($this, 'shutdown'));
+	var $id = NULL;
+	var $created = NULL;
+
+	var $location_url = NULL;
+	var $referer_url = NULL;
+	var $hostname = NULL;
+
+	public function __construct() {
+		if ( isset( $_SERVER ) && is_array( $_SERVER ) ) {
+			$this->location_url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$this->referer_url  = isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : NULL;
+			$this->hostname     = isset( $_SERVER['REMOTE_HOST'] ) ? $_SERVER['REMOTE_HOST'] : NULL;
+		}
 	}
 
-	public function save_post( $post_id ) {
-		//		$this->writer->addLog(
-		//			ProcessLog::build()
-		//			          ->setMessage("save post")
-		//			->setAffectedPost($post_id)
-		//			->setLinkUrl(get_permalink($post_id))
-		//		);
+	public function isArg( $key ) {
+		return ( $key != "created" );
 	}
 
 	/**
-	 * @param $post_id
-	 * @param \WP_Post $post_after
-	 * @param \WP_Post $post_before
+	 * @return Process
 	 */
-	public function post_updated( $post_id, $post_after, $post_before ) {
-		if ( $post_after->post_title != $post_before->post_title ) {
-			$this->writer->addLog(
-				ProcessLog::build()
-				          ->setMessage( "update post" )
-				          ->setAffectedPost( $post_id )
-				          ->setLinkUrl( get_permalink( $post_id ) )
-				          ->setChangedDataField( "post_title" )
-				          ->setChangedDataValueOld( $post_before->post_title )
-				          ->setChangedDataValueNew( $post_after->post_title )
-			);
-		}
-		if ( $post_after->guid != $post_before->guid ) {
-			$this->writer->addLog(
-				ProcessLog::build()
-				          ->setMessage( "update post" )
-				          ->setAffectedPost( $post_id )
-				          ->setLinkUrl( get_permalink( $post_id ) )
-				          ->setChangedDataField( "guid" )
-				          ->setChangedDataValueOld( $post_before->guid )
-				          ->setChangedDataValueNew( $post_after->guid )
-			);
-		}
+	public static function build(){
+		return new Process();
 	}
 
 	/**
-	 * @param $user_id
-	 * @param \WP_User $old_user_data
+	 * @return int|null
 	 */
-	public function profile_update($user_id, $old_user_data ){
-		// after profile was saved
-
-		$user = get_user_by("id", $user_id);
-
-		$userData = $user->data;
-		$oldData = $old_user_data->data;
-
-		foreach ($userData as $prop => $value){
-			if($userData->{$prop} != $oldData->{$prop}){
-				$this->writer->addLog(
-					ProcessLog::build()
-					          ->setMessage( "update post" )
-					          ->setAffectedUser($user_id)
-					          ->setLinkUrl( get_edit_user_link( $user_id ) )
-					          ->setChangedDataField( $prop )
-					          ->setChangedDataValueOld( $oldData->{$prop} )
-					          ->setChangedDataValueNew( $userData->{$prop} )
-				);
-			}
-		}
-
+	public function getId() {
+		return $this->id;
 	}
 
-	//	public function shutdown(){
-	//		$this->writer->addLog(
-	//			ProcessLog::build()->setMessage("shutdown")
-	//		);
-	//	}
+	/**
+	 * @return null
+	 */
+	public function getCreated() {
+		return $this->created;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getLocationUrl() {
+		return $this->location_url;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getRefererUrl() {
+		return $this->referer_url;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getHostname() {
+		return $this->hostname;
+	}
 
 }

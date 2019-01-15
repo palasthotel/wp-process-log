@@ -8,9 +8,15 @@
 
 namespace Palasthotel\ProcessLog;
 
+/**
+ * @property \Palasthotel\ProcessLog\Plugin plugin
+ */
 class Writer {
 
-	private $process_id = null;
+	/**
+	 * @var Process|null
+	 */
+	private $process = null;
 
 	/**
 	 * Writer constructor.
@@ -22,13 +28,13 @@ class Writer {
 	}
 
 	/**
-	 * @return int
+	 * @return Process
 	 */
-	public function getProcessId(){
-		if($this->process_id == null){
-			$this->process_id = $this->plugin->database->getNextProcessId();
+	public function getProcess(){
+		if($this->process == null){
+			$this->process = $this->plugin->database->nextProcess();
 		}
-		return $this->process_id;
+		return $this->process;
 	}
 
 	/**
@@ -38,7 +44,7 @@ class Writer {
 	 */
 	public function addLog(ProcessLog $log){
 		return $this->plugin->database->addLog(
-			$log->setProcessId($this->getProcessId())
+			$log->setProcessId($this->getProcess()->getId())
 		);
 	}
 
