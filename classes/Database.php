@@ -20,6 +20,7 @@ class Database {
 	 */
 	public static function wpdb() {
 		global $wpdb;
+
 		return $wpdb;
 	}
 
@@ -38,20 +39,38 @@ class Database {
 	}
 
 	/**
-	 * @param int $count
 	 * @param int $page
+	 * @param int $count
 	 *
 	 * @return array
 	 */
-	public function getProcessList( $count = 10, $page = 1 ) {
+	public function getProcessList( $page = 1, $count = 10 ) {
 
-		$fields = array("process_id", "active_user", );
+		$fields    = array( "process_id", "active_user", );
 		$tablename = self::tablenameProcesses();
 		$offset    = $count * ( $page - 1 );
 
-		return self::wpdb()->get_results( self::wpdb()->prepare(
-			"SELECT id, created, finished, location_url, hostname FROM $tablename ORDER BY process_id DESC LIMIT %d OFFSET %d", array($count, $offset)
-		) );
+		return self::wpdb()->get_results(
+			self::wpdb()->prepare(
+				"SELECT id, active_user, created, location_url, hostname FROM $tablename ORDER BY id DESC LIMIT %d OFFSET %d",
+				$count,
+				$offset
+			)
+		);
+	}
+
+	/**
+	 * @param $process_id
+	 *
+	 * @return string|null
+	 */
+	public function countLogs($process_id){
+		return self::wpdb()->get_var(
+			self::wpdb()->prepare(
+				"SELECT count(id) from ".self::tablenameItems()." WHERE process_id = %d",
+				$process_id
+			)
+		);
 	}
 
 	/**
@@ -60,10 +79,10 @@ class Database {
 	 * @return array
 	 */
 	public function getProcessLogs( $pid ) {
-		return $this->wpdb()->get_results(
-			$this->wpdb()->prepare(
-				"SELECT * FROM " . self::tablenameProcesses() . " WHERE process_id = %d",
-				array( $pid )
+		return self::wpdb()->get_results(
+			self::wpdb()->prepare(
+				"SELECT * FROM " . self::tablenameItems() . " WHERE process_id = %d",
+				$pid
 			)
 		);
 	}
@@ -71,16 +90,17 @@ class Database {
 	/**
 	 * @return Process|false
 	 */
-	public function nextProcess(){
+	public function nextProcess() {
 		$process = new Process();
-		$result = self::wpdb()->insert(
+		$result  = self::wpdb()->insert(
 			self::tablenameProcesses(),
 			$process->insertArgs()
 		);
-		if(!$result){
+		if ( ! $result ) {
 			return false;
 		}
 		$process->id = self::wpdb()->insert_id;
+
 		return $process;
 	}
 
@@ -90,7 +110,7 @@ class Database {
 	 * @return false|int
 	 */
 	function addLog( ProcessLog $log ) {
-		$args = $log->insertArgs();
+		$args   = $log->insertArgs();
 		$result = self::wpdb()->insert(
 			self::tablenameItems(),
 			$args
@@ -111,20 +131,22 @@ class Database {
 		(
 		 id bigint(20) unsigned auto_increment,
 		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
-	
+		 
+		 active_user BIGINT(20),
 		 location_url varchar(255) comment 'where the event happend, url',
 		 referer_url varchar(255),
 		 hostname varchar(255),
 		
 		 primary key (id),
 		 key (created),
+		 key (active_user),
 		 key (hostname),
 		 key (location_url),
 		 key (referer_url)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
 
 		$tablename = self::tablenameItems();
-		
+
 		dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
 		(
 		 id bigint(20) unsigned auto_increment,
@@ -132,7 +154,7 @@ class Database {
 		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
 		 
 		 event_type varchar(100) NOT NULL,
-		 active_user BIGINT,
+		 active_user BIGINT(20),
 		 message TEXT comment 'Message from code',
 		 note TEXT comment 'Comment from user that triggered event. Comparable to git commit message',
 		 comment TEXT comment 'after creation comments in backend',

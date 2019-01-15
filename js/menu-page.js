@@ -44,9 +44,9 @@
 		const row = `<tr class="process-log__row--process">
 			<td title="Process ID" id="process-${item.process_id}">
 				<a class="process-log__process-id more" 
-				data-pid="${item.process_id}" 
-				href="#process-${item.process_id}"
-				>${item.process_id}</a>
+				data-pid="${item.id}" 
+				href="#process-${item.id}"
+				>${item.id}</a>
 			</td>
 			<td>
 				${item.created}
@@ -73,7 +73,7 @@
 
 		const $header = $('<div></div>').addClass('log__header');
 		$header.append($('<span></span>').addClass('log__id').text(log.id));
-		// $header.append($("<span></span>").addClass("log__type").text(log.type));
+		// $header.append($("<span></span>").addClass("log__type").text(log.event_type));
 		$header.append(
 			$('<span></span>').addClass('log__message').text(log.message));
 
@@ -94,16 +94,16 @@
 					$(`<span><span class="label">Changed:</span><span class="value">${log.changed_data_field}</span></span>`)
 						.addClass('log__changed-data--field'),
 				);
-			if (log.changed_data_values_old) {
+			if (log.changed_data_value_old) {
 				$change.append(
-					$(`<span><span class="label">From:</span><span class="value">${log.changed_data_values_old}</span></span>`)
+					$(`<span><span class="label">From:</span><span class="value">${log.changed_data_value_old}</span></span>`)
 						.addClass(
 							'log__changed-data--value log__changed-data--value-old'),
 				);
 			}
-			if (log.changed_data_values_new) {
+			if (log.changed_data_value_new) {
 				$change.append(
-					$(`<span><span class="label">To:</span><span class="value">${log.changed_data_values_new}</span></span>`)
+					$(`<span><span class="label">To:</span><span class="value">${log.changed_data_value_new}</span></span>`)
 						.addClass(
 							'log__changed-data--value log__changed-data--value-new'),
 				);
@@ -117,7 +117,7 @@
 		const $second_line = $('<div></div>')
 			.addClass('process-log__second-line');
 
-		$(`<span>Type: ${log.type}</span>`)
+		$(`<span>Type: ${log.event_type}</span>`)
 			.addClass('log__type')
 			.appendTo($second_line);
 

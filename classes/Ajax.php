@@ -24,10 +24,14 @@ class Ajax {
 
 	public function processes_list(){
 		$page = (isset($_GET["page"]))? intval($_GET["page"]): 1;
-		$logs = $this->plugin->database->getProcessesList($page);
+		$database = $this->plugin->database;
+		$logs = $database->getProcessList($page);
 		wp_send_json(array(
 			"page" => $page,
-			"list" => $logs,
+			"list" => array_map(function($process) use ( $database ) {
+				$process->logs_count = $database->countLogs($process->id);
+				return $process;
+			}, $logs),
 			"users" => $this->getUsersOfLogs($logs),
 		));
 

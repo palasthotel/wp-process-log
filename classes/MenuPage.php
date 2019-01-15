@@ -9,6 +9,10 @@
 namespace Palasthotel\ProcessLog;
 
 
+/**
+ * @property \Palasthotel\ProcessLog\Database database
+ * @property \Palasthotel\ProcessLog\Plugin plugin
+ */
 class MenuPage {
 
 	const API_HANDLE = "process-log-api";
@@ -20,6 +24,7 @@ class MenuPage {
 
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
+		$this->database = $plugin->database;
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 	}
 
@@ -95,7 +100,7 @@ class MenuPage {
 
 				</tbody>
 				<?php
-				$list = $this->plugin->database->getProcessesList( 1 );
+//				$list = $this->database->getProcessList();
 				$list = array();
 				foreach ( $list as $process ) {
 					?>
@@ -114,7 +119,7 @@ class MenuPage {
 								echo "<a href='$link'>" . $user->display_name . "</a>";
 							}
 							?></td>
-						<td><?php echo $process->logs_count; ?></td>
+						<td><?php echo $this->database->countLogs($process->id); ?></td>
 						<td><?php echo $process->location_url; ?></td>
 					</tr>
 					<tr>
