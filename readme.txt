@@ -1,0 +1,50 @@
+=== Process Log ===
+Contributors: palasthotel, edwardbock
+Donate link: http://palasthotel.de/
+Tags: debug, log
+Requires at least: 4.0
+Tested up to: 5.0.0
+Stable tag: 1.0.0
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl
+
+Loggin system.
+
+== Description ==
+
+Logging system.
+
+* WP_Post metas
+* WP_User profiles
+* Taxonomies
+* Comments
+* Content User Relations
+
+== Installation ==
+
+1. Upload `process-log.zip` to the `/wp-content/plugins/` directory
+1. Extract the Plugin to a `process-log` Folder
+1. Activate the plugin through the 'Plugins' menu in WordPress
+
+== Frequently Asked Questions ==
+
+
+== Screenshots ==
+
+
+== Changelog ==
+
+= 1.0.0 =
+* Support: WP_Post meta value changes
+* Support: WP_User profile changes
+* Support: Taxonomy changes
+* Support: Comment changes
+* Support: Content User Relations
+
+== Upgrade Notice ==
+
+
+== Arbitrary section ==
+
+
+

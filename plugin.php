@@ -11,12 +11,15 @@
  * Requires at least: 4.0
  * Tested up to: 4.9.8
  * License: http://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ *
  * @copyright Copyright (c) 2018, Palasthotel
  * @package Palasthotel\ProcessLog
  */
 
 namespace Palasthotel\ProcessLog;
 
+define( "PROCESS_LOG_DIR", dirname( __FILE__ ) );
+define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
 
 /**
  * @property string url
@@ -26,6 +29,8 @@ namespace Palasthotel\ProcessLog;
  * @property Database database
  * @property Request $request
  * @property SettingsPage settings_page
+ * @property MenuPage menuPage
+ * @property Ajax ajax
  */
 class Plugin {
 
@@ -34,13 +39,16 @@ class Plugin {
 	/**
 	 * @var Plugin|null
 	 */
-	private static $instance = null;
+	private static $instance = NULL;
 
 	/**
 	 * @return Plugin
 	 */
-	static function instance(){
-		if(self::$instance == null) self::$instance = new Plugin();
+	static function instance() {
+		if ( self::$instance == NULL ) {
+			self::$instance = new Plugin();
+		}
+
 		return self::$instance;
 	}
 
@@ -51,28 +59,29 @@ class Plugin {
 
 		load_plugin_textdomain(
 			Plugin::DOMAIN,
-			FALSE,
+			false,
 			dirname( plugin_basename( __FILE__ ) ) . '/languages'
 		);
 
-		$this->url = plugin_dir_url(__FILE__);
-		$this->path = plugin_dir_path(__FILE__);
-		$this->basename = plugin_basename(__FILE__);
+		$this->url      = plugin_dir_url( __FILE__ );
+		$this->path     = plugin_dir_path( __FILE__ );
+		$this->basename = plugin_basename( __FILE__ );
 
-		require_once dirname(__FILE__)."/vendor/autoload.php";
+		require_once dirname( __FILE__ ) . "/vendor/autoload.php";
 
-		$this->database      = new Database();
-		$this->writer        = new Writer($this);
-		$this->request       = new Request($this);
-		$this->settings_page = new SettingsPage($this);
+		$this->database = new Database();
+		$this->writer   = new Writer( $this );
+		$this->request  = new Request( $this );
+		$this->menuPage = new MenuPage( $this );
+		$this->ajax     = new Ajax( $this );
 
 		/**
 		 * on activate or deactivate plugin
 		 */
 		register_activation_hook( __FILE__, array( $this, "activation" ) );
-		if(WP_DEBUG){
+		if ( WP_DEBUG ) {
 			// for development purpose
-			add_action('init', array($this, 'activation'));
+			add_action( 'init', array( $this, 'activation' ) );
 		}
 	}
 
@@ -84,6 +93,7 @@ class Plugin {
 		$this->database->createTables();
 	}
 }
+
 Plugin::instance();
 
-require_once dirname(__FILE__).'/public-functions.php';
+require_once dirname( __FILE__ ) . '/public-functions.php';

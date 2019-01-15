@@ -8,8 +8,7 @@
 
 namespace Palasthotel\ProcessLog;
 
-
-use mysql_xdevapi\Exception;
+use Exception;
 
 /**
  *
@@ -17,7 +16,7 @@ use mysql_xdevapi\Exception;
 class Database {
 
 	/**
-	 * @return \QM_DB|\wpdb
+	 * @return \wpdb
 	 */
 	public static function wpdb() {
 		global $wpdb;
@@ -25,59 +24,64 @@ class Database {
 	}
 
 	/**
-	 * @return array
-	 */
-	public function getProcessList( $count = 10, $page = 1 ) {
-
-		$fields = array("process_id", "active_user", );
-		$tablename = $this->tablenameProcesses();
-		$offset    = $count * ( $page - 1 );
-
-		return self::wpdb()->get_results( self::wpdb()->prepare(
-			"SELECT id, created, finished, location_url, hostname FROM $tablename ORDER BY process_id DESC LIMIT %d, %d", array($offset, $count)
-		) );
-	}
-
-	/**
-	 * @return Process
-	 */
-	public function nextProcess(){
-		$process = new Process();
-		$result = self::wpdb()->insert(
-			$this->tablenameProcesses(),
-			$process->insertArgs()
-		);
-		if(!$result){
-			throw new Exception("Could not start new process");
-		}
-		$process->id = self::wpdb()->insert_id;
-		return $process;
-	}
-
-	/**
 	 * @return string
 	 */
-	public function tablenameProcesses(){
+	public static function tablenameProcesses() {
 		return self::wpdb()->prefix . "process_logs";
 	}
 
 	/**
 	 * @return string
 	 */
-	public function tablenameItems() {
+	public static function tablenameItems() {
 		return self::wpdb()->prefix . "process_log_items";
 	}
 
 	/**
-	 * @param \Palasthotel\ProcessLog\ProcessLog $log
+	 * @param int $count
+	 * @param int $page
 	 *
-	 * @return false|int
+	 * @return array
 	 */
-	function startProcess(ProcessLog $log){
-		return self::wpdb()->insert(
-			$this->tablenameProcesses(),
-			$log->insertArgs()
+	public function getProcessList( $count = 10, $page = 1 ) {
+
+		$fields = array("process_id", "active_user", );
+		$tablename = self::tablenameProcesses();
+		$offset    = $count * ( $page - 1 );
+
+		return self::wpdb()->get_results( self::wpdb()->prepare(
+			"SELECT id, created, finished, location_url, hostname FROM $tablename ORDER BY process_id DESC LIMIT %d OFFSET %d", array($count, $offset)
+		) );
+	}
+
+	/**
+	 * @param int $pid
+	 *
+	 * @return array
+	 */
+	public function getProcessLogs( $pid ) {
+		return $this->wpdb()->get_results(
+			$this->wpdb()->prepare(
+				"SELECT * FROM " . self::tablenameProcesses() . " WHERE process_id = %d",
+				array( $pid )
+			)
 		);
+	}
+
+	/**
+	 * @return Process|false
+	 */
+	public function nextProcess(){
+		$process = new Process();
+		$result = self::wpdb()->insert(
+			self::tablenameProcesses(),
+			$process->insertArgs()
+		);
+		if(!$result){
+			return false;
+		}
+		$process->id = self::wpdb()->insert_id;
+		return $process;
 	}
 
 	/**
@@ -87,10 +91,11 @@ class Database {
 	 */
 	function addLog( ProcessLog $log ) {
 		return self::wpdb()->insert(
-			$this->tablenameItems(),
+			self::tablenameItems(),
 			$log->insertArgs()
 		);
 	}
+
 
 	/**
 	 * create the tables if not exist
@@ -98,12 +103,11 @@ class Database {
 	function createTables() {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
-		$process = $this->tablenameProcesses();
+		$process = self::tablenameProcesses();
 		dbDelta( "CREATE TABLE IF NOT EXISTS $process
 		(
 		 id bigint(20) unsigned auto_increment,
 		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
-		 finished DATETIME DEFAULT NULL,
 	
 		 location_url varchar(255) comment 'where the event happend, url',
 		 referer_url varchar(255),
@@ -116,7 +120,8 @@ class Database {
 		 key (referer_url)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
 
-		$tablename = $this->tablenameItems();
+		$tablename = self::tablenameItems();
+		
 		dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
 		(
 		 id bigint(20) unsigned auto_increment,
@@ -138,8 +143,8 @@ class Database {
 		 expires BIGINT comment 'timestamp when to clean up this log entry',
 		 
 		 changed_data_field VARCHAR(255),
-		 changed_data_value_old TEXT,
-		 changed_data_value_new TEXT,
+		 changed_data_values_old TEXT,
+		 changed_data_values_new TEXT,
 		 
 		 variables text,
 		 

@@ -45,6 +45,21 @@ class ProcessLog extends DatabaseItem {
 		if ( $user instanceof \WP_User ) {
 			$this->active_user = $user->ID;
 		}
+
+		$bt = debug_backtrace();
+		foreach ($bt as $trace){
+			$file = $trace["file"];
+			if(
+				strpos($file, PROCESS_LOG_HANDLERS_DIR) === 0
+				||
+				( strpos($file, ABSPATH."wp-content") === 0 && strpos($file, PROCESS_LOG_DIR) === false )
+			){
+				$docroot_relative_file = "/".str_replace(ABSPATH, "", $trace["file"]);
+				$this->location_path = $docroot_relative_file." Line ".$trace["line"];
+				break;
+			}
+
+		}
 	}
 
 	public function isArg( $key ) {
@@ -181,14 +196,14 @@ class ProcessLog extends DatabaseItem {
 	/**
 	 * @return null|string
 	 */
-	public function getChangedDataValueOld() {
+	public function getChangedDataValuesOld() {
 		return $this->changed_data_value_old;
 	}
 
 	/**
 	 * @return null|string
 	 */
-	public function getChangedDataValueNew() {
+	public function getChangedDataValuesNew() {
 		return $this->changed_data_value_new;
 	}
 
@@ -323,7 +338,6 @@ class ProcessLog extends DatabaseItem {
 	 */
 	public function setLocationPath( $location_path ) {
 		$this->location_path = $location_path;
-
 		return $this;
 	}
 
@@ -394,23 +408,23 @@ class ProcessLog extends DatabaseItem {
 	}
 
 	/**
-	 * @param null $changed_data_value_old
+	 * @param string|int $value
 	 *
 	 * @return ProcessLog
 	 */
-	public function setChangedDataValueOld( $changed_data_value_old ) {
-		$this->changed_data_value_old = $changed_data_value_old;
+	public function setChangedDataValueOld( $value ) {
+		$this->changed_data_value_old = $value;
 
 		return $this;
 	}
 
 	/**
-	 * @param null $changed_data_value_new
+	 * @param string|int $value
 	 *
 	 * @return ProcessLog
 	 */
-	public function setChangedDataValueNew( $changed_data_value_new ) {
-		$this->changed_data_value_new = $changed_data_value_new;
+	public function setChangedDataValueNew( $value ) {
+		$this->changed_data_value_new = $value;
 
 		return $this;
 	}
@@ -427,12 +441,12 @@ class ProcessLog extends DatabaseItem {
 	}
 
 	/**
-	 * @param null $blobdata
+	 * @param null $blob_data
 	 *
 	 * @return ProcessLog
 	 */
-	public function setBlobdata( $blobdata ) {
-		$this->blobdata = $blobdata;
+	public function setBlobData( $blob_data ) {
+		$this->blobdata = $blob_data;
 
 		return $this;
 	}

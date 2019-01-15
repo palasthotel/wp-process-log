@@ -8,7 +8,6 @@
 
 namespace Palasthotel\ProcessLog;
 
-
 class Process extends DatabaseItem {
 
 	var $id = NULL;
@@ -71,5 +70,4 @@ class Process extends DatabaseItem {
 	public function getHostname() {
 		return $this->hostname;
 	}
-
 }
