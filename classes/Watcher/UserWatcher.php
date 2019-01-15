@@ -6,20 +6,18 @@
  * Time: 16:37
  */
 
-namespace Palasthotel\ProcessLog\Process;
+namespace Palasthotel\ProcessLog;
 
-use Palasthotel\ProcessLog\Plugin;
-use Palasthotel\ProcessLog\ProcessLog;
 
 /**
- * @property \Palasthotel\ProcessLog\Writer writer
+ * @property Writer writer
  */
-class User {
+class UserWatcher {
 
 	/**
 	 * User constructor.
 	 *
-	 * @param \Palasthotel\ProcessLog\Plugin $plugin
+	 * @param Plugin $plugin
 	 */
 	public function __construct( Plugin $plugin ) {
 		$this->writer = $plugin->writer;
@@ -67,8 +65,8 @@ class User {
 					          ->setAffectedUser( $user_id )
 					          ->setLinkUrl( get_edit_user_link( $user_id ) )
 					          ->setChangedDataField( $prop )
-					          ->setChangedDataValuesOld( $oldData->{$prop} )
-					          ->setChangedDataValuesNew( $userData->{$prop} )
+					          ->setChangedDataValueOld( $oldData->{$prop} )
+					          ->setChangedDataValueNew( $userData->{$prop} )
 				);
 			}
 		}
@@ -96,8 +94,8 @@ class User {
 			          ->setAffectedUser( $user_id )
 			          ->setLinkUrl( get_edit_user_link( $user_id ) )
 			          ->setChangedDataField( $meta_key )
-			          ->setChangedDataValuesOld( $old_value )
-			          ->setChangedDataValuesNew( $meta_value )
+			          ->setChangedDataValueOld( $old_value )
+			          ->setChangedDataValueNew( $meta_value )
 		);
 	}
 

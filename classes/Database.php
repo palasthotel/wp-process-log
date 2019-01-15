@@ -90,10 +90,13 @@ class Database {
 	 * @return false|int
 	 */
 	function addLog( ProcessLog $log ) {
-		return self::wpdb()->insert(
+		$args = $log->insertArgs();
+		$result = self::wpdb()->insert(
 			self::tablenameItems(),
-			$log->insertArgs()
+			$args
 		);
+
+		return $result;
 	}
 
 
@@ -143,8 +146,8 @@ class Database {
 		 expires BIGINT comment 'timestamp when to clean up this log entry',
 		 
 		 changed_data_field VARCHAR(255),
-		 changed_data_values_old TEXT,
-		 changed_data_values_new TEXT,
+		 changed_data_value_old TEXT,
+		 changed_data_value_new TEXT,
 		 
 		 variables text,
 		 

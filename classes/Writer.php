@@ -9,7 +9,7 @@
 namespace Palasthotel\ProcessLog;
 
 /**
- * @property \Palasthotel\ProcessLog\Plugin plugin
+ * @property Plugin plugin
  */
 class Writer {
 
@@ -21,16 +21,17 @@ class Writer {
 	/**
 	 * Writer constructor.
 	 *
-	 * @param \Palasthotel\ProcessLog\Plugin $plugin
+	 * @param Plugin $plugin
 	 */
 	public function __construct(Plugin $plugin) {
 		$this->plugin = $plugin;
+		add_action('shutdown', array($this, 'shutdown'));
 	}
 
 	/**
 	 * @return Process
 	 */
-	public function getProcess(){
+	private function getProcess(){
 		if($this->process == null){
 			$this->process = $this->plugin->database->nextProcess();
 		}
@@ -46,6 +47,15 @@ class Writer {
 		return $this->plugin->database->addLog(
 			$log->setProcessId($this->getProcess()->getId())
 		);
+	}
+
+	/**
+	 *
+	 */
+	public function shutdown(){
+		if($this->process != null){
+
+		}
 	}
 
 }

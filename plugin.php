@@ -27,8 +27,7 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property string basename
  * @property Writer writer
  * @property Database database
- * @property Request $request
- * @property SettingsPage settings_page
+ * @property Watcher $watcher
  * @property MenuPage menuPage
  * @property Ajax ajax
  */
@@ -71,7 +70,7 @@ class Plugin {
 
 		$this->database = new Database();
 		$this->writer   = new Writer( $this );
-		$this->request  = new Request( $this );
+		$this->watcher  = new Watcher( $this );
 		$this->menuPage = new MenuPage( $this );
 		$this->ajax     = new Ajax( $this );
 

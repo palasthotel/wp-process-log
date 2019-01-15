@@ -17,14 +17,22 @@ class Process extends DatabaseItem {
 	var $referer_url = NULL;
 	var $hostname = NULL;
 
+	/**
+	 * Process constructor.
+	 */
 	public function __construct() {
 		if ( isset( $_SERVER ) && is_array( $_SERVER ) ) {
-			$this->location_url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$this->location_url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
 			$this->referer_url  = isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : NULL;
 			$this->hostname     = isset( $_SERVER['REMOTE_HOST'] ) ? $_SERVER['REMOTE_HOST'] : NULL;
 		}
 	}
 
+	/**
+	 * @param $key
+	 *
+	 * @return bool
+	 */
 	public function isArg( $key ) {
 		return ( $key != "created" );
 	}

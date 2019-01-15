@@ -6,15 +6,12 @@
  * Time: 16:37
  */
 
-namespace Palasthotel\ProcessLog\Process;
-
-use Palasthotel\ProcessLog\Plugin;
-use Palasthotel\ProcessLog\ProcessLog;
+namespace Palasthotel\ProcessLog;
 
 /**
- * @property \Palasthotel\ProcessLog\Writer writer
+ * @property Writer writer
  */
-class ContentUserRelations {
+class ContentUserRelationWatcher {
 
 	/**
 	 * User constructor.
@@ -46,7 +43,7 @@ class ContentUserRelations {
 			          ->setAffectedUser( $user_id )
 			          ->setAffectedPost( $post_id )
 			          ->setChangedDataField( "typestate_id" )
-			          ->setChangedDataValuesNew( $typeState_id )
+			          ->setChangedDataValueNew( $typeState_id )
 		);
 	}
 	/**
@@ -61,7 +58,7 @@ class ContentUserRelations {
 			          ->setAffectedUser( $user_id )
 			          ->setAffectedPost( $post_id )
 			          ->setChangedDataField( "typestate_id" )
-			          ->setChangedDataValuesOld( $typeState_id )
+			          ->setChangedDataValueOld( $typeState_id )
 		);
 	}
 }

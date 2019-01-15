@@ -37,6 +37,16 @@ class ProcessLog extends DatabaseItem {
 	var $variables = NULL;
 	var $blobdata = NULL;
 
+	/**
+	 * @return ProcessLog
+	 */
+	public static function build(){
+		return new ProcessLog();
+	}
+
+	/**
+	 * ProcessLog constructor.
+	 */
 	public function __construct( ) {
 
 		$this->expires = time() + 60 * 60 * 24 * 14;
@@ -62,15 +72,13 @@ class ProcessLog extends DatabaseItem {
 		}
 	}
 
+	/**
+	 * @param $key
+	 *
+	 * @return bool
+	 */
 	public function isArg( $key ) {
 		return ( $key != "created" );
-	}
-
-	/**
-	 * @return ProcessLog
-	 */
-	public static function build(){
-		return new ProcessLog();
 	}
 
 	/**
