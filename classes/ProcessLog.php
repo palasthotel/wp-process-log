@@ -458,4 +458,17 @@ class ProcessLog extends DatabaseItem {
 
 		return $this;
 	}
+
+	/**
+	 * use path of which file this call was triggered
+	 * @return ProcessLog
+	 */
+	public function useLocationPath(){
+		$bt = debug_backtrace();
+		if(count($bt) > 0){
+			$this->location_path = "/".str_replace(ABSPATH, "", $bt[0]["file"])." Line: ".$bt[0]["line"];
+		}
+
+		return $this;
+	}
 }
