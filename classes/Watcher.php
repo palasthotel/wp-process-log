@@ -30,8 +30,17 @@ class Watcher {
 		$this->comment = new CommentWatcher($plugin);
 
 
+		add_filter(Plugin::FILTER_IS_USER_WATCHER_ACTIVE, array($this, 'core_watchers'));
+		add_filter(Plugin::FILTER_IS_POST_WATCHER_ACTIVE, array($this, 'core_watchers'));
+		add_filter(Plugin::FILTER_IS_CUR_WATCHER_ACTIVE, array($this, 'core_watchers'));
+	}
 
+	public function isActive(){
+		return apply_filters(Plugin::FILTER_CORE_WATCHERS_ACTIVE, true);
+	}
 
+	public function core_watchers(){
+		return $this->isActive();
 	}
 
 }

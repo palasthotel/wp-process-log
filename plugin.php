@@ -36,6 +36,14 @@ class Plugin {
 	const DOMAIN = "process-log";
 
 	/**
+	 * filters
+	 */
+	const FILTER_CORE_WATCHERS_ACTIVE = "process_log_core_watchers_active";
+	const FILTER_IS_USER_WATCHER_ACTIVE = "process_log_is_user_watcher_active";
+	const FILTER_IS_POST_WATCHER_ACTIVE = "process_log_is_post_watcher_active";
+	const FILTER_IS_CUR_WATCHER_ACTIVE = "process_log_is_content_user_relations_watcher_active";
+
+	/**
 	 * @var Plugin|null
 	 */
 	private static $instance = NULL;

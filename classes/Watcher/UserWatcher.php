@@ -32,11 +32,21 @@ class UserWatcher {
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function isActive(){
+		return apply_filters(Plugin::FILTER_IS_USER_WATCHER_ACTIVE, true);
+	}
+
+	/**
 	 * new user registered
 	 *
 	 * @param $user_id
 	 */
 	public function user_register( $user_id ) {
+
+		if(!$this->isActive()) return;
+
 		$this->writer->addLog(
 			ProcessLog::build()
 			          ->setMessage( "user register" )
@@ -51,6 +61,8 @@ class UserWatcher {
 	 */
 	public function profile_update( $user_id, $old_user_data ) {
 		// after profile was saved
+
+		if(!$this->isActive()) return;
 
 		$user = get_user_by( "id", $user_id );
 
@@ -82,6 +94,9 @@ class UserWatcher {
 	 *
 	 */
 	public function update_user_meta( $meta_id, $user_id, $meta_key, $meta_value ) {
+
+		if(!$this->isActive()) return;
+
 		$old_value = get_user_meta( $user_id, $meta_key, true );
 
 		if ( $old_value == $meta_value ) {
@@ -94,8 +109,10 @@ class UserWatcher {
 			          ->setAffectedUser( $user_id )
 			          ->setLinkUrl( get_edit_user_link( $user_id ) )
 			          ->setChangedDataField( $meta_key )
-			          ->setChangedDataValueOld( $old_value )
-			          ->setChangedDataValueNew( $meta_value )
+			          ->setChangedDataValueOld( (is_array($old_value) || is_object($old_value))?
+				          json_encode($old_value)	: $old_value )
+			          ->setChangedDataValueNew( (is_array($meta_value) || is_object($meta_value))?
+				          json_encode($meta_value)	: $meta_value)
 		);
 	}
 
@@ -103,6 +120,9 @@ class UserWatcher {
 	 * @param $user_id
 	 */
 	public function delete_user( $user_id ) {
+
+		if(!$this->isActive()) return;
+
 		$this->writer->addLog(
 			ProcessLog::build()
 			          ->setMessage( "user delete" )

@@ -29,11 +29,23 @@ class PostWatcher {
 	}
 
 	/**
+	 * @param null|int $post_id
+	 *
+	 * @return boolean
+	 */
+	public function isActive($post_id = null){
+		return apply_filters(Plugin::FILTER_IS_POST_WATCHER_ACTIVE, true, $post_id);
+	}
+
+	/**
 	 * @param $post_id
 	 * @param \WP_Post $post_after
 	 * @param \WP_Post $post_before
 	 */
 	public function post_updated( $post_id, $post_after, $post_before ) {
+
+		if(!$this->isActive($post_id)) return;
+
 		$attributes = array(
 			"post_title",
 			"guid",
