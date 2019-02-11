@@ -31,7 +31,7 @@ class Process extends DatabaseItem {
 		if ( isset( $_SERVER ) && is_array( $_SERVER ) ) {
 			$this->location_url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
 			$this->referer_url  = isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : NULL;
-			$this->hostname     = isset( $_SERVER['REMOTE_HOST'] ) ? $_SERVER['REMOTE_HOST'] : NULL;
+			$this->hostname     = isset( $_SERVER['REMOTE_HOST'] ) ? $_SERVER['REMOTE_HOST'] : getHostname();
 		}
 	}
 
