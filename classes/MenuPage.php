@@ -30,8 +30,8 @@ class MenuPage {
 
 	public function admin_menu() {
 		add_management_page(
-			"Process Logs",
-			"Process Logs",
+			__("Process Logs", Plugin::DOMAIN),
+			__("Process Logs", Plugin::DOMAIN),
 			"manage_options",
 			"process_logs",
 			array( $this, 'render' )
@@ -74,6 +74,9 @@ class MenuPage {
 					"affected_post" => __( "Affected post", Plugin::DOMAIN ),
 					"affected_term" => __( "Affected term", Plugin::DOMAIN ),
 					"affected_comment" => __( "Affected comment", Plugin::DOMAIN ),
+					"load_more_loading" => __("Loading more logs", Plugin::DOMAIN),
+					"load_more_loading_again" => __("Give me a second... I'm on it", Plugin::DOMAIN),
+					"load_more_done" => __("No more logs to load 🏖", Plugin::DOMAIN),
 				),
 			)
 		);
@@ -84,56 +87,30 @@ class MenuPage {
 
 		?>
 		<div class="wrap process-log">
-			<h2>Process logs</h2>
+			<h2><?php _e("Process logs", Plugin::DOMAIN); ?></h2>
 			<table class="widefat">
 				<thead>
 				<tr>
-					<th scope="col" title="Process ID">PID</th>
+					<th scope="col" title="Process ID">
+						<?php _e("PID", Plugin::DOMAIN); ?>
+					</th>
 					<th scope="col">
 						<?php _e( 'Created', Plugin::DOMAIN ); ?>
 					</th>
-					<th scope="col">Active User</th>
-					<th scope="col">Logs</th>
-					<th scope="col"><?php _e( 'Location URL', Plugin::DOMAIN ); ?></th>
+					<th scope="col">
+						<?php _e("Active User", Plugin::DOMAIN); ?>
+					</th>
+					<th scope="col"><?php
+						_e("Logs", Plugin::DOMAIN); ?>
+					</th>
+					<th scope="col">
+						<?php _e( 'URL', Plugin::DOMAIN ); ?>
+					</th>
 				</tr>
 				</thead>
-				<tbody id="process-log-table-body">
-
-				</tbody>
-				<?php
-//				$list = $this->database->getProcessList();
-				$list = array();
-				foreach ( $list as $process ) {
-					?>
-					<tr class="process-log__row">
-						<td id="process-<?php echo $process->id; ?>">
-							<a href="#process-<?php echo $process->id; ?>">
-								+ <?php echo $process->created; ?>
-							</a>
-						</td>
-						<td><?php
-							if ( $process->active_user == 0 ) {
-								echo "Annonymous";
-							} else {
-								$user = get_user_by( "ID", $process->active_user );
-								$link = get_edit_user_link( $process->active_user );
-								echo "<a href='$link'>" . $user->display_name . "</a>";
-							}
-							?></td>
-						<td><?php echo $this->database->countLogs($process->id); ?></td>
-						<td><?php echo $process->location_url; ?></td>
-					</tr>
-					<tr>
-						<td colspan="3">
-							<i>Load process logs via JS</i>
-						</td>
-					</tr>
-					<?php
-				}
-				?>
-
+				<tbody id="process-log-table-body"></tbody>
 			</table>
-			<button id="process-log-load-more" class="button button-primary">Load more</button>
+			<button id="process-log-load-more" class="button button-primary"><?php _e("Load more", Plugin::DOMAIN); ?></button>
 		</div>
 		<?php
 	}

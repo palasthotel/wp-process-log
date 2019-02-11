@@ -247,13 +247,13 @@
 			return;
 		}
 		if($loadmore.hasClass("is-loading")) {
-			$loadmore.text("Give me a second... I'm on it ");
+			$loadmore.text(i18n.load_more_loading_again+" ");
 			return;
 		}
 		$loadmore.addClass("is-loading");
 
 		$loadmore.data("default-text", $loadmore.text());
-		$loadmore.text("Loading ");
+		$loadmore.text(i18n.load_more_loading);
 
 		fetchProcessList(logsPage++).then(json =>{
 			appendProcessRows(json.list);
@@ -262,7 +262,7 @@
 				$loadmore.text($loadmore.data("default-text"));
 			} else {
 				$loadmore.attr("disabled", "disabled");
-				$loadmore.text("No more logs to load 🏖");
+				$loadmore.text(i18n.load_more_done);
 			}
 		});
 
