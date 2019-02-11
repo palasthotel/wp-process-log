@@ -74,6 +74,20 @@ class Database {
 	}
 
 	/**
+	 * @param $process_id
+	 *
+	 * @return array|null
+	 */
+	public function getProcessEventTypes($process_id){
+		return self::wpdb()->get_col(
+			self::wpdb()->prepare(
+				"SELECT DISTINCT event_type from ".self::tablenameItems()." WHERE process_id = %d",
+				$process_id
+			)
+		);
+	}
+
+	/**
 	 * @param int $pid
 	 *
 	 * @return array

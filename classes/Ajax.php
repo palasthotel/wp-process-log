@@ -30,6 +30,7 @@ class Ajax {
 			"page" => $page,
 			"list" => array_map(function($process) use ( $database ) {
 				$process->logs_count = $database->countLogs($process->id);
+				$process->event_types = $database->getProcessEventTypes($process->id);
 				return $process;
 			}, $logs),
 			"users" => $this->getUsersOfLogs($logs),

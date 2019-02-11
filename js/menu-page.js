@@ -41,6 +41,7 @@
 		if (location_url_text.length > 84) {
 			location_url_text = location_url_text.substr(0, 84) + '…';
 		}
+		console.log(item.event_types);
 		const row = `<tr class="process-log__row--process">
 			<td title="Process ID" id="process-${item.process_id}">
 				<a class="process-log__process-id more" 
@@ -52,7 +53,7 @@
 				${item.created}
 			</td>
 			<td>${username}</td>
-			<td>${item.logs_count}</td>
+			<td>${item.logs_count} / <small>${item.event_types.join(", ")}</small></td>
 			<td>
 				<a target="_blank" title="${item.location_url}" href="${item.location_url}">
 					${location_url_text}
