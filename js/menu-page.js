@@ -11,6 +11,7 @@
 	const i18n = app.i18n;
 	const selectors = app.selectors;
 	const $tbody = $(selectors.root);
+	const $loadmore = $(selectors.button_load_more);
 	const users = {};
 	const posts = {};
 
@@ -41,7 +42,6 @@
 		if (location_url_text.length > 84) {
 			location_url_text = location_url_text.substr(0, 84) + '…';
 		}
-		console.log(item.event_types);
 		const row = `<tr class="process-log__row--process">
 			<td title="Process ID" id="process-${item.process_id}">
 				<a class="process-log__process-id more" 
@@ -240,6 +240,34 @@
 		$(this).closest('tr').toggleClass('is-open').next().toggle();
 	});
 
+	let logsPage = 1;
+	$loadmore.on('click', function(e){
+		e.preventDefault();
+		if($loadmore.hasClass("is-done")){
+			return;
+		}
+		if($loadmore.hasClass("is-loading")) {
+			$loadmore.text("Give me a second... I'm on it ");
+			return;
+		}
+		$loadmore.addClass("is-loading");
+
+		$loadmore.data("default-text", $loadmore.text());
+		$loadmore.text("Loading ");
+
+		fetchProcessList(logsPage++).then(json =>{
+			appendProcessRows(json.list);
+			$loadmore.removeClass("is-loading");
+			if(json.list.length){
+				$loadmore.text($loadmore.data("default-text"));
+			} else {
+				$loadmore.attr("disabled", "disabled");
+				$loadmore.text("No more logs to load 🏖");
+			}
+		});
+
+	});
+
 	// ----------------------------
 	// pure functions
 	// ----------------------------
@@ -276,7 +304,6 @@
 	// ----------------------------
 	// API calls and processing
 	// ----------------------------
-
 	/**
 	 * @param page
 	 * @return {Promise}
@@ -318,7 +345,6 @@
 	// ----------------------------
 	// init application
 	// ----------------------------
-	// TODO: add autoloader when scrolling at the end of table
-	fetchProcessList().then(json => appendProcessRows(json.list));
+	$loadmore.trigger("click");
 
 })(ProcessLogAPI, ProcessLogApp, jQuery);

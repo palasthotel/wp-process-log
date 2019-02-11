@@ -169,6 +169,11 @@ $color-border-secondary: #efefef;
 			animation-direction: normal;
 		}
 	}
+
+	#process-log-load-more{
+		display: block;
+		margin: 10px auto;
+	}
 }
 
 @keyframes loading {

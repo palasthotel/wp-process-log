@@ -69,6 +69,8 @@
 
 .process-log .is-loading:after { margin-left: 4px; content: "."; -webkit-animation-name: loading; animation-name: loading; -webkit-animation-duration: .6s; animation-duration: .6s; -webkit-animation-iteration-count: infinite; animation-iteration-count: infinite; -webkit-animation-direction: normal; animation-direction: normal; }
 
+.process-log #process-log-load-more { display: block; margin: 10px auto; }
+
 @-webkit-keyframes loading { 0% { content: "…"; }
   30% { content: "⋰"; }
   60% { content: "⋮"; }

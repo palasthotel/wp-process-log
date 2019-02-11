@@ -66,7 +66,8 @@ class MenuPage {
 			"ProcessLogApp",
 			array(
 				'selectors' => array(
-					"root" => "#process-logs-table-body",
+					"root" => "#process-log-table-body",
+					"button_load_more" => "#process-log-load-more"
 				),
 				'i18n'    => array(
 					"affected_user" => __( "Affected user", Plugin::DOMAIN ),
@@ -96,7 +97,7 @@ class MenuPage {
 					<th scope="col"><?php _e( 'Location URL', Plugin::DOMAIN ); ?></th>
 				</tr>
 				</thead>
-				<tbody id="process-logs-table-body">
+				<tbody id="process-log-table-body">
 
 				</tbody>
 				<?php
@@ -132,6 +133,7 @@ class MenuPage {
 				?>
 
 			</table>
+			<button id="process-log-load-more" class="button button-primary">Load more</button>
 		</div>
 		<?php
 	}
