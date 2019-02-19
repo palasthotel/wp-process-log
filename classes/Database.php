@@ -44,7 +44,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function getProcessList( $page = 1, $count = 20 ) {
+	public function getProcessList( $page = 1, $count = 50 ) {
 
 		$fields    = array( "process_id", "active_user", );
 		$tablename = self::tablenameProcesses();
