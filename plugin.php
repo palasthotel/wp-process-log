@@ -9,7 +9,7 @@
  * Text Domain: process-log
  * Domain Path: /languages
  * Requires at least: 4.0
- * Tested up to: 4.9.8
+ * Tested up to: 5.0.3
  * License: http://www.gnu.org/licenses/gpl-3.0.html GPLv3
  *
  * @copyright Copyright (c) 2018, Palasthotel
