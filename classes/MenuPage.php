@@ -105,14 +105,22 @@ class MenuPage {
 					Event type
 					<select name="process_event_type">
 						<option value="">All</option>
-						<option value="event">event</option>
+						<?php
+						foreach ($this->database->getEventTypes() as $type){
+							echo "<option value='$type'>$type</option>";
+						}
+						?>
 					</select>
 				</label>
 				<label>
 					Severity
 					<select name="process_severity">
 						<option value="">All</option>
-						<option value="info">info</option>
+						<?php
+						foreach ($this->database->getSeverities() as $type){
+							echo "<option value='$type'>$type</option>";
+						}
+						?>
 					</select>
 				</label>
 

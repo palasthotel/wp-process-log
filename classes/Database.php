@@ -39,6 +39,29 @@ class Database {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getSeverities(){
+		return $this->getDistinct("severity");
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getEventTypes(){
+		return $this->getDistinct("event_type");
+	}
+
+	/**
+	 * @param string $col column name
+	 *
+	 * @return array
+	 */
+	private function getDistinct($col){
+		return self::wpdb()->get_col("SELECT DISTINCT $col FROM ".self::tablenameItems());
+	}
+
+	/**
 	 * @param int $page
 	 * @param int $count
 	 *
