@@ -36,6 +36,20 @@ class Plugin {
 	const DOMAIN = "process-log";
 
 	/**
+	 * event types
+	 */
+	CONST EVENT_TYPE_GENERAL = "event";
+	const EVENT_TYPE_CREATE = "create";
+	const EVENT_TYPE_UPDATE = "update";
+	const EVENT_TYPE_DELETE = "delete";
+	CONST EVENT_TYPE_USER_REGISTER = "user_register";
+
+	/**
+	 * severity types
+	 */
+	const SEVERITY_TYPE_INFO = "info";
+
+	/**
 	 * filters
 	 */
 	const FILTER_CORE_WATCHERS_ACTIVE = "process_log_core_watchers_active";

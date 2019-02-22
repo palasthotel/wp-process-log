@@ -42,17 +42,24 @@ class Database {
 	 * @param int $page
 	 * @param int $count
 	 *
+	 * @param string $where
+	 *
 	 * @return array
 	 */
-	public function getProcessList( $page = 1, $count = 50 ) {
+	public function getProcessList( $page = 1, $count = 50, $where = "" ) {
 
-		$fields    = array( "process_id", "active_user", );
-		$tablename = self::tablenameProcesses();
+		$tableProcesses = self::tablenameProcesses();
+		$tableItems = self::tablenameItems();
 		$offset    = $count * ( $page - 1 );
+
+		$where_in = "";
+		if(!empty($where)){
+			$where_in = "WHERE id IN( SELECT p.id FROM $tableProcesses as p LEFT JOIN $tableItems as i ON ( p.id = i.process_id ) $where )";
+		}
 
 		return self::wpdb()->get_results(
 			self::wpdb()->prepare(
-				"SELECT id, active_user, created, location_url, hostname FROM $tablename ORDER BY id DESC LIMIT %d OFFSET %d",
+				"SELECT id, active_user, created, location_url, hostname FROM $tableProcesses $where_in ORDER BY id DESC LIMIT %d OFFSET %d",
 				$count,
 				$offset
 			)

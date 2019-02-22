@@ -12,15 +12,25 @@
 	const selectors = app.selectors;
 	const $tbody = $(selectors.root);
 	const $loadmore = $(selectors.button_load_more);
+	const $filters = $(selectors.filters_form);
 	const users = {};
 	const posts = {};
 
 	// ----------------------------
-	// ui manipulation
+	// ui helpers
 	// ----------------------------
 	const appendProcessRows = list => {
 		const $elements = list.map(item => buildRow(item));
 		$tbody.append($elements);
+	};
+
+	const getFilterArgs = ()=>{
+		const filters = $filters.serializeArray();
+		const args = {};
+		for( let obj of filters){
+			args[obj.name] = obj.value;
+		}
+		return args;
 	};
 
 	// ----------------------------
@@ -118,7 +128,7 @@
 		const $second_line = $('<div></div>')
 			.addClass('process-log__second-line');
 
-		$(`<span>Type: ${log.event_type}</span>`)
+		$(`<span>Event type: ${log.event_type}</span>`)
 			.addClass('log__type')
 			.appendTo($second_line);
 
@@ -255,7 +265,7 @@
 		$loadmore.data("default-text", $loadmore.text());
 		$loadmore.text(i18n.load_more_loading);
 
-		fetchProcessList(logsPage++).then(json =>{
+		fetchProcessList(logsPage++, getFilterArgs()).then(json =>{
 			appendProcessRows(json.list);
 			$loadmore.removeClass("is-loading");
 			if(json.list.length){
@@ -265,6 +275,15 @@
 				$loadmore.text(i18n.load_more_done);
 			}
 		});
+
+	});
+
+	$filters.on('submit', function(e){
+		e.preventDefault();
+		console.log(getFilterArgs());
+		logsPage = 1;
+		$tbody.empty();
+		$loadmore.trigger("click");
 
 	});
 
@@ -306,10 +325,11 @@
 	// ----------------------------
 	/**
 	 * @param page
+	 * @param {object} filters
 	 * @return {Promise}
 	 */
-	function fetchProcessList(page = 1) {
-		return api.fetchProcessList(page).then(processUsers);
+	function fetchProcessList(page = 1, filters = {}) {
+		return api.fetchProcessList(page, filters).then(processUsers);
 	}
 
 	/**

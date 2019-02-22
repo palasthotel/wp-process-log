@@ -24,8 +24,31 @@ class Ajax {
 
 	public function processes_list(){
 		$page = (isset($_GET["page"]))? intval($_GET["page"]): 1;
+
+		$where = array();
+
+		if(isset($_GET["process_content_type"]) && !empty($_GET["process_content_type"]) ){
+			$type = sanitize_text_field($_GET["process_content_type"]);
+			if(in_array($type, array("post", "user", "comment", "term"))){
+				$where[] = " affected_$type IS NOT NULL ";
+			}
+		}
+		if(isset($_GET["process_event_type"]) && !empty($_GET["process_event_type"]) ){
+			$type = sanitize_text_field($_GET["process_event_type"]);
+			$where[] = " event_type ='$type' ";
+		}
+		if(isset($_GET["process_severity_type"]) && !empty($_GET["process_severity_type"]) ){
+			$type = sanitize_text_field($_GET["process_severity_type"]);
+			$where[] = " severity ='$type' ";
+		}
+
+		$where_param = "";
+		if(count($where)>0){
+			$where_param = "WHERE ".implode(" AND ", $where);
+		}
+
 		$database = $this->plugin->database;
-		$logs = $database->getProcessList($page);
+		$logs = $database->getProcessList($page, 50, $where_param);
 		wp_send_json(array(
 			"page" => $page,
 			"list" => array_map(function($process) use ( $database ) {

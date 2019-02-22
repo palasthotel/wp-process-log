@@ -72,6 +72,7 @@ class PostWatcher {
 			if ( $post_after->{$attr} != $post_before->{$attr} ) {
 				$this->writer->addLog(
 					ProcessLog::build()
+					          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 					          ->setMessage( "update post" )
 					          ->setAffectedPost( $post_id )
 					          ->setLinkUrl( get_permalink( $post_id ) )
@@ -102,6 +103,7 @@ class PostWatcher {
 
 		$this->writer->addLog(
 			ProcessLog::build()
+			          ->setEventType( Plugin::EVENT_TYPE_CREATE )
 			          ->setMessage( "post meta add" )
 			          ->setAffectedPost( $object_id )
 			          ->setLinkUrl( get_edit_post_link( $object_id ) )
@@ -139,6 +141,7 @@ class PostWatcher {
 
 		$this->writer->addLog(
 			ProcessLog::build()
+			          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 			          ->setMessage( "post meta update" )
 			          ->setAffectedPost( $object_id )
 			          ->setLinkUrl( get_edit_post_link( $object_id ) )
@@ -172,6 +175,7 @@ class PostWatcher {
 
 		$this->writer->addLog(
 			ProcessLog::build()
+			          ->setEventType( Plugin::EVENT_TYPE_DELETE )
 			          ->setMessage( "post meta delete " . count( $meta_ids ) . " entries" )
 			          ->setAffectedPost( $object_id )
 			          ->setLinkUrl( get_edit_post_link( $object_id ) )

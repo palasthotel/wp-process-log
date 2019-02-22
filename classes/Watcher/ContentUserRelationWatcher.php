@@ -33,8 +33,8 @@ class ContentUserRelationWatcher {
 	/**
 	 * @return boolean
 	 */
-	public function isActive(){
-		return apply_filters(Plugin::FILTER_IS_CUR_WATCHER_ACTIVE, true);
+	public function isActive() {
+		return apply_filters( Plugin::FILTER_IS_CUR_WATCHER_ACTIVE, true );
 	}
 
 
@@ -45,10 +45,13 @@ class ContentUserRelationWatcher {
 	 */
 	public function add_relation( $user_id, $post_id, $typeState_id ) {
 
-		if(!$this->isActive()) return;
+		if ( ! $this->isActive() ) {
+			return;
+		}
 
 		$this->writer->addLog(
 			ProcessLog::build()
+			          ->setEventType( Plugin::EVENT_TYPE_CREATE )
 			          ->setMessage( "content user relation added" )
 			          ->setAffectedUser( $user_id )
 			          ->setAffectedPost( $post_id )
@@ -56,6 +59,7 @@ class ContentUserRelationWatcher {
 			          ->setChangedDataValueNew( $typeState_id )
 		);
 	}
+
 	/**
 	 * @param $user_id
 	 * @param $post_id
@@ -63,10 +67,13 @@ class ContentUserRelationWatcher {
 	 */
 	public function remove_relation( $user_id, $post_id, $typeState_id ) {
 
-		if(!$this->isActive()) return;
+		if ( ! $this->isActive() ) {
+			return;
+		}
 
 		$this->writer->addLog(
 			ProcessLog::build()
+			          ->setEventType( Plugin::EVENT_TYPE_DELETE )
 			          ->setMessage( "content user relation removed" )
 			          ->setAffectedUser( $user_id )
 			          ->setAffectedPost( $post_id )

@@ -67,7 +67,8 @@ class MenuPage {
 			array(
 				'selectors' => array(
 					"root" => "#process-log-table-body",
-					"button_load_more" => "#process-log-load-more"
+					"button_load_more" => "#process-log-load-more",
+					"filters_form" => "#process-filters",
 				),
 				'i18n'    => array(
 					"affected_user" => __( "Affected user", Plugin::DOMAIN ),
@@ -88,6 +89,36 @@ class MenuPage {
 		?>
 		<div class="wrap process-log">
 			<h2><?php _e("Process logs", Plugin::DOMAIN); ?></h2>
+
+			<form id="process-filters">
+				<label>
+					Effected content
+					<select name="process_content_type">
+						<option value="">All</option>
+						<option value="post">Posts</option>
+						<option value="user">Users</option>
+						<option value="term">Term</option>
+						<option value="comment">Comment</option>
+					</select>
+				</label>
+				<label>
+					Event type
+					<select name="process_event_type">
+						<option value="">All</option>
+						<option value="event">event</option>
+					</select>
+				</label>
+				<label>
+					Severity
+					<select name="process_severity">
+						<option value="">All</option>
+						<option value="info">info</option>
+					</select>
+				</label>
+
+				<button class="button-primary">Filter</button>
+			</form>
+
 			<table class="widefat">
 				<thead>
 				<tr>

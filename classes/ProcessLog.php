@@ -15,12 +15,12 @@ class ProcessLog extends DatabaseItem {
 	var $process_id = NULL;
 	var $created = NULL;
 
-	var $event_type = "event";
+	var $event_type = Plugin::EVENT_TYPE_GENERAL;
 	var $active_user = 0;
 	var $message = "";
 	var $note = "";
 	var $comment = "";
-	var $severity = "info";
+	var $severity = Plugin::SEVERITY_TYPE_INFO;
 	var $link_url = NULL;
 	var $location_path = NULL;
 	var $affected_post = NULL;
