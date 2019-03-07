@@ -405,7 +405,7 @@ class ProcessLog extends DatabaseItem {
 	}
 
 	/**
-	 * @param null $changed_data_field
+	 * @param string $changed_data_field
 	 *
 	 * @return ProcessLog
 	 */
@@ -416,7 +416,7 @@ class ProcessLog extends DatabaseItem {
 	}
 
 	/**
-	 * @param string|int $value
+	 * @param mixed $value
 	 *
 	 * @return ProcessLog
 	 */
@@ -427,7 +427,7 @@ class ProcessLog extends DatabaseItem {
 	}
 
 	/**
-	 * @param string|int $value
+	 * @param mixed $value
 	 *
 	 * @return ProcessLog
 	 */
@@ -438,7 +438,7 @@ class ProcessLog extends DatabaseItem {
 	}
 
 	/**
-	 * @param null $variables
+	 * @param mixed $variables
 	 *
 	 * @return ProcessLog
 	 */

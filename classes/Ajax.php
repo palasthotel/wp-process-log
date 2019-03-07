@@ -64,12 +64,22 @@ class Ajax {
 	public function process_logs(){
 		$pid = intval($_GET["pid"]);
 		$logs = $this->plugin->database->getProcessLogs($pid);
-		wp_send_json(array(
-			"pid" => $pid,
-			"list" => $logs,
-			"posts" => $this->getPostsOfLogs($logs),
-			"users" => $this->getUsersOfLogs($logs),
-		));
+		foreach ($logs as $i => $log){
+			foreach ($log as $key => $value){
+				$obj = json_decode($value);
+				if($obj !== null && json_last_error() == JSON_ERROR_NONE){
+					$logs[$i]->{$key} = json_encode($obj, JSON_PRETTY_PRINT);
+				}
+			}
+		}
+		wp_send_json(
+			array(
+				"pid" => $pid,
+				"list" => $logs,
+				"posts" => $this->getPostsOfLogs($logs),
+				"users" => $this->getUsersOfLogs($logs),
+			)
+		);
 	}
 
 	/**

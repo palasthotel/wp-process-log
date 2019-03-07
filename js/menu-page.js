@@ -11,10 +11,13 @@
 	const i18n = app.i18n;
 	const selectors = app.selectors;
 	const $tbody = $(selectors.root);
-	const $loadmore = $(selectors.button_load_more);
+	const $load_more = $(selectors.button_load_more);
 	const $filters = $(selectors.filters_form);
 	const users = {};
 	const posts = {};
+
+	// save default text
+	$load_more.data("default-text", $load_more.text());
 
 	// ----------------------------
 	// ui helpers
@@ -31,6 +34,16 @@
 			args[obj.name] = obj.value;
 		}
 		return args;
+	};
+
+	const setLoadMoreActive = (isActive)=>{
+		if(isActive){
+			$load_more.text($load_more.data("default-text"));
+			$load_more.removeAttr("disabled");
+		} else {
+			$load_more.attr("disabled", "disabled");
+			$load_more.text(i18n.load_more_done);
+		}
 	};
 
 	// ----------------------------
@@ -80,6 +93,7 @@
 	 */
 	const buildLog = (log) => {
 
+
 		const $item = $(`<li></li>`).addClass('process-log__item');
 
 		const $header = $('<div></div>').addClass('log__header');
@@ -96,6 +110,13 @@
 
 
 		$header.appendTo($item);
+
+		if( log.variables ){
+			const $variables = $("<pre/>")
+				.addClass("log__variables")
+				.text(log.variables)
+				.appendTo($item);
+		}
 
 		if (log.changed_data_field != null) {
 
@@ -251,40 +272,33 @@
 	});
 
 	let logsPage = 1;
-	$loadmore.on('click', function(e){
+	$load_more.on('click', function(e){
 		e.preventDefault();
-		if($loadmore.hasClass("is-done")){
+		if($load_more.hasClass("is-done")){
 			return;
 		}
-		if($loadmore.hasClass("is-loading")) {
-			$loadmore.text(i18n.load_more_loading_again+" ");
+		if($load_more.hasClass("is-loading")) {
+			$load_more.text(i18n.load_more_loading_again+" ");
 			return;
 		}
-		$loadmore.addClass("is-loading");
+		$load_more.addClass("is-loading");
 
-		$loadmore.data("default-text", $loadmore.text());
-		$loadmore.text(i18n.load_more_loading);
+		$load_more.text(i18n.load_more_loading);
 
 		fetchProcessList(logsPage++, getFilterArgs()).then(json =>{
 			appendProcessRows(json.list);
-			$loadmore.removeClass("is-loading");
-			if(json.list.length){
-				$loadmore.text($loadmore.data("default-text"));
-			} else {
-				$loadmore.attr("disabled", "disabled");
-				$loadmore.text(i18n.load_more_done);
-			}
+			$load_more.removeClass("is-loading");
+			setLoadMoreActive(json.list.length > 0);
 		});
 
 	});
 
 	$filters.on('submit', function(e){
 		e.preventDefault();
-		console.log(getFilterArgs());
 		logsPage = 1;
 		$tbody.empty();
-		$loadmore.trigger("click");
-
+		setLoadMoreActive(true);
+		$load_more.trigger("click");
 	});
 
 	// ----------------------------
@@ -365,6 +379,6 @@
 	// ----------------------------
 	// init application
 	// ----------------------------
-	$loadmore.trigger("click");
+	$load_more.trigger("click");
 
 })(ProcessLogAPI, ProcessLogApp, jQuery);

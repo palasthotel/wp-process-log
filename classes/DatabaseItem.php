@@ -21,7 +21,7 @@ class DatabaseItem {
 			if ( !$this->isArg($key)) {
 				continue;
 			}
-			$args[ $key ] = $value;
+			$args[ $key ] = $this->prepareForInsert($value);
 		}
 
 		return $args;
@@ -29,5 +29,10 @@ class DatabaseItem {
 
 	public function isArg($key){
 		return true;
+	}
+
+	public function prepareForInsert($value){
+		if(is_array($value) || is_object($value)) return json_encode($value);
+		return $value;
 	}
 }
