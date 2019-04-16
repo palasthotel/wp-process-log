@@ -23,22 +23,22 @@ class Ajax {
 	}
 
 	public function processes_list(){
-		$page = (isset($_GET["page"]))? intval($_GET["page"]): 1;
+		$page = (isset($_REQUEST["page"]))? intval($_REQUEST["page"]): 1;
 
 		$where = array();
 
-		if(isset($_GET["process_content_type"]) && !empty($_GET["process_content_type"]) ){
-			$type = sanitize_text_field($_GET["process_content_type"]);
+		if(isset($_REQUEST["process_content_type"]) && !empty($_REQUEST["process_content_type"]) ){
+			$type = sanitize_text_field($_REQUEST["process_content_type"]);
 			if(in_array($type, array("post", "user", "comment", "term"))){
 				$where[] = " affected_$type IS NOT NULL ";
 			}
 		}
-		if(isset($_GET["process_event_type"]) && !empty($_GET["process_event_type"]) ){
-			$type = sanitize_text_field($_GET["process_event_type"]);
+		if(isset($_REQUEST["process_event_type"]) && !empty($_REQUEST["process_event_type"]) ){
+			$type = sanitize_text_field($_REQUEST["process_event_type"]);
 			$where[] = " event_type ='$type' ";
 		}
-		if(isset($_GET["process_severity_type"]) && !empty($_GET["process_severity_type"]) ){
-			$type = sanitize_text_field($_GET["process_severity_type"]);
+		if(isset($_REQUEST["process_severity_type"]) && !empty($_REQUEST["process_severity_type"]) ){
+			$type = sanitize_text_field($_REQUEST["process_severity_type"]);
 			$where[] = " severity ='$type' ";
 		}
 
@@ -62,7 +62,7 @@ class Ajax {
 	}
 
 	public function process_logs(){
-		$pid = intval($_GET["pid"]);
+		$pid = intval($_REQUEST["pid"]);
 		$logs = $this->plugin->database->getProcessLogs($pid);
 		foreach ($logs as $i => $log){
 			foreach ($log as $key => $value){
