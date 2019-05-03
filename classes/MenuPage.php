@@ -123,6 +123,9 @@ class MenuPage {
 						?>
 					</select>
 				</label>
+				<label>
+					Query <input name="process_event_query" />
+				</label>
 
 				<button class="button-primary">Filter</button>
 			</form>

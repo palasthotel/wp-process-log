@@ -80,12 +80,10 @@ class Database {
 			$where_in = "WHERE id IN( SELECT p.id FROM $tableProcesses as p LEFT JOIN $tableItems as i ON ( p.id = i.process_id ) $where )";
 		}
 
+		$query = "SELECT id, active_user, created, location_url, hostname FROM $tableProcesses $where_in ORDER BY id DESC LIMIT %d OFFSET %d";
+
 		return self::wpdb()->get_results(
-			self::wpdb()->prepare(
-				"SELECT id, active_user, created, location_url, hostname FROM $tableProcesses $where_in ORDER BY id DESC LIMIT %d OFFSET %d",
-				$count,
-				$offset
-			)
+			self::wpdb()->prepare( $query, $count, $offset )
 		);
 	}
 
