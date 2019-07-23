@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 4.0
-Tested up to: 5.0.3
-Stable tag: 1.0.0
+Tested up to: 5.2.2
+Stable tag: 1.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.1.0 =
+* Feature: Added filter for changed data field
 
 = 1.0.0 =
 * Support: WP_Post meta value changes
