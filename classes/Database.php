@@ -180,9 +180,9 @@ class Database {
 		 created DATETIME NOT NULL,
 		 
 		 active_user BIGINT(20),
-		 location_url varchar(255) comment 'where the event happend, url',
-		 referer_url varchar(255),
-		 hostname varchar(255),
+		 location_url varchar(190) comment 'where the event happend, url',
+		 referer_url varchar(190),
+		 hostname varchar(190),
 		
 		 primary key (id),
 		 key (created),
@@ -214,7 +214,7 @@ class Database {
 		 affected_comment BIGINT comment 'comment id that was affected by the event',
 		 expires BIGINT comment 'timestamp when to clean up this log entry',
 		 
-		 changed_data_field VARCHAR(255),
+		 changed_data_field VARCHAR(100),
 		 changed_data_value_old TEXT,
 		 changed_data_value_new TEXT,
 		 
