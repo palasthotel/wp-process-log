@@ -8,10 +8,6 @@
 
 namespace Palasthotel\ProcessLog;
 
-use Palasthotel\ProcessLog\Plugin;
-use Palasthotel\ProcessLog\ProcessLog;
-use Palasthotel\ProcessLog\Writer;
-
 const BLACKLIST_POST_METAS = array(
 	"_edit_lock",
 	"_edit_last",
@@ -75,7 +71,7 @@ class PostWatcher {
 					          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 					          ->setMessage( "update post" )
 					          ->setAffectedPost( $post_id )
-					          ->setLinkUrl( get_permalink( $post_id ) )
+					          ->setLinkUrl( \get_edit_post_link( $post_id ) )
 					          ->setChangedDataField( $attr )
 					          ->setChangedDataValueOld( $post_before->{$attr} )
 					          ->setChangedDataValueNew( $post_after->{$attr} )
@@ -106,7 +102,7 @@ class PostWatcher {
 			          ->setEventType( Plugin::EVENT_TYPE_CREATE )
 			          ->setMessage( "post meta add" )
 			          ->setAffectedPost( $object_id )
-			          ->setLinkUrl( get_edit_post_link( $object_id ) )
+			          ->setLinkUrl( \get_edit_post_link( $object_id ) )
 			          ->setChangedDataField( $meta_key )
 			          ->setChangedDataValueOld( ( is_array( $_meta_value ) || is_object( $_meta_value ) ) ?
 				          json_encode( $_meta_value ) : $_meta_value )
@@ -132,7 +128,7 @@ class PostWatcher {
 			return;
 		}
 
-		$meta       = get_post_meta_by_id( $meta_id );
+		$meta       = \get_post_meta_by_id( $meta_id );
 		$prev_value = $meta->meta_value;
 
 		if ( $prev_value == $_meta_value ) {
@@ -144,7 +140,7 @@ class PostWatcher {
 			          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 			          ->setMessage( "post meta update" )
 			          ->setAffectedPost( $object_id )
-			          ->setLinkUrl( get_edit_post_link( $object_id ) )
+			          ->setLinkUrl( \get_edit_post_link( $object_id ) )
 			          ->setChangedDataField( $meta_key )
 			          ->setChangedDataValueOld( ( is_array( $prev_value ) || is_object( $prev_value ) ) ?
 				          json_encode( $prev_value ) : $prev_value )
@@ -178,7 +174,7 @@ class PostWatcher {
 			          ->setEventType( Plugin::EVENT_TYPE_DELETE )
 			          ->setMessage( "post meta delete " . count( $meta_ids ) . " entries" )
 			          ->setAffectedPost( $object_id )
-			          ->setLinkUrl( get_edit_post_link( $object_id ) )
+			          ->setLinkUrl( \get_edit_post_link( $object_id ) )
 			          ->setChangedDataField( $meta_key )
 			          ->setChangedDataValueOld( ( is_array( $_meta_value ) || is_object( $_meta_value ) ) ?
 				          json_encode( $_meta_value ) : $_meta_value )

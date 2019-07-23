@@ -51,6 +51,8 @@ class ProcessLog extends DatabaseItem {
 
 		$this->expires = time() + 60 * 60 * 24 * 14;
 
+		$this->created = date('Y-m-d H:i:s');
+
 		$user = wp_get_current_user();
 		if ( $user instanceof \WP_User ) {
 			$this->active_user = $user->ID;

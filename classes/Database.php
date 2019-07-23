@@ -8,8 +8,6 @@
 
 namespace Palasthotel\ProcessLog;
 
-use Exception;
-
 /**
  *
  */
@@ -176,10 +174,10 @@ class Database {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		$process = self::tablenameProcesses();
-		dbDelta( "CREATE TABLE IF NOT EXISTS $process
+		\dbDelta( "CREATE TABLE IF NOT EXISTS $process
 		(
 		 id bigint(20) unsigned auto_increment,
-		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
+		 created DATETIME NOT NULL,
 		 
 		 active_user BIGINT(20),
 		 location_url varchar(255) comment 'where the event happend, url',
@@ -196,11 +194,11 @@ class Database {
 
 		$tablename = self::tablenameItems();
 
-		dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
+		\dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
 		(
 		 id bigint(20) unsigned auto_increment,
 		 process_id bigint(20) unsigned,
-		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
+		 created DATETIME NOT NULL,
 		 
 		 event_type varchar(100) NOT NULL,
 		 active_user BIGINT(20),

@@ -54,7 +54,7 @@ class UserWatcher {
 			          ->setEventType( Plugin::EVENT_TYPE_USER_REGISTER )
 			          ->setMessage( "user register" )
 			          ->setAffectedUser( $user_id )
-			          ->setLinkUrl( get_edit_user_link( $user_id ) )
+			          ->setLinkUrl( \get_edit_user_link( $user_id ) )
 		);
 	}
 
@@ -69,7 +69,7 @@ class UserWatcher {
 			return;
 		}
 
-		$user = get_user_by( "id", $user_id );
+		$user = \get_user_by( "id", $user_id );
 
 		$userData = $user->data;
 		$oldData  = $old_user_data->data;
@@ -81,7 +81,7 @@ class UserWatcher {
 					          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 					          ->setMessage( "user profile update" )
 					          ->setAffectedUser( $user_id )
-					          ->setLinkUrl( get_edit_user_link( $user_id ) )
+					          ->setLinkUrl( \get_edit_user_link( $user_id ) )
 					          ->setChangedDataField( $prop )
 					          ->setChangedDataValueOld( $oldData->{$prop} )
 					          ->setChangedDataValueNew( $userData->{$prop} )
@@ -105,7 +105,7 @@ class UserWatcher {
 			return;
 		}
 
-		$old_value = get_user_meta( $user_id, $meta_key, true );
+		$old_value = \get_user_meta( $user_id, $meta_key, true );
 
 		if ( $old_value == $meta_value ) {
 			return;
@@ -116,7 +116,7 @@ class UserWatcher {
 			          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 			          ->setMessage( "user metadata update" )
 			          ->setAffectedUser( $user_id )
-			          ->setLinkUrl( get_edit_user_link( $user_id ) )
+			          ->setLinkUrl( \get_edit_user_link( $user_id ) )
 			          ->setChangedDataField( $meta_key )
 			          ->setChangedDataValueOld( ( is_array( $old_value ) || is_object( $old_value ) ) ?
 				          json_encode( $old_value ) : $old_value )
