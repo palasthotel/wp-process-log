@@ -75,15 +75,6 @@ class ProcessLog extends DatabaseItem {
 	}
 
 	/**
-	 * @param $key
-	 *
-	 * @return bool
-	 */
-	public function isArg( $key ) {
-		return ( $key != "created" );
-	}
-
-	/**
 	 * @return int|null
 	 */
 	public function getId() {

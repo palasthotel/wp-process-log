@@ -38,15 +38,6 @@ class Process extends DatabaseItem {
 	}
 
 	/**
-	 * @param $key
-	 *
-	 * @return bool
-	 */
-	public function isArg( $key ) {
-		return ( $key != "created" );
-	}
-
-	/**
 	 * @return Process
 	 */
 	public static function build(){
