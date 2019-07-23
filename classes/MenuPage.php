@@ -113,6 +113,17 @@ class MenuPage {
 					</select>
 				</label>
 				<label>
+					Changed field
+					<select name="process_changed_data_field">
+						<option value="">All</option>
+						<?php
+						foreach ($this->database->getChangedDataFields() as $field){
+							echo "<option value='$field'>$field</option>";
+						}
+						?>
+					</select>
+				</label>
+				<label>
 					Severity
 					<select name="process_severity">
 						<option value="">All</option>

@@ -53,6 +53,13 @@ class Database {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getChangedDataFields(){
+		return $this->getDistinct("changed_data_field");
+	}
+
+	/**
 	 * @param string $col column name
 	 *
 	 * @return array

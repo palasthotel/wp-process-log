@@ -42,6 +42,11 @@ class Ajax {
 			$where[] = " severity = '$type' ";
 		}
 
+		if(isset($_REQUEST["process_changed_data_field"]) && !empty($_REQUEST["process_changed_data_field"])){
+			$field = sanitize_text_field($_REQUEST["process_changed_data_field"]);
+			$where[] = " changed_data_field = '$field' ";
+		}
+
 		if(isset($_REQUEST["process_event_query"]) && !empty($_REQUEST["process_event_query"]) ){
 			$q = sanitize_text_field($_REQUEST["process_event_query"]);
 
