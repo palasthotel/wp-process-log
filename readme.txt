@@ -36,6 +36,7 @@ Logging system.
 
 = 1.1.0 =
 * Feature: Added filter for changed data field
+* Filter: ignore post meta value filter "process_log_ignore_post_meta"
 
 = 1.0.0 =
 * Support: WP_Post meta value changes

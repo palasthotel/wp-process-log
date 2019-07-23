@@ -81,9 +81,19 @@ class PostWatcher {
 	}
 
 	/**
-	 * @param $object_id
-	 * @param $meta_key
-	 * @param $_meta_value
+	 * @param int $post_id
+	 * @param string $meta_key
+	 *
+	 * @return bool
+	 */
+	public function ignorePostMeta($post_id, $meta_key){
+		return apply_filters(Plugin::FILTER_IGNORE_POST_META, in_array( $meta_key, BLACKLIST_POST_METAS ), $post_id, $meta_key );
+	}
+
+	/**
+	 * @param string $object_id post ID
+	 * @param string $meta_key
+	 * @param mixed $_meta_value
 	 */
 	public function add_meta( $object_id, $meta_key, $_meta_value ) {
 
@@ -91,9 +101,7 @@ class PostWatcher {
 			return;
 		}
 
-		if (
-		in_array( $meta_key, BLACKLIST_POST_METAS )
-		) {
+		if ( $this->ignorePostMeta($object_id, $meta_key) ) {
 			return;
 		}
 
@@ -122,9 +130,7 @@ class PostWatcher {
 			return;
 		}
 
-		if (
-		in_array( $meta_key, BLACKLIST_POST_METAS )
-		) {
+		if ( $this->ignorePostMeta($object_id, $meta_key) ) {
 			return;
 		}
 
@@ -163,9 +169,7 @@ class PostWatcher {
 			return;
 		}
 
-		if (
-		in_array( $meta_key, BLACKLIST_POST_METAS )
-		) {
+		if ($this->ignorePostMeta($object_id, $meta_key)) {
 			return;
 		}
 
