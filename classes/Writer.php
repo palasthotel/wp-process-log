@@ -44,8 +44,13 @@ class Writer {
 	 * @return false|int
 	 */
 	public function addLog(ProcessLog $log){
+		$p = $this->getProcess();
+		if(! ($p instanceof Process)){
+			\error_log("Process-log: Could not get process instance");
+			return false;
+		}
 		return $this->plugin->database->addLog(
-			$log->setProcessId($this->getProcess()->getId())
+			$log->setProcessId($p->getId())
 		);
 	}
 
