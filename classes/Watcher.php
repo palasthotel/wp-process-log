@@ -17,11 +17,14 @@ use Palasthotel\ProcessLog\Request\TaxonomyWatcher;
  * @property UserWatcher user
  * @property \Palasthotel\ProcessLog\Request\TaxonomyWatcher taxonomy
  * @property \Palasthotel\ProcessLog\CommentWatcher comment
+ * @property \Palasthotel\ProcessLog\ErrorWatcher error
  */
 class Watcher {
 
 	public function __construct( Plugin $plugin ) {
 		$this->writer = $plugin->writer;
+
+		$this->error = new ErrorWatcher($plugin);
 
 		$this->content_user_relations = new ContentUserRelationWatcher($plugin);
 		$this->post = new PostWatcher($plugin);
@@ -33,6 +36,8 @@ class Watcher {
 		add_filter(Plugin::FILTER_IS_USER_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_POST_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_CUR_WATCHER_ACTIVE, array($this, 'core_watchers'));
+
+
 	}
 
 	public function isActive(){

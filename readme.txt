@@ -35,6 +35,7 @@ Logging system.
 == Changelog ==
 
 = 1.1.0 =
+* Feature: new ErrorWatcher that adds fatal errors to protocol
 * Feature: Added filter for changed data field
 * Filter: ignore post meta value filter "process_log_ignore_post_meta"
 

@@ -38,6 +38,7 @@ class Plugin {
 	/**
 	 * event types
 	 */
+	CONST EVENT_TYPE_ERROR = "error";
 	CONST EVENT_TYPE_GENERAL = "event";
 	const EVENT_TYPE_CREATE = "create";
 	const EVENT_TYPE_UPDATE = "update";
@@ -47,6 +48,7 @@ class Plugin {
 	/**
 	 * severity types
 	 */
+	const SEVERITY_TYPE_FATAL = "fatal";
 	const SEVERITY_TYPE_INFO = "info";
 
 	/**
