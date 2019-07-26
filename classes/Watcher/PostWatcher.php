@@ -140,7 +140,7 @@ class PostWatcher {
 			$prev_value = $meta->meta_value;
 
 		} else {
-			$prev_value = get_post_meta($object_id, $meta_key);
+			$prev_value = \get_post_meta($object_id, $meta_key);
 			$note = "get_post_meta_by_id function not exists";
 		}
 

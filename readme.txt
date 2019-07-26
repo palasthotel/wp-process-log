@@ -38,6 +38,7 @@ Logging system.
 * Feature: new ErrorWatcher that adds fatal errors to protocol
 * Feature: Added filter for changed data field
 * Filter: ignore post meta value filter "process_log_ignore_post_meta"
+* Bugfix: sometimes get_post_meta_by_id not exists in PostWatcher fix
 
 = 1.0.0 =
 * Support: WP_Post meta value changes
