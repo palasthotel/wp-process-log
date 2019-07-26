@@ -138,11 +138,10 @@ class PostWatcher {
 		if( function_exists('get_post_meta_by_id') ){
 			$meta       = \get_post_meta_by_id( $meta_id );
 			$prev_value = $meta->meta_value;
-
 		} else {
 			$prev_value = \get_post_meta($object_id, $meta_key);
 			if(is_countable($prev_value) && count($prev_value) == 1) $prev_value = $prev_value[0];
-			$note = "get_post_meta_by_id function not available";
+			$note = "get_post_meta_by_id function not available. Used get_post_meta instead.";
 		}
 
 		if ( $prev_value == $_meta_value ) {
