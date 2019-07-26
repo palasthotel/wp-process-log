@@ -86,8 +86,8 @@ class PostWatcher {
 	 *
 	 * @return bool
 	 */
-	public function ignorePostMeta($post_id, $meta_key){
-		return apply_filters(Plugin::FILTER_IGNORE_POST_META, in_array( $meta_key, BLACKLIST_POST_METAS ), $post_id, $meta_key );
+	public function ignorePostMeta( $post_id, $meta_key ) {
+		return apply_filters( Plugin::FILTER_IGNORE_POST_META, in_array( $meta_key, BLACKLIST_POST_METAS ), $post_id, $meta_key );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class PostWatcher {
 			return;
 		}
 
-		if ( $this->ignorePostMeta($object_id, $meta_key) ) {
+		if ( $this->ignorePostMeta( $object_id, $meta_key ) ) {
 			return;
 		}
 
@@ -130,17 +130,19 @@ class PostWatcher {
 			return;
 		}
 
-		if ( $this->ignorePostMeta($object_id, $meta_key) ) {
+		if ( $this->ignorePostMeta( $object_id, $meta_key ) ) {
 			return;
 		}
 
 		$note = "";
-		if( function_exists('get_post_meta_by_id') ){
+		if ( function_exists( 'get_post_meta_by_id' ) ) {
 			$meta       = \get_post_meta_by_id( $meta_id );
 			$prev_value = $meta->meta_value;
 		} else {
-			$prev_value = \get_post_meta($object_id, $meta_key);
-			if(is_countable($prev_value) && count($prev_value) == 1) $prev_value = $prev_value[0];
+			$prev_value = \get_post_meta( $object_id, $meta_key );
+			if ( is_countable( $prev_value ) && count( $prev_value ) == 1 ) {
+				$prev_value = $prev_value[0];
+			}
 			$note = "get_post_meta_by_id function not available. Used get_post_meta instead.";
 		}
 
@@ -159,7 +161,7 @@ class PostWatcher {
 				          json_encode( $prev_value ) : $prev_value )
 			          ->setChangedDataValueNew( ( is_array( $_meta_value ) || is_object( $_meta_value ) ) ?
 				          json_encode( $_meta_value ) : $_meta_value )
-						->setNote($note)
+			          ->setNote( $note )
 		);
 
 
@@ -177,7 +179,7 @@ class PostWatcher {
 			return;
 		}
 
-		if ($this->ignorePostMeta($object_id, $meta_key)) {
+		if ( $this->ignorePostMeta( $object_id, $meta_key ) ) {
 			return;
 		}
 
