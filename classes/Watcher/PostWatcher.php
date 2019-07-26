@@ -134,8 +134,15 @@ class PostWatcher {
 			return;
 		}
 
-		$meta       = \get_post_meta_by_id( $meta_id );
-		$prev_value = $meta->meta_value;
+		$note = null;
+		if( function_exists('get_post_meta_by_id') ){
+			$meta       = \get_post_meta_by_id( $meta_id );
+			$prev_value = $meta->meta_value;
+
+		} else {
+			$prev_value = get_post_meta($object_id, $meta_key);
+			$note = "get_post_meta_by_id function not exists";
+		}
 
 		if ( $prev_value == $_meta_value ) {
 			return;
@@ -152,6 +159,7 @@ class PostWatcher {
 				          json_encode( $prev_value ) : $prev_value )
 			          ->setChangedDataValueNew( ( is_array( $_meta_value ) || is_object( $_meta_value ) ) ?
 				          json_encode( $_meta_value ) : $_meta_value )
+						->setNote($note)
 		);
 
 
