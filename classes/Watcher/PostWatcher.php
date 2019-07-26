@@ -134,14 +134,15 @@ class PostWatcher {
 			return;
 		}
 
-		$note = null;
+		$note = "";
 		if( function_exists('get_post_meta_by_id') ){
 			$meta       = \get_post_meta_by_id( $meta_id );
 			$prev_value = $meta->meta_value;
 
 		} else {
 			$prev_value = \get_post_meta($object_id, $meta_key);
-			$note = "get_post_meta_by_id function not exists";
+			if(count($prev_value) == 1) $prev_value = $prev_value[0];
+			$note = "get_post_meta_by_id function not available";
 		}
 
 		if ( $prev_value == $_meta_value ) {
