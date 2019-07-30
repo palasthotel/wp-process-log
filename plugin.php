@@ -3,7 +3,7 @@
  * Plugin Name: Process Log
  * Plugin URI: https://palasthotel.de
  * Description: Have a look whats going on with your system.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Palasthotel <edward.bock@palasthotel.de>
  * Author URI: https://palasthotel.de
  * Text Domain: process-log
@@ -30,10 +30,16 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property Watcher $watcher
  * @property MenuPage menuPage
  * @property Ajax ajax
+ * @property Schedule schedule
  */
 class Plugin {
 
 	const DOMAIN = "process-log";
+
+	/**
+	 * schedules
+	 */
+	const SCHEDULE_CLEAN = "process_log_clean";
 
 	/**
 	 * event types
@@ -98,11 +104,13 @@ class Plugin {
 		$this->watcher  = new Watcher( $this );
 		$this->menuPage = new MenuPage( $this );
 		$this->ajax     = new Ajax( $this );
+		$this->schedule = new Schedule($this);
 
 		/**
 		 * on activate or deactivate plugin
 		 */
 		register_activation_hook( __FILE__, array( $this, "activation" ) );
+		register_deactivation_hook( __FILE__, array( $this, "deactivation" ) );
 		if ( WP_DEBUG ) {
 			// for development purpose
 			add_action( 'init', array( $this, 'activation' ) );
@@ -115,6 +123,11 @@ class Plugin {
 	function activation() {
 		// create tables
 		$this->database->createTables();
+		$this->schedule->start();
+	}
+
+	function deactivation(){
+		$this->schedule->stop();
 	}
 }
 

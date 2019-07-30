@@ -173,6 +173,25 @@ class Database {
 		return $result;
 	}
 
+	public function clean(){
+
+		// clean expired log items
+		$tablenameItems = self::tablenameItems();
+		self::wpdb()->query("DELETE FROM $tablenameItems WHERE expires < unix_timestamp()");
+
+		// clean empty processes
+		$tablenameProcesses = self::tablenameProcesses();
+		$sub = "SELECT p.id FROM $tablenameProcesses as p ";
+		$sub.= "LEFT JOIN $tablenameItems as i ON (p.id = i.process_id) ";
+		$sub.= "WHERE i.process_id IS NULL";
+
+		// wrap it (important step!)
+		$sub = "SELECT * FROM ( $sub ) as tmp";
+
+		self::wpdb()->query("DELETE FROM $tablenameProcesses WHERE id IN ( $sub )");
+
+	}
+
 
 	/**
 	 * create the tables if not exist

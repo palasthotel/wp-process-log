@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 4.0
 Tested up to: 5.2.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.1.1 =
+* Feature: schedule for cleaning expired logs
 
 = 1.1.0 =
 * Feature: new ErrorWatcher that adds fatal errors to protocol
