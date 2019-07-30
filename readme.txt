@@ -36,6 +36,7 @@ Logging system.
 
 = 1.1.1 =
 * Feature: schedule for cleaning expired logs
+* Filter: process_log_expires
 
 = 1.1.0 =
 * Feature: new ErrorWatcher that adds fatal errors to protocol
