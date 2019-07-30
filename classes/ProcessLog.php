@@ -49,7 +49,8 @@ class ProcessLog extends DatabaseItem {
 	 */
 	public function __construct( ) {
 
-		$this->expires = time() + 60 * 60 * 24 * 14;
+		$expires = time() + 60 * 60 * 24 * 14;
+		$this->expires = apply_filters(Plugin::FILTER_LOG_ITEM_EXPIRES, $expires, $expires );
 
 		$this->created = date('Y-m-d H:i:s');
 

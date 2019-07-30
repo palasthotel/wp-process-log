@@ -60,6 +60,7 @@ class Plugin {
 	/**
 	 * filters
 	 */
+	const FILTER_LOG_ITEM_EXPIRES = "process_log_expires";
 	const FILTER_CORE_WATCHERS_ACTIVE = "process_log_core_watchers_active";
 	const FILTER_IS_USER_WATCHER_ACTIVE = "process_log_is_user_watcher_active";
 	const FILTER_IS_POST_WATCHER_ACTIVE = "process_log_is_post_watcher_active";
