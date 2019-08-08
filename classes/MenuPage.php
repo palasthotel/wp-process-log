@@ -65,6 +65,7 @@ class MenuPage {
 			self::APP_HANDLE,
 			"ProcessLogApp",
 			array(
+				'base_url' => admin_url("tools.php?page=process_logs"),
 				'selectors' => array(
 					"root" => "#process-log-table-body",
 					"button_load_more" => "#process-log-load-more",

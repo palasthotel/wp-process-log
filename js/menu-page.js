@@ -8,6 +8,7 @@
 	// ----------------------------
 	// scope constants
 	// ----------------------------
+	const base_url = app.base_url;
 	const i18n = app.i18n;
 	const selectors = app.selectors;
 	const $tbody = $(selectors.root);
@@ -34,6 +35,13 @@
 			args[obj.name] = obj.value;
 		}
 		return args;
+	};
+
+	const getFilterSerialized = ()=>{
+		const args = getFilterArgs();
+		return Object.keys(args).map((key)=>{
+			return (args[key] !== "" && args[key].length > 0)? key+"="+args[key]: null;
+		}).filter((el)=> el != null).join(("&"));
 	};
 
 	const setLoadMoreActive = (isActive)=>{
@@ -284,7 +292,8 @@
 		$load_more.addClass("is-loading");
 
 		$load_more.text(i18n.load_more_loading);
-
+		const serialized = getFilterSerialized();
+		window.history.replaceState(getFilterArgs(), window.document.title, base_url+((serialized.length > 0)? "&"+serialized: "") );
 		fetchProcessList(logsPage++, getFilterArgs()).then(json =>{
 			appendProcessRows(json.list);
 			$load_more.removeClass("is-loading");
