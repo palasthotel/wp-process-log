@@ -86,19 +86,24 @@ class MenuPage {
 			$this->plugin->url . "/css/menu-page.css"
 		);
 
+
+
 		?>
 		<div class="wrap process-log">
 			<h2><?php _e("Process logs", Plugin::DOMAIN); ?></h2>
 
-			<form id="process-filters">
+			<form id="process-filters" method="GET">
 				<label>
 					Effected content
 					<select name="process_content_type">
 						<option value="">All</option>
-						<option value="post">Posts</option>
-						<option value="user">Users</option>
-						<option value="term">Term</option>
-						<option value="comment">Comment</option>
+						<?php
+						$_type = sanitize_text_field($_GET["process_content_type"]);
+						foreach (array("post", "user", "term", "comment") as $type){
+							$selected = ($_type === $type)? "selected":"";
+							echo "<option value='$type' $selected>$type</option>";
+						}
+						?>
 					</select>
 				</label>
 				<label>
@@ -106,8 +111,10 @@ class MenuPage {
 					<select name="process_event_type">
 						<option value="">All</option>
 						<?php
+						$_type = sanitize_text_field($_GET["process_event_type"]);
 						foreach ($this->database->getEventTypes() as $type){
-							echo "<option value='$type'>$type</option>";
+							$selected = ($_type === $type)? "selected":"";
+							echo "<option value='$type' $selected>$type</option>";
 						}
 						?>
 					</select>
@@ -117,8 +124,10 @@ class MenuPage {
 					<select name="process_changed_data_field">
 						<option value="">All</option>
 						<?php
+						$_field = sanitize_text_field($_GET["process_changed_data_field"]);
 						foreach ($this->database->getChangedDataFields() as $field){
-							echo "<option value='$field'>$field</option>";
+							$selected = ($_field === $field)? "selected":"";
+							echo "<option value='$field' $selected>$field</option>";
 						}
 						?>
 					</select>
@@ -128,14 +137,18 @@ class MenuPage {
 					<select name="process_severity">
 						<option value="">All</option>
 						<?php
+						$_type = sanitize_text_field($_GET["process_severity"]);
 						foreach ($this->database->getSeverities() as $type){
-							echo "<option value='$type'>$type</option>";
+							$selected = ($_type === $type)? "selected":"";
+							echo "<option value='$type' $selected>$type</option>";
 						}
 						?>
 					</select>
 				</label>
 				<label>
-					Query <input name="process_event_query" />
+					Query <input name="process_event_query" value="<?php
+					echo (isset($_GET["process_event_query"]))? sanitize_text_field($_GET["process_event_query"]) : "";
+					?>" />
 				</label>
 
 				<button class="button-primary">Filter</button>
