@@ -28,7 +28,7 @@ class Process extends DatabaseItem {
 			$this->active_user = $user->ID;
 		}
 
-		$this->created = date('Y-m-d H:i:s');
+		$this->created = $this->getTimestamp();
 
 		if ( isset( $_SERVER ) && is_array( $_SERVER ) ) {
 			$this->location_url = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];

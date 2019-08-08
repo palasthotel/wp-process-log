@@ -52,7 +52,8 @@ class ProcessLog extends DatabaseItem {
 		$expires = time() + 60 * 60 * 24 * 14;
 		$this->expires = apply_filters(Plugin::FILTER_LOG_ITEM_EXPIRES, $expires, $expires );
 
-		$this->created = date('Y-m-d H:i:s');
+
+		$this->created = $this->getTimestamp();
 
 		$user = wp_get_current_user();
 		if ( $user instanceof \WP_User ) {
