@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 4.0
 Tested up to: 5.2.2
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,10 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.1.3 =
+* Feature: options watcher
+* Feature: settings page
 
 = 1.1.2 =
 * Feature: process log filter params in url
