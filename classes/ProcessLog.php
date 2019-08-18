@@ -262,7 +262,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setEventType( string $event_type ) {
+	public function setEventType( $event_type ) {
 		$this->event_type = $event_type;
 
 		return $this;
@@ -273,7 +273,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setActiveUser( int $active_user ) {
+	public function setActiveUser( $active_user ) {
 		$this->active_user = $active_user;
 
 		return $this;
@@ -284,7 +284,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setMessage( string $message ) {
+	public function setMessage( $message ) {
 		$this->message = $message;
 
 		return $this;
@@ -295,7 +295,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setNote( string $note ) {
+	public function setNote( $note ) {
 		$this->note = $note;
 
 		return $this;
@@ -306,7 +306,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setComment( string $comment ) {
+	public function setComment( $comment ) {
 		$this->comment = $comment;
 
 		return $this;
@@ -317,7 +317,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setSeverity( string $severity ) {
+	public function setSeverity( $severity ) {
 		$this->severity = $severity;
 
 		return $this;
