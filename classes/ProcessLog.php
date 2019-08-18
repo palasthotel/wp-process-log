@@ -62,6 +62,7 @@ class ProcessLog extends DatabaseItem {
 
 		$bt = debug_backtrace();
 		foreach ($bt as $trace){
+			if(!isset($trace["file"])) continue;
 			$file = $trace["file"];
 			if(
 				strpos($file, PROCESS_LOG_HANDLERS_DIR) === 0
