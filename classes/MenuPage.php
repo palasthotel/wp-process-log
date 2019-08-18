@@ -15,6 +15,8 @@ namespace Palasthotel\ProcessLog;
  */
 class MenuPage {
 
+	const SLUG = "process_logs";
+
 	const API_HANDLE = "process-log-api";
 
 	const APP_HANDLE = "process-log-app";
@@ -33,7 +35,7 @@ class MenuPage {
 			__("Process Logs", Plugin::DOMAIN),
 			__("Process Logs", Plugin::DOMAIN),
 			"manage_options",
-			"process_logs",
+			self::SLUG,
 			array( $this, 'render' )
 		);
 	}
