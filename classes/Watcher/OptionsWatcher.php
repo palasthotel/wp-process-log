@@ -20,7 +20,19 @@ class OptionsWatcher {
 		add_action('delete_option', array($this, 'delete'));
 	}
 
+	/**
+	 * @return boolean
+	 */
+	public function isActive() {
+		return apply_filters( Plugin::FILTER_IS_OPTION_WATCHER_ACTIVE, true );
+	}
+
 	public function added($option, $value){
+
+		if ( ! $this->isActive() ) {
+			return;
+		}
+
 		$this->writer->addLog(
 			ProcessLog::build()
 			          ->setEventType( Plugin::EVENT_TYPE_CREATE )
@@ -31,6 +43,11 @@ class OptionsWatcher {
 	}
 
 	public function updated($option, $old_value, $value){
+
+		if ( ! $this->isActive() ) {
+			return;
+		}
+
 		$this->writer->addLog(
 			ProcessLog::build()
 			          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
@@ -42,6 +59,11 @@ class OptionsWatcher {
 	}
 
 	public function deleted($option){
+
+		if ( ! $this->isActive() ) {
+			return;
+		}
+
 		$this->writer->addLog(
 			ProcessLog::build()
 			          ->setEventType( Plugin::EVENT_TYPE_DELETE )

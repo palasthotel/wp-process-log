@@ -64,6 +64,7 @@ class Plugin {
 	const FILTER_CORE_WATCHERS_ACTIVE = "process_log_core_watchers_active";
 	const FILTER_IS_USER_WATCHER_ACTIVE = "process_log_is_user_watcher_active";
 	const FILTER_IS_POST_WATCHER_ACTIVE = "process_log_is_post_watcher_active";
+	const FILTER_IS_OPTION_WATCHER_ACTIVE = "process_log_is_option_watcher_active";
 	const FILTER_IGNORE_POST_META = "process_log_ignore_post_meta";
 	const FILTER_IS_CUR_WATCHER_ACTIVE = "process_log_is_content_user_relations_watcher_active";
 

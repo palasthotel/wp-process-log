@@ -8,16 +8,15 @@
 
 namespace Palasthotel\ProcessLog;
 
-use Palasthotel\ProcessLog\Request\TaxonomyWatcher;
-
 /**
  * @property Writer writer
  * @property ContentUserRelationWatcher content_user_relations
  * @property PostWatcher post
  * @property UserWatcher user
- * @property \Palasthotel\ProcessLog\Request\TaxonomyWatcher taxonomy
+ * @property \Palasthotel\ProcessLog\TaxonomyWatcher taxonomy
  * @property \Palasthotel\ProcessLog\CommentWatcher comment
  * @property \Palasthotel\ProcessLog\ErrorWatcher error
+ * @property \Palasthotel\ProcessLog\OptionsWatcher options
  */
 class Watcher {
 
@@ -31,12 +30,13 @@ class Watcher {
 		$this->user = new UserWatcher($plugin);
 		$this->taxonomy = new TaxonomyWatcher($plugin);
 		$this->comment = new CommentWatcher($plugin);
+		$this->options = new OptionsWatcher($plugin);
 
 
 		add_filter(Plugin::FILTER_IS_USER_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_POST_WATCHER_ACTIVE, array($this, 'core_watchers'));
+		add_filter(Plugin::FILTER_IS_OPTION_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_CUR_WATCHER_ACTIVE, array($this, 'core_watchers'));
-
 
 	}
 
