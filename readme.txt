@@ -34,6 +34,9 @@ Logging system.
 
 == Changelog ==
 
+= 1.1.4 =
+* Bugfix: Undefined file in $trace warning.
+
 = 1.1.3 =
 * Feature: options watcher
 * Feature: settings page
