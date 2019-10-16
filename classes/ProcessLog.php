@@ -49,7 +49,11 @@ class ProcessLog extends DatabaseItem {
 	 */
 	public function __construct( ) {
 
-		$this->expires = time() + 60 * 60 * 24 * 14;
+		$expires = time() + 60 * 60 * 24 * 14;
+		$this->expires = apply_filters(Plugin::FILTER_LOG_ITEM_EXPIRES, $expires, $expires );
+
+
+		$this->created = $this->getTimestamp();
 
 		$user = wp_get_current_user();
 		if ( $user instanceof \WP_User ) {
@@ -58,6 +62,7 @@ class ProcessLog extends DatabaseItem {
 
 		$bt = debug_backtrace();
 		foreach ($bt as $trace){
+			if(!isset($trace["file"])) continue;
 			$file = $trace["file"];
 			if(
 				strpos($file, PROCESS_LOG_HANDLERS_DIR) === 0
@@ -70,15 +75,6 @@ class ProcessLog extends DatabaseItem {
 			}
 
 		}
-	}
-
-	/**
-	 * @param $key
-	 *
-	 * @return bool
-	 */
-	public function isArg( $key ) {
-		return ( $key != "created" );
 	}
 
 	/**
@@ -267,7 +263,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setEventType( string $event_type ) {
+	public function setEventType( $event_type ) {
 		$this->event_type = $event_type;
 
 		return $this;
@@ -278,7 +274,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setActiveUser( int $active_user ) {
+	public function setActiveUser( $active_user ) {
 		$this->active_user = $active_user;
 
 		return $this;
@@ -289,7 +285,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setMessage( string $message ) {
+	public function setMessage( $message ) {
 		$this->message = $message;
 
 		return $this;
@@ -300,7 +296,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setNote( string $note ) {
+	public function setNote( $note ) {
 		$this->note = $note;
 
 		return $this;
@@ -311,7 +307,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setComment( string $comment ) {
+	public function setComment( $comment ) {
 		$this->comment = $comment;
 
 		return $this;
@@ -322,7 +318,7 @@ class ProcessLog extends DatabaseItem {
 	 *
 	 * @return ProcessLog
 	 */
-	public function setSeverity( string $severity ) {
+	public function setSeverity( $severity ) {
 		$this->severity = $severity;
 
 		return $this;

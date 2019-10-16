@@ -8,8 +8,6 @@
 
 namespace Palasthotel\ProcessLog;
 
-use Exception;
-
 /**
  *
  */
@@ -53,6 +51,13 @@ class Database {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function getChangedDataFields(){
+		return $this->getDistinct("changed_data_field");
+	}
+
+	/**
 	 * @param string $col column name
 	 *
 	 * @return array
@@ -80,12 +85,10 @@ class Database {
 			$where_in = "WHERE id IN( SELECT p.id FROM $tableProcesses as p LEFT JOIN $tableItems as i ON ( p.id = i.process_id ) $where )";
 		}
 
+		$query = "SELECT id, active_user, created, location_url, hostname FROM $tableProcesses $where_in ORDER BY id DESC LIMIT %d OFFSET %d";
+
 		return self::wpdb()->get_results(
-			self::wpdb()->prepare(
-				"SELECT id, active_user, created, location_url, hostname FROM $tableProcesses $where_in ORDER BY id DESC LIMIT %d OFFSET %d",
-				$count,
-				$offset
-			)
+			self::wpdb()->prepare( $query, $count, $offset )
 		);
 	}
 
@@ -141,6 +144,8 @@ class Database {
 			$process->insertArgs()
 		);
 		if ( ! $result ) {
+			\error_log(self::wpdb()->last_error, 4);
+			\error_log("Process-log: Cannot insert process");
 			return false;
 		}
 		$process->id = self::wpdb()->insert_id;
@@ -160,7 +165,31 @@ class Database {
 			$args
 		);
 
+		if(!$result){
+			\error_log(self::wpdb()->last_error, 4);
+			\error_log("Process-log: Cannot add log to process");
+		}
+
 		return $result;
+	}
+
+	public function clean(){
+
+		// clean expired log items
+		$tablenameItems = self::tablenameItems();
+		self::wpdb()->query("DELETE FROM $tablenameItems WHERE expires < unix_timestamp()");
+
+		// clean empty processes
+		$tablenameProcesses = self::tablenameProcesses();
+		$sub = "SELECT p.id FROM $tablenameProcesses as p ";
+		$sub.= "LEFT JOIN $tablenameItems as i ON (p.id = i.process_id) ";
+		$sub.= "WHERE i.process_id IS NULL";
+
+		// wrap it (important step!)
+		$sub = "SELECT * FROM ( $sub ) as tmp";
+
+		self::wpdb()->query("DELETE FROM $tablenameProcesses WHERE id IN ( $sub )");
+
 	}
 
 
@@ -171,15 +200,15 @@ class Database {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		$process = self::tablenameProcesses();
-		dbDelta( "CREATE TABLE IF NOT EXISTS $process
+		\dbDelta( "CREATE TABLE IF NOT EXISTS $process
 		(
 		 id bigint(20) unsigned auto_increment,
-		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
+		 created DATETIME NOT NULL,
 		 
 		 active_user BIGINT(20),
-		 location_url varchar(255) comment 'where the event happend, url',
-		 referer_url varchar(255),
-		 hostname varchar(255),
+		 location_url varchar(190) comment 'where the event happend, url',
+		 referer_url varchar(190),
+		 hostname varchar(190),
 		
 		 primary key (id),
 		 key (created),
@@ -191,11 +220,11 @@ class Database {
 
 		$tablename = self::tablenameItems();
 
-		dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
+		\dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
 		(
 		 id bigint(20) unsigned auto_increment,
 		 process_id bigint(20) unsigned,
-		 created DATETIME DEFAULT CURRENT_TIMESTAMP,
+		 created DATETIME NOT NULL,
 		 
 		 event_type varchar(100) NOT NULL,
 		 active_user BIGINT(20),
@@ -211,7 +240,7 @@ class Database {
 		 affected_comment BIGINT comment 'comment id that was affected by the event',
 		 expires BIGINT comment 'timestamp when to clean up this log entry',
 		 
-		 changed_data_field VARCHAR(255),
+		 changed_data_field VARCHAR(100),
 		 changed_data_value_old TEXT,
 		 changed_data_value_new TEXT,
 		 

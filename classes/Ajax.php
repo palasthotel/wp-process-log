@@ -23,24 +23,67 @@ class Ajax {
 	}
 
 	public function processes_list(){
-		$page = (isset($_GET["page"]))? intval($_GET["page"]): 1;
+		$page = (isset($_REQUEST["page"]))? intval($_REQUEST["page"]): 1;
 
 		$where = array();
 
-		if(isset($_GET["process_content_type"]) && !empty($_GET["process_content_type"]) ){
-			$type = sanitize_text_field($_GET["process_content_type"]);
+		if(isset($_REQUEST["process_content_type"]) && !empty($_REQUEST["process_content_type"]) ){
+			$type = sanitize_text_field($_REQUEST["process_content_type"]);
 			if(in_array($type, array("post", "user", "comment", "term"))){
 				$where[] = " affected_$type IS NOT NULL ";
 			}
 		}
-		if(isset($_GET["process_event_type"]) && !empty($_GET["process_event_type"]) ){
-			$type = sanitize_text_field($_GET["process_event_type"]);
-			$where[] = " event_type ='$type' ";
+		if(isset($_REQUEST["process_event_type"]) && !empty($_REQUEST["process_event_type"]) ){
+			$type = sanitize_text_field($_REQUEST["process_event_type"]);
+			$where[] = " event_type = '$type' ";
 		}
-		if(isset($_GET["process_severity_type"]) && !empty($_GET["process_severity_type"]) ){
-			$type = sanitize_text_field($_GET["process_severity_type"]);
-			$where[] = " severity ='$type' ";
+		if(isset($_REQUEST["process_severity_type"]) && !empty($_REQUEST["process_severity_type"]) ){
+			$type = sanitize_text_field($_REQUEST["process_severity_type"]);
+			$where[] = " severity = '$type' ";
 		}
+
+		if(isset($_REQUEST["process_changed_data_field"]) && !empty($_REQUEST["process_changed_data_field"])){
+			$field = sanitize_text_field($_REQUEST["process_changed_data_field"]);
+			$where[] = " changed_data_field = '$field' ";
+		}
+
+		if(isset($_REQUEST["process_event_query"]) && !empty($_REQUEST["process_event_query"]) ){
+			$q = sanitize_text_field($_REQUEST["process_event_query"]);
+
+			$parts = array();
+
+			if(is_int($q)){
+				$parts[] = " p.active_user = $q ";
+				$parts[] = " i.active_user = $q ";
+				$parts[] = " i.affected_post = $q ";
+				$parts[] = " i.affected_term = $q ";
+				$parts[] = " i.affected_user = $q ";
+				$parts[] = " i.affected_comment = $q ";
+
+			}
+
+			$parts[] = " location_url LIKE '%$q%' ";
+			$parts[] = " referer_url LIKE '%$q%' ";
+			$parts[] = " hostname LIKE '%$q%' ";
+			$parts[] = " event_type LIKE '%$q%' ";
+			$parts[] = " note LIKE '%$q%' ";
+			$parts[] = " event_type LIKE '%$q%' ";
+			$parts[] = " message LIKE '%$q%' ";
+			$parts[] = " comment LIKE '%$q%' ";
+			$parts[] = " severity LIKE '%$q%' ";
+			$parts[] = " message LIKE '%$q%' ";
+			$parts[] = " link_url LIKE '%$q%' ";
+			$parts[] = " location_path LIKE '%$q%' ";
+			$parts[] = " changed_data_field LIKE '%$q%' ";
+			$parts[] = " changed_data_value_old LIKE '%$q%' ";
+			$parts[] = " changed_data_value_new LIKE '%$q%' ";
+			$parts[] = " variables LIKE '%$q%' ";
+
+			$where[] = " ( ".join(" OR ", $parts )." ) ";
+
+		}
+
+
 
 		$where_param = "";
 		if(count($where)>0){
@@ -62,7 +105,7 @@ class Ajax {
 	}
 
 	public function process_logs(){
-		$pid = intval($_GET["pid"]);
+		$pid = intval($_REQUEST["pid"]);
 		$logs = $this->plugin->database->getProcessLogs($pid);
 		foreach ($logs as $i => $log){
 			foreach ($log as $key => $value){

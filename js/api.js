@@ -1,5 +1,5 @@
 'use strict';
-;(function(api){
+;(function($, api){
 
 	const url = new URL(api.ajaxurl);
 
@@ -11,11 +11,22 @@
 		return fetch(url).then(res => res.json());
 	};
 
+	const apiPost = (action, data = {}) =>{
+		return new Promise((resolve, reject)=>{
+			$.ajax(url+"?action="+action,{
+				method: 'POST',
+				data,
+				success: resolve,
+				error: reject,
+			})
+		});
+	};
+
 	api.fetchProcessList = (page, filter = {})=> {
-		return apiFetch("processes_list",{page, ...filter});
+		return apiPost("processes_list",{page, ...filter});
 	};
 	api.fetchProcessLogs = (pid) => {
-		return apiFetch("process_logs",{pid});
+		return apiPost("process_logs",{pid});
 	}
 
-})(ProcessLogAPI);
+})(jQuery, ProcessLogAPI);

@@ -27,6 +27,12 @@ class DatabaseItem {
 		return $args;
 	}
 
+	public function getTimestamp(){
+		$now = new \DateTime();
+		$now->setTimezone( new \DateTimeZone( get_option("timezone_string") ) );
+		return $now->format('Y-m-d H:i:s');
+	}
+
 	public function isArg($key){
 		return true;
 	}

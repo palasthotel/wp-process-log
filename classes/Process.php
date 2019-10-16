@@ -28,6 +28,8 @@ class Process extends DatabaseItem {
 			$this->active_user = $user->ID;
 		}
 
+		$this->created = $this->getTimestamp();
+
 		if ( isset( $_SERVER ) && is_array( $_SERVER ) ) {
 			$host = (isset($_SERVER['HTTP_HOST']))? $_SERVER['HTTP_HOST']: "";
 			$uri = (isset($_SERVER['REQUEST_URI']))? $_SERVER['REQUEST_URI']: "";
@@ -35,15 +37,6 @@ class Process extends DatabaseItem {
 			$this->referer_url  = isset( $_SERVER["HTTP_REFERER"] ) ? $_SERVER["HTTP_REFERER"] : NULL;
 			$this->hostname     = isset( $_SERVER['REMOTE_HOST'] ) ? $_SERVER['REMOTE_HOST'] : getHostname();
 		}
-	}
-
-	/**
-	 * @param $key
-	 *
-	 * @return bool
-	 */
-	public function isArg( $key ) {
-		return ( $key != "created" );
 	}
 
 	/**

@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 4.0
-Tested up to: 5.0.3
-Stable tag: 1.0.0
+Tested up to: 5.2.2
+Stable tag: 1.1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,27 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.1.4 =
+* Bugfix: Undefined file in $trace warning.
+
+= 1.1.3 =
+* Feature: options watcher
+* Feature: settings page
+
+= 1.1.2 =
+* Feature: process log filter params in url
+* Optimization: log datetime in wordpress timezone
+
+= 1.1.1 =
+* Feature: schedule for cleaning expired logs
+* Filter: process_log_expires
+
+= 1.1.0 =
+* Feature: new ErrorWatcher that adds fatal errors to protocol
+* Feature: Added filter for changed data field
+* Filter: ignore post meta value filter "process_log_ignore_post_meta"
+* Bugfix: sometimes get_post_meta_by_id not exists in PostWatcher fix
 
 = 1.0.0 =
 * Support: WP_Post meta value changes

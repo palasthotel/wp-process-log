@@ -8,10 +8,6 @@
 
 namespace Palasthotel\ProcessLog;
 
-use Palasthotel\ProcessLog\Plugin;
-use Palasthotel\ProcessLog\ProcessLog;
-use Palasthotel\ProcessLog\Writer;
-
 const BLACKLIST_POST_METAS = array(
 	"_edit_lock",
 	"_edit_last",
@@ -75,7 +71,7 @@ class PostWatcher {
 					          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 					          ->setMessage( "update post" )
 					          ->setAffectedPost( $post_id )
-					          ->setLinkUrl( get_permalink( $post_id ) )
+					          ->setLinkUrl( \get_edit_post_link( $post_id ) )
 					          ->setChangedDataField( $attr )
 					          ->setChangedDataValueOld( $post_before->{$attr} )
 					          ->setChangedDataValueNew( $post_after->{$attr} )
@@ -85,9 +81,19 @@ class PostWatcher {
 	}
 
 	/**
-	 * @param $object_id
-	 * @param $meta_key
-	 * @param $_meta_value
+	 * @param int $post_id
+	 * @param string $meta_key
+	 *
+	 * @return bool
+	 */
+	public function ignorePostMeta( $post_id, $meta_key ) {
+		return apply_filters( Plugin::FILTER_IGNORE_POST_META, in_array( $meta_key, BLACKLIST_POST_METAS ), $post_id, $meta_key );
+	}
+
+	/**
+	 * @param string $object_id post ID
+	 * @param string $meta_key
+	 * @param mixed $_meta_value
 	 */
 	public function add_meta( $object_id, $meta_key, $_meta_value ) {
 
@@ -95,9 +101,7 @@ class PostWatcher {
 			return;
 		}
 
-		if (
-		in_array( $meta_key, BLACKLIST_POST_METAS )
-		) {
+		if ( $this->ignorePostMeta( $object_id, $meta_key ) ) {
 			return;
 		}
 
@@ -106,7 +110,7 @@ class PostWatcher {
 			          ->setEventType( Plugin::EVENT_TYPE_CREATE )
 			          ->setMessage( "post meta add" )
 			          ->setAffectedPost( $object_id )
-			          ->setLinkUrl( get_edit_post_link( $object_id ) )
+			          ->setLinkUrl( \get_edit_post_link( $object_id ) )
 			          ->setChangedDataField( $meta_key )
 			          ->setChangedDataValueOld( ( is_array( $_meta_value ) || is_object( $_meta_value ) ) ?
 				          json_encode( $_meta_value ) : $_meta_value )
@@ -126,14 +130,21 @@ class PostWatcher {
 			return;
 		}
 
-		if (
-		in_array( $meta_key, BLACKLIST_POST_METAS )
-		) {
+		if ( $this->ignorePostMeta( $object_id, $meta_key ) ) {
 			return;
 		}
 
-		$meta       = get_post_meta_by_id( $meta_id );
-		$prev_value = $meta->meta_value;
+		$note = "";
+		if ( function_exists( 'get_post_meta_by_id' ) ) {
+			$meta       = \get_post_meta_by_id( $meta_id );
+			$prev_value = $meta->meta_value;
+		} else {
+			$prev_value = \get_post_meta( $object_id, $meta_key );
+			if ( is_countable( $prev_value ) && count( $prev_value ) == 1 ) {
+				$prev_value = $prev_value[0];
+			}
+			$note = "get_post_meta_by_id function not available. Used get_post_meta instead.";
+		}
 
 		if ( $prev_value == $_meta_value ) {
 			return;
@@ -144,12 +155,13 @@ class PostWatcher {
 			          ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 			          ->setMessage( "post meta update" )
 			          ->setAffectedPost( $object_id )
-			          ->setLinkUrl( get_edit_post_link( $object_id ) )
+			          ->setLinkUrl( \get_edit_post_link( $object_id ) )
 			          ->setChangedDataField( $meta_key )
 			          ->setChangedDataValueOld( ( is_array( $prev_value ) || is_object( $prev_value ) ) ?
 				          json_encode( $prev_value ) : $prev_value )
 			          ->setChangedDataValueNew( ( is_array( $_meta_value ) || is_object( $_meta_value ) ) ?
 				          json_encode( $_meta_value ) : $_meta_value )
+			          ->setNote( $note )
 		);
 
 
@@ -167,9 +179,7 @@ class PostWatcher {
 			return;
 		}
 
-		if (
-		in_array( $meta_key, BLACKLIST_POST_METAS )
-		) {
+		if ( $this->ignorePostMeta( $object_id, $meta_key ) ) {
 			return;
 		}
 
@@ -178,7 +188,7 @@ class PostWatcher {
 			          ->setEventType( Plugin::EVENT_TYPE_DELETE )
 			          ->setMessage( "post meta delete " . count( $meta_ids ) . " entries" )
 			          ->setAffectedPost( $object_id )
-			          ->setLinkUrl( get_edit_post_link( $object_id ) )
+			          ->setLinkUrl( \get_edit_post_link( $object_id ) )
 			          ->setChangedDataField( $meta_key )
 			          ->setChangedDataValueOld( ( is_array( $_meta_value ) || is_object( $_meta_value ) ) ?
 				          json_encode( $_meta_value ) : $_meta_value )
