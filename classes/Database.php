@@ -144,8 +144,7 @@ class Database {
 			$process->insertArgs()
 		);
 		if ( ! $result ) {
-			error_log(json_encode($process->insertArgs()));
-			error_log(self::wpdb()->last_error);
+			error_log("wpdb last_error:".self::wpdb()->last_error."\n");
 			error_log("Process-log: Cannot insert process");
 			return false;
 		}
