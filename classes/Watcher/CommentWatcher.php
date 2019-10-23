@@ -114,6 +114,7 @@ class CommentWatcher {
 			$post_id = $rawComment['comment_post_ID'];
 
 			foreach ( $attributes as $attr ) {
+				if(!isset($oldComment[$attr]) || !isset($data[$attr])) continue;
 				if($oldComment[$attr] !== $data[$attr]){
 					$this->writer->addLog(
 						ProcessLog::build()
