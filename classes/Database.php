@@ -63,7 +63,9 @@ class Database {
 	 * @return array
 	 */
 	private function getDistinct($col){
-		return self::wpdb()->get_col("SELECT DISTINCT $col FROM ".self::tablenameItems());
+		return self::wpdb()->get_col(
+			"SELECT DISTINCT $col FROM ".self::tablenameItems()
+		);
 	}
 
 	/**

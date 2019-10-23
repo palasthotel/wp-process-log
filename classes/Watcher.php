@@ -35,6 +35,7 @@ class Watcher {
 
 		add_filter(Plugin::FILTER_IS_USER_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_POST_WATCHER_ACTIVE, array($this, 'core_watchers'));
+		add_filter(Plugin::FILTER_IS_COMMENT_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_OPTION_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_CUR_WATCHER_ACTIVE, array($this, 'core_watchers'));
 

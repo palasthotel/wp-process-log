@@ -120,16 +120,11 @@ class MenuPage {
 				</label>
 				<label>
 					Changed field
-					<select name="process_changed_data_field">
-						<option value="">All</option>
-						<?php
-						$_field = (isset($_GET["process_changed_data_field"]))? sanitize_text_field($_GET["process_changed_data_field"]): "";
-						foreach ($this->database->getChangedDataFields() as $field){
-							$selected = ($_field === $field)? "selected":"";
-							echo "<option value='$field' $selected>$field</option>";
-						}
-						?>
-					</select>
+					<input
+							name="process_changed_data_field"
+							type="text"
+							value="<?php echo (isset($_GET["process_changed_data_field"]))? sanitize_text_field($_GET["process_changed_data_field"]): ""; ?>"
+					/>
 				</label>
 				<label>
 					Severity
