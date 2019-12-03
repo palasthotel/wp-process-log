@@ -133,11 +133,11 @@ class Ajax {
 	private function getUsersOfLogs($logs){
 		$active_users = array();
 		foreach ($logs as $item){
-			if( intval($item->active_user) > 0 && !isset($active_users[$item->active_user]) ){
+			if( isset($item->active_user) && intval($item->active_user) > 0 && !isset($active_users[$item->active_user]) ){
 				$user = $this->getUserIf( $item->active_user );
 				if($user !== false) $active_users[$item->active_user] = $user;
 			}
-			if( intval($item->affected_user) > 0 && !empty($item->affected_user) ){
+			if( isset($item->affected_user) && !empty($item->affected_user)  && intval($item->affected_user) > 0 ){
 				$user = $this->getUserIf($item->affected_user);
 				if($user !== false) $active_users[$item->affected_user] = $user;
 			}

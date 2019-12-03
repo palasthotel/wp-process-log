@@ -89,8 +89,6 @@ class MenuPage {
 			$this->plugin->url . "/css/menu-page.css"
 		);
 
-
-
 		?>
 		<div class="wrap process-log">
 			<h2><?php _e("Process logs", Plugin::DOMAIN); ?></h2>
@@ -101,7 +99,7 @@ class MenuPage {
 					<select name="process_content_type">
 						<option value="">All</option>
 						<?php
-						$_type = sanitize_text_field($_GET["process_content_type"]);
+						$_type = (isset($_GET["process_content_type"]))? sanitize_text_field($_GET["process_content_type"]) : "";
 						foreach (array("post", "user", "term", "comment") as $type){
 							$selected = ($_type === $type)? "selected":"";
 							echo "<option value='$type' $selected>$type</option>";
@@ -114,7 +112,7 @@ class MenuPage {
 					<select name="process_event_type">
 						<option value="">All</option>
 						<?php
-						$_type = sanitize_text_field($_GET["process_event_type"]);
+						$_type = (isset($_GET["process_event_type"]))? sanitize_text_field($_GET["process_event_type"]): "";
 						foreach ($this->database->getEventTypes() as $type){
 							$selected = ($_type === $type)? "selected":"";
 							echo "<option value='$type' $selected>$type</option>";
@@ -124,23 +122,18 @@ class MenuPage {
 				</label>
 				<label>
 					Changed field
-					<select name="process_changed_data_field">
-						<option value="">All</option>
-						<?php
-						$_field = sanitize_text_field($_GET["process_changed_data_field"]);
-						foreach ($this->database->getChangedDataFields() as $field){
-							$selected = ($_field === $field)? "selected":"";
-							echo "<option value='$field' $selected>$field</option>";
-						}
-						?>
-					</select>
+					<input
+							name="process_changed_data_field"
+							type="text"
+							value="<?php echo (isset($_GET["process_changed_data_field"]))? sanitize_text_field($_GET["process_changed_data_field"]): ""; ?>"
+					/>
 				</label>
 				<label>
 					Severity
 					<select name="process_severity">
 						<option value="">All</option>
 						<?php
-						$_type = sanitize_text_field($_GET["process_severity"]);
+						$_type = (isset($_GET["process_severity"]))? sanitize_text_field($_GET["process_severity"]): "";
 						foreach ($this->database->getSeverities() as $type){
 							$selected = ($_type === $type)? "selected":"";
 							echo "<option value='$type' $selected>$type</option>";

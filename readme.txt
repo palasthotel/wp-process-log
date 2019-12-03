@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 1.1.3
+Tested up to: 5.2.4
+Stable tag: 1.1.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,15 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.1.6 =
+* Feature: Implemented comments watcher
+
+= 1.1.5 =
+* Bugfix: Undefined index in $_SERVER when using wp cli.
+
+= 1.1.4 =
+* Bugfix: Undefined file in $trace warning.
 
 = 1.1.3 =
 * Feature: options watcher

@@ -63,7 +63,9 @@ class Database {
 	 * @return array
 	 */
 	private function getDistinct($col){
-		return self::wpdb()->get_col("SELECT DISTINCT $col FROM ".self::tablenameItems());
+		return self::wpdb()->get_col(
+			"SELECT DISTINCT $col FROM ".self::tablenameItems()
+		);
 	}
 
 	/**
@@ -144,8 +146,8 @@ class Database {
 			$process->insertArgs()
 		);
 		if ( ! $result ) {
-			\error_log(self::wpdb()->last_error, 4);
-			\error_log("Process-log: Cannot insert process");
+			error_log("wpdb last_error:".self::wpdb()->last_error."\n");
+			error_log("Process-log: Cannot insert process");
 			return false;
 		}
 		$process->id = self::wpdb()->insert_id;
