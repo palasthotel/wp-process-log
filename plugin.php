@@ -105,6 +105,7 @@ class Plugin {
 		$this->writer   = new Writer( $this );
 		$this->watcher  = new Watcher( $this );
 		$this->menuPage = new MenuPage( $this );
+		$this->settings = new Settings( $this );
 		$this->ajax     = new Ajax( $this );
 		$this->schedule = new Schedule($this);
 

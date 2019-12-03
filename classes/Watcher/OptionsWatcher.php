@@ -58,7 +58,7 @@ class OptionsWatcher {
 		);
 	}
 
-	public function deleted($option){
+	public function delete($option){
 
 		if ( ! $this->isActive() ) {
 			return;
