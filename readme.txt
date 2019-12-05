@@ -3,7 +3,7 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 4.0
-Tested up to: 5.2.4
+Tested up to: 5.3
 Stable tag: 1.1.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
