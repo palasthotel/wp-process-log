@@ -21,7 +21,7 @@ class ErrorWatcher {
 
 	public function onError() {
 		$error = error_get_last();
-		if ($error['type'] === E_ERROR) {
+		if (is_array($error) && $error['type'] === E_ERROR) {
 			$this->writer->addLog(
 				ProcessLog::build()
 				          ->setEventType( Plugin::EVENT_TYPE_ERROR )
