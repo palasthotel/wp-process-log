@@ -3,4 +3,4 @@ WordPress process logging
 
 ## Regenerate autoload.php
 
-```composer dump```
+```composer dump-autoload```

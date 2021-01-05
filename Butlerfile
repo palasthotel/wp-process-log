@@ -31,11 +31,11 @@
 					"version" : "3.0.3"
 				}
 			],
-			"input" : "scss/menu-page.scss",
+			"input" : "src/styles/menu-page.scss",
 			"type" : "watch",
-			"output" : "css/menu-page.css",
+			"output" : "public/css/menu-page.css",
 			"observe" : {
-				"path" : "scss"
+				"path" : "src/styles"
 			}
 		}
 	]

@@ -1,14 +1,14 @@
 {
+	"config": {
+		"vendor-dir": "public/vendor"
+	},
     "autoload": {
         "classmap": [
-            "classes"
+            "public/classes"
         ],
 		"psr-4": {
-			"Palasthotel\\ProcessLog\\": "classes"
+			"Palasthotel\\ProcessLog\\": "public/classes"
 		}
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^7"
     },
 	"require": {
 		"ext-curl": "*",
