@@ -16,6 +16,7 @@
 	const $filters = $(selectors.filters_form);
 	const users = {};
 	const posts = {};
+	const comments = {};
 
 	// save default text
 	$load_more.data("default-text", $load_more.text());
@@ -75,8 +76,8 @@
 		}
 		const row = `<tr class="process-log__row--process">
 			<td title="Process ID" id="process-${item.process_id}">
-				<a class="process-log__process-id more" 
-				data-pid="${item.id}" 
+				<a class="process-log__process-id more"
+				data-pid="${item.id}"
 				href="#process-${item.id}"
 				>${item.id}</a>
 			</td>
@@ -182,7 +183,9 @@
 				.appendTo($second_line);
 		}
 		if (log.affected_comment) {
-			$(`<span>${i18n.affected_term}: ${log.affected_comment}</span>`)
+			const comment = comments[log.affected_comment];
+
+			$(`<span>${i18n.affected_comment}: ${getMaybeLinkedComment(comment.ID, comment.edit_link)}</span>`)
 				.addClass('log__affected-comment')
 				.appendTo($second_line);
 		}
@@ -342,6 +345,9 @@
 			`<a href="${link}" target="_blank">` :
 			''}${title}${(link) ? '</a>' : ''}`;
 	};
+	const getMaybeLinkedComment = (comment_id, link) => {
+		return link ? `<a href='${link}'>${comment_id}</a>` : comment_id;
+	}
 
 	// ----------------------------
 	// API calls and processing
@@ -360,7 +366,7 @@
 	 * @return {Promise}
 	 */
 	function fetchProcessLogs(pid) {
-		return api.fetchProcessLogs(pid).then(processPosts).then(processUsers);
+		return api.fetchProcessLogs(pid).then(processPosts).then(processComments).then(processUsers);
 	}
 
 	/**
@@ -381,6 +387,17 @@
 	const processPosts = json => {
 		for (let post of Object.values(json.posts)) {
 			posts[post.ID] = post;
+		}
+		return json;
+	};
+
+	/**
+	 * @param json
+	 * @return {Promise}
+	 */
+	const processComments = json => {
+		for (let comment of Object.values(json.comments)) {
+			comments[comment.ID] = comment;
 		}
 		return json;
 	};

@@ -1,13 +1,13 @@
 {
 	"config": {
-		"vendor-dir": "public/vendor"
+		"vendor-dir": "vendor"
 	},
     "autoload": {
         "classmap": [
-            "public/classes"
+            "classes"
         ],
 		"psr-4": {
-			"Palasthotel\\ProcessLog\\": "public/classes"
+			"Palasthotel\\ProcessLog\\": "classes"
 		}
     },
 	"require": {

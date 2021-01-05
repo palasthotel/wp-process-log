@@ -16,28 +16,28 @@ class ComposerStaticInit05d2c2948c432a1c3b8f11410634a31a
     public static $prefixDirsPsr4 = array (
         'Palasthotel\\ProcessLog\\' => 
         array (
-            0 => __DIR__ . '/../../..' . '/public/classes',
+            0 => __DIR__ . '/../..' . '/classes',
         ),
     );
 
     public static $classMap = array (
-        'Palasthotel\\ProcessLog\\Ajax' => __DIR__ . '/../../..' . '/public/classes/Ajax.php',
-        'Palasthotel\\ProcessLog\\CommentWatcher' => __DIR__ . '/../../..' . '/public/classes/Watcher/CommentWatcher.php',
-        'Palasthotel\\ProcessLog\\ContentUserRelationWatcher' => __DIR__ . '/../../..' . '/public/classes/Watcher/ContentUserRelationWatcher.php',
-        'Palasthotel\\ProcessLog\\Database' => __DIR__ . '/../../..' . '/public/classes/Database.php',
-        'Palasthotel\\ProcessLog\\DatabaseItem' => __DIR__ . '/../../..' . '/public/classes/DatabaseItem.php',
-        'Palasthotel\\ProcessLog\\ErrorWatcher' => __DIR__ . '/../../..' . '/public/classes/Watcher/ErrorWatcher.php',
-        'Palasthotel\\ProcessLog\\MenuPage' => __DIR__ . '/../../..' . '/public/classes/MenuPage.php',
-        'Palasthotel\\ProcessLog\\OptionsWatcher' => __DIR__ . '/../../..' . '/public/classes/Watcher/OptionsWatcher.php',
-        'Palasthotel\\ProcessLog\\PostWatcher' => __DIR__ . '/../../..' . '/public/classes/Watcher/PostWatcher.php',
-        'Palasthotel\\ProcessLog\\Process' => __DIR__ . '/../../..' . '/public/classes/Process.php',
-        'Palasthotel\\ProcessLog\\ProcessLog' => __DIR__ . '/../../..' . '/public/classes/ProcessLog.php',
-        'Palasthotel\\ProcessLog\\Schedule' => __DIR__ . '/../../..' . '/public/classes/Schedule.php',
-        'Palasthotel\\ProcessLog\\Settings' => __DIR__ . '/../../..' . '/public/classes/Settings.php',
-        'Palasthotel\\ProcessLog\\TaxonomyWatcher' => __DIR__ . '/../../..' . '/public/classes/Watcher/TaxonomyWatcher.php',
-        'Palasthotel\\ProcessLog\\UserWatcher' => __DIR__ . '/../../..' . '/public/classes/Watcher/UserWatcher.php',
-        'Palasthotel\\ProcessLog\\Watcher' => __DIR__ . '/../../..' . '/public/classes/Watcher.php',
-        'Palasthotel\\ProcessLog\\Writer' => __DIR__ . '/../../..' . '/public/classes/Writer.php',
+        'Palasthotel\\ProcessLog\\Ajax' => __DIR__ . '/../..' . '/classes/Ajax.php',
+        'Palasthotel\\ProcessLog\\CommentWatcher' => __DIR__ . '/../..' . '/classes/Watcher/CommentWatcher.php',
+        'Palasthotel\\ProcessLog\\ContentUserRelationWatcher' => __DIR__ . '/../..' . '/classes/Watcher/ContentUserRelationWatcher.php',
+        'Palasthotel\\ProcessLog\\Database' => __DIR__ . '/../..' . '/classes/Database.php',
+        'Palasthotel\\ProcessLog\\DatabaseItem' => __DIR__ . '/../..' . '/classes/DatabaseItem.php',
+        'Palasthotel\\ProcessLog\\ErrorWatcher' => __DIR__ . '/../..' . '/classes/Watcher/ErrorWatcher.php',
+        'Palasthotel\\ProcessLog\\MenuPage' => __DIR__ . '/../..' . '/classes/MenuPage.php',
+        'Palasthotel\\ProcessLog\\OptionsWatcher' => __DIR__ . '/../..' . '/classes/Watcher/OptionsWatcher.php',
+        'Palasthotel\\ProcessLog\\PostWatcher' => __DIR__ . '/../..' . '/classes/Watcher/PostWatcher.php',
+        'Palasthotel\\ProcessLog\\Process' => __DIR__ . '/../..' . '/classes/Process.php',
+        'Palasthotel\\ProcessLog\\ProcessLog' => __DIR__ . '/../..' . '/classes/ProcessLog.php',
+        'Palasthotel\\ProcessLog\\Schedule' => __DIR__ . '/../..' . '/classes/Schedule.php',
+        'Palasthotel\\ProcessLog\\Settings' => __DIR__ . '/../..' . '/classes/Settings.php',
+        'Palasthotel\\ProcessLog\\TaxonomyWatcher' => __DIR__ . '/../..' . '/classes/Watcher/TaxonomyWatcher.php',
+        'Palasthotel\\ProcessLog\\UserWatcher' => __DIR__ . '/../..' . '/classes/Watcher/UserWatcher.php',
+        'Palasthotel\\ProcessLog\\Watcher' => __DIR__ . '/../..' . '/classes/Watcher.php',
+        'Palasthotel\\ProcessLog\\Writer' => __DIR__ . '/../..' . '/classes/Writer.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

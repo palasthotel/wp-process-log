@@ -52,7 +52,7 @@ class Ajax {
 
 			$parts = array();
 
-			if(is_int($q)){
+			if(intval($q)."" === $q){
 				$parts[] = " p.active_user = $q ";
 				$parts[] = " i.active_user = $q ";
 				$parts[] = " i.affected_post = $q ";
@@ -83,14 +83,13 @@ class Ajax {
 
 		}
 
-
-
 		$where_param = "";
 		if(count($where)>0){
 			$where_param = "WHERE ".implode(" AND ", $where);
 		}
 
 		$database = $this->plugin->database;
+
 		$logs = $database->getProcessList($page, 50, $where_param);
 		wp_send_json(array(
 			"page" => $page,
@@ -120,6 +119,7 @@ class Ajax {
 				"pid" => $pid,
 				"list" => $logs,
 				"posts" => $this->getPostsOfLogs($logs),
+				"comments" => $this->getCommentsOfLogs($logs),
 				"users" => $this->getUsersOfLogs($logs),
 			)
 		);
@@ -137,7 +137,7 @@ class Ajax {
 				$user = $this->getUserIf( $item->active_user );
 				if($user !== false) $active_users[$item->active_user] = $user;
 			}
-			if( isset($item->affected_user) && !empty($item->affected_user)  && intval($item->affected_user) > 0 ){
+			if( isset($item->affected_user) && !empty($item->affected_user)  && intval($item->affected_user) > 0  && !isset($active_users[$item->affected_user])){
 				$user = $this->getUserIf($item->affected_user);
 				if($user !== false) $active_users[$item->affected_user] = $user;
 			}
@@ -170,6 +170,9 @@ class Ajax {
 	private function getPostsOfLogs($logs){
 		$affected_posts = array();
 		foreach ($logs as $item) {
+
+			if(isset($affected_posts[$item->affected_post])) continue;
+
 			if ( ! empty( $item->affected_post ) && intval( $item->affected_post ) > 0 ) {
 				$post = get_post( $item->affected_post );
 				if ( $post instanceof \WP_Post ) {
@@ -188,6 +191,35 @@ class Ajax {
 			}
 		}
 		return $affected_posts;
+	}
+
+	/**
+	 * @param array $logs
+	 *
+	 * @return array
+	 */
+	private function getCommentsOfLogs($logs){
+		$affected_comments = array();
+		foreach ($logs as $item) {
+
+			if(isset($affected_comments[$item->affected_comment])) continue;
+
+			if ( ! empty( $item->affected_comment ) && intval( $item->affected_comment ) > 0 ) {
+				$comment = get_comment( $item->affected_comment );
+				if ( $comment instanceof \WP_Comment ) {
+					$affected_comments[ $item->affected_comment ] = array(
+						"ID"         => $comment->comment_ID,
+						"edit_link" => get_edit_comment_link($comment),
+					);
+				} else {
+					$affected_comments[ $item->affected_comment ] = array(
+						"ID"         => $item->affected_comment,
+						"edit_link"  => NULL,
+					);
+				}
+			}
+		}
+		return $affected_comments;
 	}
 
 

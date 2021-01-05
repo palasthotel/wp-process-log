@@ -1,25 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: edward
- * Date: 29.11.18
- * Time: 09:45
- */
+
+use Palasthotel\ProcessLog\Plugin;
+use Palasthotel\ProcessLog\ProcessLog;
 
 /**
- * @return \Palasthotel\ProcessLog\Plugin
+ * @return Plugin
  */
 function process_log_get_plugin(){
-	return \Palasthotel\ProcessLog\Plugin::instance();
+	return Plugin::instance();
 }
 
 /**
  * @param callable $fn
  *
- * @throws \Exception
+ * @throws Exception
  */
 function process_log_write(callable $fn){
-	$log = $fn(\Palasthotel\ProcessLog\ProcessLog::build());
-	if(!($log instanceof \Palasthotel\ProcessLog\ProcessLog)) throw new Exception("Must be an instance of ProcessLog.");
+	$log = $fn(ProcessLog::build());
+	if(!($log instanceof ProcessLog)) throw new Exception("Must be an instance of ProcessLog.");
 	process_log_get_plugin()->writer->addLog($log);
 }

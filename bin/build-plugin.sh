@@ -11,14 +11,18 @@ if [ ! -d "$PUBLIC_PATH" ]; then
 	exit
 fi
 
-composer dump-autoload
-
 echo "Generating build directory..."
 rm -rf "$BUILD_PATH"
 mkdir -p "$DEST_PATH"
 
 echo "Syncing files..."
 rsync -rL "$PROJECT_PATH/public/" "$DEST_PATH/"
+
+cd $DEST_PATH
+composer dump-autoload
+rm composer.json
+rm composer.lock
+cd ../..
 
 echo "Generating zip file..."
 cd "$BUILD_PATH" || exit
