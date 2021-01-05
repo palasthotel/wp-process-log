@@ -7,9 +7,9 @@ BUILD_PATH="${PROJECT_PATH}/build"
 DEST_PATH="$BUILD_PATH/$PLUGIN_SLUG"
 
 if [ ! -d "$PUBLIC_PATH" ]; then
-	echo "Please execute in root directory.";
-	exit;
-fi;
+	echo "Please execute in root directory."
+	exit
+fi
 
 composer dump-autoload
 
