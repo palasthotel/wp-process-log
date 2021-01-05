@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PLUGIN_SLUG="process-logs"
+PLUGIN_SLUG="process-log"
 PROJECT_PATH=$(pwd)
 PUBLIC_PATH="${PROJECT_PATH}/public"
 BUILD_PATH="${PROJECT_PATH}/build"
