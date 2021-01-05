@@ -31,6 +31,7 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property MenuPage menuPage
  * @property Ajax ajax
  * @property Schedule schedule
+ * @property Settings settings
  */
 class Plugin {
 

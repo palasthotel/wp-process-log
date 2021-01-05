@@ -49,7 +49,7 @@ class ProcessLog extends DatabaseItem {
 	 */
 	public function __construct( ) {
 
-		$expires = time() + 60 * 60 * 24 * 14;
+		$expires = time() + DAY_IN_SECONDS * 14;
 		$this->expires = apply_filters(Plugin::FILTER_LOG_ITEM_EXPIRES, $expires, $expires );
 
 

@@ -14,16 +14,10 @@ namespace Palasthotel\ProcessLog;
  */
 class CommentWatcher {
 
-	/**
-	 * @var null|\WP_Comment
-	 */
-	private $lastGetComment = null;
-
 	public function __construct(Plugin $plugin) {
 		$this->writer = $plugin->writer;
-		add_filter('get_comment', array($this, 'get_comment'));
 		add_action('wp_insert_comment', array($this, 'wp_insert_comment'), 10 , 2);
-		add_action('wp_set_comment_status', array($this, 'wp_set_comment_status'),10, 2);
+		add_action('transition_comment_status', array($this, 'transition_comment_status'),10, 3);
 		add_filter('wp_update_comment_data', array($this, 'wp_update_comment_data'), 10 , 3);
 	}
 
@@ -37,48 +31,48 @@ class CommentWatcher {
 	}
 
 	/**
-	 * @param \WP_Comment $comment
-	 *
-	 * @return \WP_Comment
-	 */
-	public function get_comment($comment){
-		if($comment instanceof \WP_Comment) $this->lastGetComment = $comment;
-		return $comment;
-	}
-
-	/**
 	 * @param int $comment_id
 	 * @param \WP_Comment $comment
 	 */
 	public function wp_insert_comment($comment_id, $comment){
 		if(!$this->isActive($comment_id)) return;
 
-		$this->writer->addLog(
-			ProcessLog::build()
-			          ->setEventType( Plugin::EVENT_TYPE_CREATE )
-			          ->setMessage( "insert comment" )
-			          ->setAffectedComment($comment_id)
-			          ->setLinkUrl( \get_comment_link( $comment_id ) )
-		);
+		$log = ProcessLog::build()
+		                 ->setEventType( Plugin::EVENT_TYPE_CREATE )
+		                 ->setMessage( "insert comment" )
+		                 ->setAffectedPost($comment->comment_post_ID)
+		                 ->setAffectedComment($comment_id)
+		                 ->setLinkUrl( \get_comment_link( $comment ) );
+
+		if($comment->user_id > 0){
+			$log->setAffectedUser($comment->user_id);
+		}
+
+		$this->writer->addLog($log);
+
+
 	}
 
 	/**
-	 * @param int $comment_id
-	 * @param string|boolean $comment_status
+	 * @param string $new_status
+	 * @param string $old_status
+	 * @param \WP_Comment $comment
 	 */
-	public function wp_set_comment_status($comment_id, $comment_status){
-		if(!$this->isActive($comment_id)) return;
+	public function transition_comment_status($new_status, $old_status, $comment){
+		if(!$this->isActive($comment->comment_ID)) return;
 
 		$log = ProcessLog::build()
 		                 ->setEventType( Plugin::EVENT_TYPE_UPDATE )
 		                 ->setMessage( "update comment status" )
-		                 ->setAffectedComment($comment_id)
-		                 ->setLinkUrl( \get_comment_link( $comment_id ) )
+		                 ->setAffectedPost($comment->comment_post_ID)
+		                 ->setAffectedComment($comment->comment_ID)
+		                 ->setLinkUrl( \get_comment_link( $comment ) )
 		                 ->setChangedDataField("comment_approved")
-		                 ->setChangedDataValueNew( $comment_status );
+						 ->setChangedDataValueOld($old_status)
+		                 ->setChangedDataValueNew( $new_status );
 
-		if($this->lastGetComment != null && $this->lastGetComment->comment_ID == $comment_id){
-			$log->setChangedDataValueOld($this->lastGetComment->comment_approved);
+		if($comment->user_id > 0){
+			$log->setAffectedUser($comment->user_id);
 		}
 
 		$this->writer->addLog( $log );
