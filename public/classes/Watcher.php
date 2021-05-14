@@ -1,22 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: edward
- * Date: 07.12.18
- * Time: 13:35
- */
 
 namespace Palasthotel\ProcessLog;
+
+use Palasthotel\ProcessLog\Watcher\CommentWatcher;
+use Palasthotel\ProcessLog\Watcher\ContentUserRelationWatcher;
+use Palasthotel\ProcessLog\Watcher\ErrorWatcher;
+use Palasthotel\ProcessLog\Watcher\OptionsWatcher;
+use Palasthotel\ProcessLog\Watcher\PostWatcher;
+use Palasthotel\ProcessLog\Watcher\TaxonomyWatcher;
+use Palasthotel\ProcessLog\Watcher\UserWatcher;
 
 /**
  * @property Writer writer
  * @property ContentUserRelationWatcher content_user_relations
  * @property PostWatcher post
  * @property UserWatcher user
- * @property \Palasthotel\ProcessLog\TaxonomyWatcher taxonomy
- * @property \Palasthotel\ProcessLog\CommentWatcher comment
- * @property \Palasthotel\ProcessLog\ErrorWatcher error
- * @property \Palasthotel\ProcessLog\OptionsWatcher options
+ * @property TaxonomyWatcher taxonomy
+ * @property CommentWatcher comment
+ * @property ErrorWatcher error
+ * @property OptionsWatcher options
  */
 class Watcher {
 

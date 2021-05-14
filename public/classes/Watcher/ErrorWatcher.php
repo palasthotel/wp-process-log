@@ -6,8 +6,12 @@
  * Time: 15:51
  */
 
-namespace Palasthotel\ProcessLog;
+namespace Palasthotel\ProcessLog\Watcher;
 
+
+use Palasthotel\ProcessLog\Plugin;
+use Palasthotel\ProcessLog\ProcessLog;
+use Palasthotel\ProcessLog\Writer;
 
 /**
  * @property Writer writer

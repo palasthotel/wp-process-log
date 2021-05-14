@@ -6,7 +6,11 @@
  * Time: 16:37
  */
 
-namespace Palasthotel\ProcessLog;
+namespace Palasthotel\ProcessLog\Watcher;
+
+use Palasthotel\ProcessLog\Plugin;
+use Palasthotel\ProcessLog\ProcessLog;
+use Palasthotel\ProcessLog\Writer;
 
 const BLACKLIST_POST_METAS = array(
 	"_edit_lock",

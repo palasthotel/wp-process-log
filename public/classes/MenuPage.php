@@ -10,8 +10,8 @@ namespace Palasthotel\ProcessLog;
 
 
 /**
- * @property \Palasthotel\ProcessLog\Database database
- * @property \Palasthotel\ProcessLog\Plugin plugin
+ * @property Database database
+ * @property Plugin plugin
  */
 class MenuPage {
 
