@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 4.0
-Tested up to: 5.3
-Stable tag: 1.1.6
+Tested up to: 5.7.2
+Stable tag: 1.1.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.1.7 =
+* Bugfix: menu-page.js null check fix
 
 = 1.1.6 =
 * Feature: Implemented comments watcher

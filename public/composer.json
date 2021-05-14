@@ -1,11 +1,7 @@
 {
-	"config": {
-		"vendor-dir": "vendor"
-	},
+	"name": "palasthotel/process-log",
+	"description": "Protocol of system requests and processes",
     "autoload": {
-        "classmap": [
-            "classes"
-        ],
 		"psr-4": {
 			"Palasthotel\\ProcessLog\\": "classes"
 		}

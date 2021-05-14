@@ -71,7 +71,7 @@
 			username = getMaybeLinkedTitle(user.display_name, user.edit_link);
 		}
 		let location_url_text = item.location_url;
-		if (location_url_text.length > 84) {
+		if (typeof location_url_text === "string" && location_url_text.length > 84) {
 			location_url_text = location_url_text.substr(0, 84) + '…';
 		}
 		const row = `<tr class="process-log__row--process">

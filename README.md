@@ -1,6 +1,6 @@
 # wp-process-log
 WordPress process logging
 
-## Regenerate autoload.php
+## build plugin
 
-```composer dump-autoload```
+```./bin/build-plugin.sh```
