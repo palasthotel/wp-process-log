@@ -18,12 +18,14 @@
 
 namespace Palasthotel\ProcessLog;
 
+use Palasthotel\ProcessLog\Component\TextdomainConfig;
+
+require_once dirname( __FILE__ ) . "/vendor/autoload.php";
+
 define( "PROCESS_LOG_DIR", dirname( __FILE__ ) );
 define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
 
 /**
- * @property string url
- * @property string path
  * @property string basename
  * @property Writer writer
  * @property Database database
@@ -33,7 +35,7 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property Schedule schedule
  * @property Settings settings
  */
-class Plugin {
+class Plugin extends Component\Plugin {
 
 	const DOMAIN = "process-log";
 
@@ -71,37 +73,14 @@ class Plugin {
 	const FILTER_IS_CUR_WATCHER_ACTIVE = "process_log_is_content_user_relations_watcher_active";
 
 	/**
-	 * @var Plugin|null
-	 */
-	private static $instance = NULL;
-
-	/**
-	 * @return Plugin
-	 */
-	static function instance() {
-		if ( self::$instance == NULL ) {
-			self::$instance = new Plugin();
-		}
-
-		return self::$instance;
-	}
-
-	/**
 	 * Plugin constructor.
 	 */
-	private function __construct() {
+	public function onCreate() {
 
-		load_plugin_textdomain(
+		$this->textdomainConfig = new TextdomainConfig(
 			Plugin::DOMAIN,
-			false,
-			dirname( plugin_basename( __FILE__ ) ) . '/languages'
+			"languages",
 		);
-
-		$this->url      = plugin_dir_url( __FILE__ );
-		$this->path     = plugin_dir_path( __FILE__ );
-		$this->basename = plugin_basename( __FILE__ );
-
-		require_once dirname( __FILE__ ) . "/vendor/autoload.php";
 
 		$this->database = new Database();
 		$this->writer   = new Writer( $this );
@@ -110,28 +89,18 @@ class Plugin {
 		$this->settings = new Settings( $this );
 		$this->ajax     = new Ajax( $this );
 		$this->schedule = new Schedule($this);
-
-		/**
-		 * on activate or deactivate plugin
-		 */
-		register_activation_hook( __FILE__, array( $this, "activation" ) );
-		register_deactivation_hook( __FILE__, array( $this, "deactivation" ) );
-		if ( WP_DEBUG ) {
-			// for development purpose
-			add_action( 'init', array( $this, 'activation' ) );
-		}
 	}
 
 	/**
 	 * on plugin activation
 	 */
-	function activation() {
+	function onSiteActivation() {
 		// create tables
 		$this->database->createTables();
 		$this->schedule->start();
 	}
 
-	function deactivation(){
+	function onSiteDeactivation(){
 		$this->schedule->stop();
 	}
 }

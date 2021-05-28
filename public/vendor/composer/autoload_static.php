@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit05d2c2948c432a1c3b8f11410634a31a
+class ComposerStaticInit16996f7cd4a6c3fadea8d7571d5c1939
 {
     public static $prefixLengthsPsr4 = array (
         'P' => 
@@ -21,31 +21,15 @@ class ComposerStaticInit05d2c2948c432a1c3b8f11410634a31a
     );
 
     public static $classMap = array (
-        'Palasthotel\\ProcessLog\\Ajax' => __DIR__ . '/../..' . '/classes/Ajax.php',
-        'Palasthotel\\ProcessLog\\CommentWatcher' => __DIR__ . '/../..' . '/classes/Watcher/CommentWatcher.php',
-        'Palasthotel\\ProcessLog\\ContentUserRelationWatcher' => __DIR__ . '/../..' . '/classes/Watcher/ContentUserRelationWatcher.php',
-        'Palasthotel\\ProcessLog\\Database' => __DIR__ . '/../..' . '/classes/Database.php',
-        'Palasthotel\\ProcessLog\\DatabaseItem' => __DIR__ . '/../..' . '/classes/DatabaseItem.php',
-        'Palasthotel\\ProcessLog\\ErrorWatcher' => __DIR__ . '/../..' . '/classes/Watcher/ErrorWatcher.php',
-        'Palasthotel\\ProcessLog\\MenuPage' => __DIR__ . '/../..' . '/classes/MenuPage.php',
-        'Palasthotel\\ProcessLog\\OptionsWatcher' => __DIR__ . '/../..' . '/classes/Watcher/OptionsWatcher.php',
-        'Palasthotel\\ProcessLog\\PostWatcher' => __DIR__ . '/../..' . '/classes/Watcher/PostWatcher.php',
-        'Palasthotel\\ProcessLog\\Process' => __DIR__ . '/../..' . '/classes/Process.php',
-        'Palasthotel\\ProcessLog\\ProcessLog' => __DIR__ . '/../..' . '/classes/ProcessLog.php',
-        'Palasthotel\\ProcessLog\\Schedule' => __DIR__ . '/../..' . '/classes/Schedule.php',
-        'Palasthotel\\ProcessLog\\Settings' => __DIR__ . '/../..' . '/classes/Settings.php',
-        'Palasthotel\\ProcessLog\\TaxonomyWatcher' => __DIR__ . '/../..' . '/classes/Watcher/TaxonomyWatcher.php',
-        'Palasthotel\\ProcessLog\\UserWatcher' => __DIR__ . '/../..' . '/classes/Watcher/UserWatcher.php',
-        'Palasthotel\\ProcessLog\\Watcher' => __DIR__ . '/../..' . '/classes/Watcher.php',
-        'Palasthotel\\ProcessLog\\Writer' => __DIR__ . '/../..' . '/classes/Writer.php',
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit05d2c2948c432a1c3b8f11410634a31a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit05d2c2948c432a1c3b8f11410634a31a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit05d2c2948c432a1c3b8f11410634a31a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit16996f7cd4a6c3fadea8d7571d5c1939::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit16996f7cd4a6c3fadea8d7571d5c1939::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit16996f7cd4a6c3fadea8d7571d5c1939::$classMap;
 
         }, null, ClassLoader::class);
     }

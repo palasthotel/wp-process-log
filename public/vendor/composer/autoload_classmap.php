@@ -6,21 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Palasthotel\\ProcessLog\\Ajax' => $baseDir . '/classes/Ajax.php',
-    'Palasthotel\\ProcessLog\\CommentWatcher' => $baseDir . '/classes/Watcher/CommentWatcher.php',
-    'Palasthotel\\ProcessLog\\ContentUserRelationWatcher' => $baseDir . '/classes/Watcher/ContentUserRelationWatcher.php',
-    'Palasthotel\\ProcessLog\\Database' => $baseDir . '/classes/Database.php',
-    'Palasthotel\\ProcessLog\\DatabaseItem' => $baseDir . '/classes/DatabaseItem.php',
-    'Palasthotel\\ProcessLog\\ErrorWatcher' => $baseDir . '/classes/Watcher/ErrorWatcher.php',
-    'Palasthotel\\ProcessLog\\MenuPage' => $baseDir . '/classes/MenuPage.php',
-    'Palasthotel\\ProcessLog\\OptionsWatcher' => $baseDir . '/classes/Watcher/OptionsWatcher.php',
-    'Palasthotel\\ProcessLog\\PostWatcher' => $baseDir . '/classes/Watcher/PostWatcher.php',
-    'Palasthotel\\ProcessLog\\Process' => $baseDir . '/classes/Process.php',
-    'Palasthotel\\ProcessLog\\ProcessLog' => $baseDir . '/classes/ProcessLog.php',
-    'Palasthotel\\ProcessLog\\Schedule' => $baseDir . '/classes/Schedule.php',
-    'Palasthotel\\ProcessLog\\Settings' => $baseDir . '/classes/Settings.php',
-    'Palasthotel\\ProcessLog\\TaxonomyWatcher' => $baseDir . '/classes/Watcher/TaxonomyWatcher.php',
-    'Palasthotel\\ProcessLog\\UserWatcher' => $baseDir . '/classes/Watcher/UserWatcher.php',
-    'Palasthotel\\ProcessLog\\Watcher' => $baseDir . '/classes/Watcher.php',
-    'Palasthotel\\ProcessLog\\Writer' => $baseDir . '/classes/Writer.php',
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );

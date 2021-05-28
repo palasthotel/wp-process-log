@@ -95,7 +95,7 @@ class MenuPage {
 
 			<form id="process-filters" method="GET">
 				<label>
-					Effected content
+					<?= __("Effected content", Plugin::DOMAIN) ?>
 					<select name="process_content_type">
 						<option value="">All</option>
 						<?php
@@ -108,9 +108,9 @@ class MenuPage {
 					</select>
 				</label>
 				<label>
-					Event type
+					<?= __("Event type", Plugin::DOMAIN); ?>
 					<select name="process_event_type">
-						<option value="">All</option>
+						<option value=""><?= _x("All", "select event type filter", Plugin::DOMAIN) ?></option>
 						<?php
 						$_type = (isset($_GET["process_event_type"]))? sanitize_text_field($_GET["process_event_type"]): "";
 						foreach ($this->database->getEventTypes() as $type){
@@ -121,7 +121,7 @@ class MenuPage {
 					</select>
 				</label>
 				<label>
-					Changed field
+					<?= __("Changed field", Plugin::DOMAIN); ?>
 					<input
 							name="process_changed_data_field"
 							type="text"
@@ -129,7 +129,7 @@ class MenuPage {
 					/>
 				</label>
 				<label>
-					Severity
+					<?= __("Severity", Plugin::DOMAIN) ?>
 					<select name="process_severity">
 						<option value="">All</option>
 						<?php
@@ -142,12 +142,12 @@ class MenuPage {
 					</select>
 				</label>
 				<label>
-					Query <input name="process_event_query" value="<?php
+					<?= __("Query", Plugin::DOMAIN) ?> <input name="process_event_query" value="<?php
 					echo (isset($_GET["process_event_query"]))? sanitize_text_field($_GET["process_event_query"]) : "";
 					?>" />
 				</label>
 
-				<button class="button-primary">Filter</button>
+				<button class="button-primary"><?= __("Filter", Plugin::DOMAIN) ?></button>
 			</form>
 
 			<table class="widefat">

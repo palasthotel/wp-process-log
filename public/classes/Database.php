@@ -11,29 +11,14 @@ namespace Palasthotel\ProcessLog;
 /**
  *
  */
-class Database {
+class Database extends Component\Database {
 
-	/**
-	 * @return \wpdb
-	 */
-	public static function wpdb() {
-		global $wpdb;
+	private string $tableLogs;
+	private string $tableLogItems;
 
-		return $wpdb;
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function tablenameProcesses() {
-		return self::wpdb()->prefix . "process_logs";
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function tablenameItems() {
-		return self::wpdb()->prefix . "process_log_items";
+	public function init() {
+		$this->tableLogs = $this->wpdb->prefix . "process_logs";
+		$this->tableLogItems = $this->wpdb->prefix . "process_log_items";
 	}
 
 	/**
@@ -63,8 +48,8 @@ class Database {
 	 * @return array
 	 */
 	private function getDistinct($col){
-		return self::wpdb()->get_col(
-			"SELECT DISTINCT $col FROM ".self::tablenameItems()
+		return $this->wpdb->get_col(
+			"SELECT DISTINCT $col FROM $this->tableLogItems"
 		);
 	}
 
@@ -78,8 +63,8 @@ class Database {
 	 */
 	public function getProcessList( $page = 1, $count = 50, $where = "" ) {
 
-		$tableProcesses = self::tablenameProcesses();
-		$tableItems = self::tablenameItems();
+		$tableProcesses = $this->tableLogs;
+		$tableItems = $this->tableLogItems;
 		$offset    = $count * ( $page - 1 );
 
 		$where_in = "";
@@ -89,8 +74,8 @@ class Database {
 
 		$query = "SELECT id, active_user, created, location_url, hostname FROM $tableProcesses $where_in ORDER BY id DESC LIMIT %d OFFSET %d";
 
-		return self::wpdb()->get_results(
-			self::wpdb()->prepare( $query, $count, $offset )
+		return $this->wpdb->get_results(
+			$this->wpdb->prepare( $query, $count, $offset )
 		);
 	}
 
@@ -100,9 +85,9 @@ class Database {
 	 * @return string|null
 	 */
 	public function countLogs($process_id){
-		return self::wpdb()->get_var(
-			self::wpdb()->prepare(
-				"SELECT count(id) from ".self::tablenameItems()." WHERE process_id = %d",
+		return $this->wpdb->get_var(
+			$this->wpdb->prepare(
+				"SELECT count(id) from $this->tableLogItems WHERE process_id = %d",
 				$process_id
 			)
 		);
@@ -114,9 +99,9 @@ class Database {
 	 * @return array|null
 	 */
 	public function getProcessEventTypes($process_id){
-		return self::wpdb()->get_col(
-			self::wpdb()->prepare(
-				"SELECT DISTINCT event_type from ".self::tablenameItems()." WHERE process_id = %d",
+		return $this->wpdb->get_col(
+			$this->wpdb->prepare(
+				"SELECT DISTINCT event_type from $this->tableLogItems WHERE process_id = %d",
 				$process_id
 			)
 		);
@@ -128,9 +113,9 @@ class Database {
 	 * @return array
 	 */
 	public function getProcessLogs( $pid ) {
-		return self::wpdb()->get_results(
-			self::wpdb()->prepare(
-				"SELECT * FROM " . self::tablenameItems() . " WHERE process_id = %d",
+		return $this->wpdb->get_results(
+			$this->wpdb->prepare(
+				"SELECT * FROM $this->tableLogItems WHERE process_id = %d",
 				$pid
 			)
 		);
@@ -141,16 +126,16 @@ class Database {
 	 */
 	public function nextProcess() {
 		$process = new Process();
-		$result  = self::wpdb()->insert(
-			self::tablenameProcesses(),
+		$result  = $this->wpdb->insert(
+			$this->tableLogs,
 			$process->insertArgs()
 		);
 		if ( ! $result ) {
-			error_log("wpdb last_error:".self::wpdb()->last_error."\n");
+			error_log("wpdb last_error:".$this->wpdb->last_error."\n");
 			error_log("Process-log: Cannot insert process");
 			return false;
 		}
-		$process->id = self::wpdb()->insert_id;
+		$process->id = $this->wpdb->insert_id;
 
 		return $process;
 	}
@@ -162,13 +147,13 @@ class Database {
 	 */
 	function addLog( ProcessLog $log ) {
 		$args   = $log->insertArgs();
-		$result = self::wpdb()->insert(
-			self::tablenameItems(),
+		$result = $this->wpdb->insert(
+			$this->tableLogItems,
 			$args
 		);
 
 		if(!$result){
-			\error_log(self::wpdb()->last_error, 4);
+			\error_log($this->wpdb->last_error, 4);
 			\error_log("Process-log: Cannot add log to process");
 		}
 
@@ -178,31 +163,27 @@ class Database {
 	public function clean(){
 
 		// clean expired log items
-		$tablenameItems = self::tablenameItems();
-		self::wpdb()->query("DELETE FROM $tablenameItems WHERE expires < unix_timestamp()");
+		$this->wpdb->query("DELETE FROM $this->tableLogItems WHERE expires < unix_timestamp()");
 
 		// clean empty processes
-		$tablenameProcesses = self::tablenameProcesses();
-		$sub = "SELECT p.id FROM $tablenameProcesses as p ";
-		$sub.= "LEFT JOIN $tablenameItems as i ON (p.id = i.process_id) ";
+		$sub = "SELECT p.id FROM $this->tableLogs as p ";
+		$sub.= "LEFT JOIN $this->tableLogItems as i ON (p.id = i.process_id) ";
 		$sub.= "WHERE i.process_id IS NULL";
 
 		// wrap it (important step!)
 		$sub = "SELECT * FROM ( $sub ) as tmp";
 
-		self::wpdb()->query("DELETE FROM $tablenameProcesses WHERE id IN ( $sub )");
+		$this->wpdb->query("DELETE FROM $this->tableLogs WHERE id IN ( $sub )");
 
 	}
-
 
 	/**
 	 * create the tables if not exist
 	 */
-	function createTables() {
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	public function createTables() {
+		parent::createTables();
 
-		$process = self::tablenameProcesses();
-		\dbDelta( "CREATE TABLE IF NOT EXISTS $process
+		\dbDelta( "CREATE TABLE IF NOT EXISTS $this->tableLogs
 		(
 		 id bigint(20) unsigned auto_increment,
 		 created DATETIME NOT NULL,
@@ -220,9 +201,7 @@ class Database {
 		 key (referer_url)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
 
-		$tablename = self::tablenameItems();
-
-		\dbDelta( "CREATE TABLE IF NOT EXISTS $tablename
+		\dbDelta( "CREATE TABLE IF NOT EXISTS $this->tableLogItems
 		(
 		 id bigint(20) unsigned auto_increment,
 		 process_id bigint(20) unsigned,
@@ -251,7 +230,7 @@ class Database {
 		 blobdata BLOB,	
 		 	 
 		 primary key (id),
-		 foreign key (process_id) REFERENCES $process(id) ,
+		 foreign key (process_id) REFERENCES $this->tableLogItems(id) ,
 		 key (created),
 		 key (event_type),
 		 key (active_user),

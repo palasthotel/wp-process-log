@@ -5,9 +5,5 @@
 		"psr-4": {
 			"Palasthotel\\ProcessLog\\": "classes"
 		}
-    },
-	"require": {
-		"ext-curl": "*",
-		"ext-json": "*"
-	}
+    }
 }
