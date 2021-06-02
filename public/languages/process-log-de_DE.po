@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Process Log\n"
-"POT-Creation-Date: 2021-05-28 07:11+0200\n"
-"PO-Revision-Date: 2021-05-28 07:14+0200\n"
+"POT-Creation-Date: 2021-06-02 06:46+0200\n"
+"PO-Revision-Date: 2021-06-02 06:47+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -62,6 +62,11 @@ msgstr "Prozesseinträge"
 msgid "Effected content"
 msgstr "Betroffener Inhalt"
 
+#: classes/MenuPage.php:100
+msgctxt "select content"
+msgid "All"
+msgstr "Alle"
+
 #: classes/MenuPage.php:111
 msgid "Event type"
 msgstr "Ereignis"
@@ -78,6 +83,11 @@ msgstr "Geändertes Feld"
 #: classes/MenuPage.php:132
 msgid "Severity"
 msgstr "Schweregrad"
+
+#: classes/MenuPage.php:134
+msgctxt "select severity"
+msgid "All"
+msgstr "Alle"
 
 #: classes/MenuPage.php:145
 msgid "Query"
