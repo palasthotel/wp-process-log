@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 4.0
 Tested up to: 5.7.2
-Stable tag: 1.1.7
+Stable tag: 1.1.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.1.8 =
+* Release feedback fix: remove short tags
 
 = 1.1.7 =
 * Bugfix: menu-page.js null check fix
