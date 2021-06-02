@@ -34,6 +34,9 @@ Logging system.
 
 == Changelog ==
 
+= 1.2.0 =
+* Feature: Related processes overview on comments edit page
+
 = 1.1.8 =
 * Release feedback fix: remove short tags
 
