@@ -6,8 +6,10 @@
  * Time: 12:21
  */
 
-namespace Palasthotel\ProcessLog;
+namespace Palasthotel\ProcessLog\Model;
 
+
+use Palasthotel\ProcessLog\Plugin;
 
 class ProcessLog extends DatabaseItem {
 

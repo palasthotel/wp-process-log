@@ -6,7 +6,7 @@
  * Time: 12:21
  */
 
-namespace Palasthotel\ProcessLog;
+namespace Palasthotel\ProcessLog\Model;
 
 class Process extends DatabaseItem {
 

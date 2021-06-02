@@ -34,6 +34,7 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property Ajax ajax
  * @property Schedule schedule
  * @property Settings settings
+ * @property Views views
  */
 class Plugin extends Component\Plugin {
 
@@ -47,12 +48,12 @@ class Plugin extends Component\Plugin {
 	/**
 	 * event types
 	 */
-	CONST EVENT_TYPE_ERROR = "error";
-	CONST EVENT_TYPE_GENERAL = "event";
+	const EVENT_TYPE_ERROR = "error";
+	const EVENT_TYPE_GENERAL = "event";
 	const EVENT_TYPE_CREATE = "create";
 	const EVENT_TYPE_UPDATE = "update";
 	const EVENT_TYPE_DELETE = "delete";
-	CONST EVENT_TYPE_USER_REGISTER = "user_register";
+	const EVENT_TYPE_USER_REGISTER = "user_register";
 
 	/**
 	 * severity types
@@ -85,10 +86,11 @@ class Plugin extends Component\Plugin {
 		$this->database = new Database();
 		$this->writer   = new Writer( $this );
 		$this->watcher  = new Watcher( $this );
+		$this->views    = new Views( $this );
 		$this->menuPage = new MenuPage( $this );
 		$this->settings = new Settings( $this );
 		$this->ajax     = new Ajax( $this );
-		$this->schedule = new Schedule($this);
+		$this->schedule = new Schedule( $this );
 	}
 
 	/**
@@ -100,7 +102,7 @@ class Plugin extends Component\Plugin {
 		$this->schedule->start();
 	}
 
-	function onSiteDeactivation(){
+	function onSiteDeactivation() {
 		$this->schedule->stop();
 	}
 }

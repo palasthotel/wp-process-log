@@ -8,6 +8,9 @@
 
 namespace Palasthotel\ProcessLog;
 
+use Palasthotel\ProcessLog\Model\Process;
+use Palasthotel\ProcessLog\Model\ProcessLog;
+
 /**
  * @property Plugin plugin
  */
@@ -59,7 +62,7 @@ class Writer {
 	 */
 	public function shutdown(){
 		if($this->process != null){
-
+			
 		}
 	}
 

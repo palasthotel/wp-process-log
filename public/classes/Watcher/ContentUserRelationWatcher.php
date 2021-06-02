@@ -9,7 +9,7 @@
 namespace Palasthotel\ProcessLog\Watcher;
 
 use Palasthotel\ProcessLog\Plugin;
-use Palasthotel\ProcessLog\ProcessLog;
+use Palasthotel\ProcessLog\Model\ProcessLog;
 use Palasthotel\ProcessLog\Writer;
 
 /**

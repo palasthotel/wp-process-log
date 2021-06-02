@@ -8,6 +8,10 @@
 
 namespace Palasthotel\ProcessLog;
 
+use Palasthotel\ProcessLog\Model\Process;
+use Palasthotel\ProcessLog\Model\ProcessLog;
+use Palasthotel\ProcessLog\Model\QueryArgs;
+
 /**
  *
  */
@@ -19,6 +23,35 @@ class Database extends Component\Database {
 	public function init() {
 		$this->tableLogs = $this->wpdb->prefix . "process_logs";
 		$this->tableLogItems = $this->wpdb->prefix . "process_log_items";
+	}
+
+	public function queryLogs(QueryArgs $args): array{
+
+		$where = [];
+		if(is_int($args->affectedComment)){
+			$where[] = "affected_comment = $args->affectedComment";
+		}
+
+		if(count($where) > 0){
+			$where = "WHERE ".implode(" AND ", $where);
+		}
+
+		$query = "SELECT * FROM $this->tableLogs as p 
+    		LEFT JOIN $this->tableLogItems as i 
+        	ON (p.id = i.process_id) $where 
+			ORDER BY p.created DESC, i.created DESC";
+
+		$results = $this->wpdb->get_results($query);
+		$processes = [];
+
+		foreach ($results as $result){
+			if(!isset($processes[$result->process_id])){
+				$processes[$result->process_id] = [];
+			}
+			$processes[$result->process_id][] = $result;
+		}
+
+		return array_values($processes);
 	}
 
 	/**
@@ -141,7 +174,7 @@ class Database extends Component\Database {
 	}
 
 	/**
-	 * @param \Palasthotel\ProcessLog\ProcessLog $log
+	 * @param ProcessLog $log
 	 *
 	 * @return false|int
 	 */
