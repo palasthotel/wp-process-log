@@ -1,7 +1,7 @@
 <?php
 
+use Palasthotel\ProcessLog\Model\ProcessLog;
 use Palasthotel\ProcessLog\Plugin;
-use Palasthotel\ProcessLog\ProcessLog;
 
 /**
  * @return Plugin

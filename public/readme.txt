@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 5.0
 Tested up to: 5.7.2
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.2.2 =
+* Bugfix: wrong import path fix in public-functions.php
 
 = 1.2.1 =
 * Bugfix: PHP < 7.4 compatibility fix

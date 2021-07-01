@@ -18,8 +18,6 @@
 
 namespace Palasthotel\ProcessLog;
 
-use Palasthotel\ProcessLog\Component\TextdomainConfig;
-
 require_once dirname( __FILE__ ) . "/vendor/autoload.php";
 
 define( "PROCESS_LOG_DIR", dirname( __FILE__ ) );
@@ -78,9 +76,9 @@ class Plugin extends Component\Plugin {
 	 */
 	public function onCreate() {
 
-		$this->textdomainConfig = new TextdomainConfig(
+		$this->loadTextdomain(
 			Plugin::DOMAIN,
-			"languages",
+			"languages"
 		);
 
 		$this->database = new Database();
