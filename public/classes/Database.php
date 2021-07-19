@@ -13,12 +13,10 @@ use Palasthotel\ProcessLog\Model\ProcessLog;
 use Palasthotel\ProcessLog\Model\QueryArgs;
 
 /**
- *
+ * @property string $tableLogs
+ * @property string $tableLogItems
  */
 class Database extends Component\Database {
-
-	private string $tableLogs;
-	private string $tableLogItems;
 
 	public function init() {
 		$this->tableLogs = $this->wpdb->prefix . "process_logs";
@@ -36,9 +34,9 @@ class Database extends Component\Database {
 			$where = "WHERE ".implode(" AND ", $where);
 		}
 
-		$query = "SELECT * FROM $this->tableLogs as p 
-    		LEFT JOIN $this->tableLogItems as i 
-        	ON (p.id = i.process_id) $where 
+		$query = "SELECT * FROM $this->tableLogs as p
+    		LEFT JOIN $this->tableLogItems as i
+        	ON (p.id = i.process_id) $where
 			ORDER BY p.created DESC, i.created DESC";
 
 		$results = $this->wpdb->get_results($query);
@@ -220,12 +218,12 @@ class Database extends Component\Database {
 		(
 		 id bigint(20) unsigned auto_increment,
 		 created DATETIME NOT NULL,
-		 
+
 		 active_user BIGINT(20),
 		 location_url varchar(190) comment 'where the event happend, url',
 		 referer_url varchar(190),
 		 hostname varchar(190),
-		
+
 		 primary key (id),
 		 key (created),
 		 key (active_user),
@@ -239,7 +237,7 @@ class Database extends Component\Database {
 		 id bigint(20) unsigned auto_increment,
 		 process_id bigint(20) unsigned,
 		 created DATETIME NOT NULL,
-		 
+
 		 event_type varchar(100) NOT NULL,
 		 active_user BIGINT(20),
 		 message TEXT comment 'Message from code',
@@ -253,15 +251,15 @@ class Database extends Component\Database {
 		 affected_user BIGINT comment 'user id that was affected by the event',
 		 affected_comment BIGINT comment 'comment id that was affected by the event',
 		 expires BIGINT comment 'timestamp when to clean up this log entry',
-		 
+
 		 changed_data_field VARCHAR(100),
 		 changed_data_value_old TEXT,
 		 changed_data_value_new TEXT,
-		 
+
 		 variables text,
-		 
-		 blobdata BLOB,	
-		 	 
+
+		 blobdata BLOB,
+
 		 primary key (id),
 		 key (created),
 		 key (event_type),
@@ -273,7 +271,7 @@ class Database extends Component\Database {
 		 key (affected_comment),
 		 key (expires),
 		 key (changed_data_field)
-		 
+
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
 	}
 

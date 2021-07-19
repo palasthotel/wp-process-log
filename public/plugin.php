@@ -3,12 +3,12 @@
  * Plugin Name: Process Log
  * Plugin URI: https://palasthotel.de
  * Description: Have a look whats going on with your system.
- * Version: 1.1.8
+ * Version: 1.2.2
  * Author: Palasthotel <edward.bock@palasthotel.de>
  * Author URI: https://palasthotel.de
  * Text Domain: process-log
  * Domain Path: /languages
- * Requires at least: 4.0
+ * Requires at least: 5.0
  * Tested up to: 5.7.2
  * License: http://www.gnu.org/licenses/gpl-3.0.html GPLv3
  *
@@ -17,8 +17,6 @@
  */
 
 namespace Palasthotel\ProcessLog;
-
-use Palasthotel\ProcessLog\Component\TextdomainConfig;
 
 require_once dirname( __FILE__ ) . "/vendor/autoload.php";
 
@@ -78,9 +76,9 @@ class Plugin extends Component\Plugin {
 	 */
 	public function onCreate() {
 
-		$this->textdomainConfig = new TextdomainConfig(
+		$this->loadTextdomain(
 			Plugin::DOMAIN,
-			"languages",
+			"languages"
 		);
 
 		$this->database = new Database();
