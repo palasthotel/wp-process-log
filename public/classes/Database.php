@@ -263,7 +263,6 @@ class Database extends Component\Database {
 		 blobdata BLOB,	
 		 	 
 		 primary key (id),
-		 foreign key (process_id) REFERENCES $this->tableLogItems(id) ,
 		 key (created),
 		 key (event_type),
 		 key (active_user),
