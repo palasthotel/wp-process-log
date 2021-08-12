@@ -21,7 +21,6 @@ abstract class Plugin {
 	private $tooLateForTextdomain;
 
 	/**
-	 * @throws ReflectionException
 	 */
 	public function __construct() {
 		$this->ref      = new ReflectionClass( get_called_class() );

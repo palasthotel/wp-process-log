@@ -253,10 +253,10 @@ class Database extends Component\Database {
 		 expires BIGINT comment 'timestamp when to clean up this log entry',
 
 		 changed_data_field VARCHAR(100),
-		 changed_data_value_old TEXT,
-		 changed_data_value_new TEXT,
+		 changed_data_value_old LONGTEXT,
+		 changed_data_value_new LONGTEXT,
 
-		 variables text,
+		 variables LONGTEXT,
 
 		 blobdata BLOB,
 

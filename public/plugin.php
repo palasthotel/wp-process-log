@@ -33,6 +33,7 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property Schedule schedule
  * @property Settings settings
  * @property Views views
+ * @property Updates updates
  */
 class Plugin extends Component\Plugin {
 
@@ -89,6 +90,8 @@ class Plugin extends Component\Plugin {
 		$this->settings = new Settings( $this );
 		$this->ajax     = new Ajax( $this );
 		$this->schedule = new Schedule( $this );
+
+		new Updates();
 	}
 
 	/**
