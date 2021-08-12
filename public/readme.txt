@@ -3,12 +3,12 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 5.0
-Tested up to: 5.7.2
-Stable tag: 1.2.2
+Tested up to: 5.8
+Stable tag: 1.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
-Loggin system.
+Logging system.
 
 == Description ==
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.2.3 =
+* Optimization: LONGTEXT database fields for object values
 
 = 1.2.2 =
 * Bugfix: wrong import path fix in public-functions.php
