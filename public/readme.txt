@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 5.0
 Tested up to: 5.8
-Stable tag: 1.2.3
+Stable tag: 1.3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.3.0 =
+* Feature: wp_mail watcher
 
 = 1.2.3 =
 * Optimization: LONGTEXT database fields for object values

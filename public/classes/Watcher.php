@@ -9,6 +9,7 @@ use Palasthotel\ProcessLog\Watcher\OptionsWatcher;
 use Palasthotel\ProcessLog\Watcher\PostWatcher;
 use Palasthotel\ProcessLog\Watcher\TaxonomyWatcher;
 use Palasthotel\ProcessLog\Watcher\UserWatcher;
+use Palasthotel\ProcessLog\Watcher\WPMailWatcher;
 
 /**
  * @property Writer writer
@@ -19,6 +20,7 @@ use Palasthotel\ProcessLog\Watcher\UserWatcher;
  * @property CommentWatcher comment
  * @property ErrorWatcher error
  * @property OptionsWatcher options
+ * @property WPMailWatcher $wpMail
  */
 class Watcher {
 
@@ -33,6 +35,7 @@ class Watcher {
 		$this->taxonomy = new TaxonomyWatcher($plugin);
 		$this->comment = new CommentWatcher($plugin);
 		$this->options = new OptionsWatcher($plugin);
+		$this->wpMail = new WPMailWatcher($plugin);
 
 
 		add_filter(Plugin::FILTER_IS_USER_WATCHER_ACTIVE, array($this, 'core_watchers'));
@@ -40,6 +43,7 @@ class Watcher {
 		add_filter(Plugin::FILTER_IS_COMMENT_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_OPTION_WATCHER_ACTIVE, array($this, 'core_watchers'));
 		add_filter(Plugin::FILTER_IS_CUR_WATCHER_ACTIVE, array($this, 'core_watchers'));
+		add_filter(Plugin::FILTER_IS_MAIL_WATCHER_ACTIVE, array($this, 'core_watchers'));
 
 	}
 
