@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 5.0
-Tested up to: 5.8
-Stable tag: 1.3.0
+Tested up to: 5.8.1
+Stable tag: 1.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.3.1 =
+ Bugfix: Added form input escaping
 
 = 1.3.0 =
 * Feature: wp_mail watcher

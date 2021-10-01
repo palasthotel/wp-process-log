@@ -3,13 +3,13 @@
  * Plugin Name: Process Log
  * Plugin URI: https://palasthotel.de
  * Description: Have a look what's going on with your system.
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author: Palasthotel <edward.bock@palasthotel.de>
  * Author URI: https://palasthotel.de
  * Text Domain: process-log
  * Domain Path: /languages
  * Requires at least: 5.0
- * Tested up to: 5.8
+ * Tested up to: 5.8.1
  * License: http://www.gnu.org/licenses/gpl-3.0.html GPLv3
  *
  * @copyright Copyright (c) 2021, Palasthotel
