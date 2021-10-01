@@ -102,7 +102,7 @@ class MenuPage {
 						$_type = (isset($_GET["process_content_type"]))? sanitize_text_field($_GET["process_content_type"]) : "";
 						foreach (array("post", "user", "term", "comment") as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='$type' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
 						}
 						?>
 					</select>
@@ -115,7 +115,7 @@ class MenuPage {
 						$_type = (isset($_GET["process_event_type"]))? sanitize_text_field($_GET["process_event_type"]): "";
 						foreach ($this->database->getEventTypes() as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='$type' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
 						}
 						?>
 					</select>
@@ -125,7 +125,7 @@ class MenuPage {
 					<input
 							name="process_changed_data_field"
 							type="text"
-							value="<?php echo (isset($_GET["process_changed_data_field"]))? sanitize_text_field($_GET["process_changed_data_field"]): ""; ?>"
+							value="<?php echo (isset($_GET["process_changed_data_field"]))? esc_attr(sanitize_text_field($_GET["process_changed_data_field"])): ""; ?>"
 					/>
 				</label>
 				<label>
@@ -136,14 +136,14 @@ class MenuPage {
 						$_type = (isset($_GET["process_severity"]))? sanitize_text_field($_GET["process_severity"]): "";
 						foreach ($this->database->getSeverities() as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='$type' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
 						}
 						?>
 					</select>
 				</label>
 				<label>
 					<?php _e("Query", Plugin::DOMAIN) ?> <input name="process_event_query" value="<?php
-					echo (isset($_GET["process_event_query"]))? sanitize_text_field($_GET["process_event_query"]) : "";
+					echo (isset($_GET["process_event_query"]))? esc_attr(sanitize_text_field($_GET["process_event_query"])) : "";
 					?>" />
 				</label>
 
