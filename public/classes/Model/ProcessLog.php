@@ -56,7 +56,10 @@ class ProcessLog extends DatabaseItem {
 
 
 		$this->created = $this->getTimestamp();
-
+		
+		if ( ! function_exists( 'wp_get_current_user' ) ) {
+			require_once ABSPATH . WPINC . '/pluggable.php';
+		}
 		$user = wp_get_current_user();
 		if ( $user instanceof \WP_User ) {
 			$this->active_user = $user->ID;
