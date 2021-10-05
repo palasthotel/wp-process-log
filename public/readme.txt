@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 5.0
 Tested up to: 5.8.1
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.3.2 =
+ Bugfix: wp_get_current_user not exists in some rare cases
 
 = 1.3.1 =
  Bugfix: Added form input escaping
