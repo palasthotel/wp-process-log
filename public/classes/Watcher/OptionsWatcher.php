@@ -31,9 +31,14 @@ class OptionsWatcher {
 		return apply_filters( Plugin::FILTER_IS_OPTION_WATCHER_ACTIVE, true );
 	}
 
+	public function ignore($option_name):bool {
+		$isTransient = str_starts_with($option_name, "_transient") || str_starts_with($option_name, "_site_transient");
+		return apply_filters(Plugin::FILTER_IGNORE_OPTION, $isTransient, $option_name);
+	}
+
 	public function added($option, $value){
 
-		if ( ! $this->isActive() ) {
+		if ( ! $this->isActive() || $this->ignore($option) ) {
 			return;
 		}
 
@@ -48,7 +53,7 @@ class OptionsWatcher {
 
 	public function updated($option, $old_value, $value){
 
-		if ( ! $this->isActive() ) {
+		if ( ! $this->isActive() || $this->ignore($option) ) {
 			return;
 		}
 
@@ -64,7 +69,7 @@ class OptionsWatcher {
 
 	public function delete($option){
 
-		if ( ! $this->isActive() ) {
+		if ( ! $this->isActive() || $this->ignore($option) ) {
 			return;
 		}
 
