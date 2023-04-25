@@ -3,8 +3,8 @@ Contributors: palasthotel, edwardbock
 Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 5.0
-Tested up to: 5.8.1
-Stable tag: 1.3.2
+Tested up to: 6.2.0
+Stable tag: 1.3.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,10 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.3.3 =
+ Optimization: Ignore _transient and _site_transient changes by default
+ Bugfix: Fix broken foreign key constraints in database
 
 = 1.3.2 =
  Bugfix: wp_get_current_user not exists in some rare cases
