@@ -215,8 +215,9 @@ class Database extends Component\Database {
 		parent::createTables();
 
 		$prefix = $this->wpdb->prefix;
+		$table = $this->tableLogs;
 
-		\dbDelta( "CREATE TABLE IF NOT EXISTS $this->tableLogs
+		\dbDelta( "CREATE TABLE IF NOT EXISTS $table
 		(
 		 id bigint(20) unsigned auto_increment,
 		 created DATETIME NOT NULL,
@@ -233,6 +234,8 @@ class Database extends Component\Database {
 		 key (location_url),
 		 key (referer_url)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
+
+
 
 		\dbDelta( "CREATE TABLE IF NOT EXISTS $this->tableLogItems
 		(
@@ -274,7 +277,7 @@ class Database extends Component\Database {
 		 key (expires),
 		 key (changed_data_field),
     
-    	 CONSTRAINT `{$prefix}_process_logs_ref` FOREIGN KEY (`process_id`) REFERENCES `blog_process_logs` (`id`) ON DELETE CASCADE
+    	 CONSTRAINT `{$prefix}process_logs_ref` FOREIGN KEY (`process_id`) REFERENCES `$table` (`id`) ON DELETE CASCADE
 
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;" );
 	}
