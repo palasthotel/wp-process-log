@@ -4,7 +4,7 @@ Donate link: http://palasthotel.de/
 Tags: debug, log
 Requires at least: 5.0
 Tested up to: 6.2.0
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl
 
@@ -33,6 +33,9 @@ Logging system.
 
 
 == Changelog ==
+
+= 1.3.4 =
+ Bugfix: constraint table name fix
 
 = 1.3.3 =
  Optimization: Ignore _transient and _site_transient changes by default
