@@ -5,8 +5,8 @@ Tags: debug, log
 Requires at least: 5.0
 Tested up to: 6.2.0
 Stable tag: 1.3.4
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl
+License: GPL-3.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Logging system.
 
