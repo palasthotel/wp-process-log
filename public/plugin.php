@@ -10,7 +10,8 @@
  * Domain Path: /languages
  * Requires at least: 5.0
  * Tested up to: 6.2.0
- * License: http://www.gnu.org/licenses/gpl-3.0.html GPLv3
+ * License: GPL-3.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
  * @copyright Copyright (c) 2021, Palasthotel
  * @package Palasthotel\ProcessLog

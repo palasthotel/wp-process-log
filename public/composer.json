@@ -1,5 +1,6 @@
 {
 	"name": "palasthotel/process-log",
+	"license": "GPL-3.0-or-later",
 	"description": "Protocol of system requests and processes",
     "autoload": {
 		"psr-4": {
