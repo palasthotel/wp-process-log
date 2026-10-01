@@ -36,8 +36,8 @@ Merge release PR  →  release-please pushes tag v1.3.5 + creates GitHub Release
                     → deploy to WordPress.org SVN (trunk + tags/1.3.5)
 ```
 
-There is no build step: the admin JS and CSS in `public/` are plain files, shipped as
-written.
+There is no build step: the admin screens are rendered in PHP, and the one stylesheet in
+`public/css/` is plain CSS, shipped as written.
 
 ---
 
@@ -46,10 +46,9 @@ written.
 Three jobs:
 
 - **php-lint** — `php -l` over every PHP file, on PHP 7.4, 8.2, 8.3 and 8.4.
-- **pack** — runs `bin/pack.sh` and asserts
-  the staged payload contains the plugin file, the classes, the autoloader, the admin JS
-  and CSS, the readme, the licence and the translations, and none of the repository-only
-  files. It also fails if the payload contains "Process logs - DEV", the development
+- **pack** — runs `bin/pack.sh` and asserts the staged payload contains the plugin file,
+  the classes and admin screens, the autoloader, the stylesheet, the readme, the licence
+  and the translations, and none of the repository-only files. It also fails if the payload contains "Process logs - DEV", the development
   wrapper's plugin name — shipping that would put a second entry in everybody's plugin list.
 - **versions** — runs `bin/version-checker.sh`, so a hand-edited version number fails in
   the pull request instead of aborting a release. Skipped on the release PR: that one

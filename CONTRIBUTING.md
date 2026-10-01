@@ -51,7 +51,9 @@ repository-only.
 | `public/plugin.php` | plugin header and bootstrap |
 | `public/classes/` | the plugin's PHP, autoloaded via `public/vendor/` |
 | `public/classes/Watcher/` | one watcher per thing that gets logged |
-| `public/js/`, `public/css/` | admin JS and CSS, plain files without a build step |
+| `public/classes/View/` | the admin screens: list tables for Tools > Process Logs, the comment meta box |
+| `public/css/` | the admin stylesheet, plain CSS without a build step |
+| `public/languages/` | translations; `process-log.pot` is generated with `wp i18n make-pot` |
 | `public/public-functions.php` | the public API (`process_log_write()`) |
 | `public/readme.txt` | the wordpress.org listing |
 | `plugin.php` | development wrapper, loads `public/`; never deployed |
