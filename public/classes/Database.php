@@ -86,28 +86,128 @@ class Database extends Component\Database {
 	}
 
 	/**
+	 * Builds the WHERE clause for getProcessList() and countProcesses() from the filters
+	 * of the log screen. Every value goes through prepare().
+	 *
+	 * @param array $filters content_type, event_type, severity, changed_field, query
+	 *
+	 * @return string an empty string or "WHERE ..."
+	 */
+	public function processFilterWhere( array $filters ) {
+		$wpdb  = $this->wpdb;
+		$where = array();
+
+		$type = $filters["content_type"] ?? "";
+		if ( in_array( $type, array( "post", "user", "comment", "term" ), true ) ) {
+			$where[] = " affected_$type IS NOT NULL ";
+		}
+		if ( ! empty( $filters["event_type"] ) ) {
+			$where[] = $wpdb->prepare( " event_type = %s ", $filters["event_type"] );
+		}
+		if ( ! empty( $filters["severity"] ) ) {
+			$where[] = $wpdb->prepare( " severity = %s ", $filters["severity"] );
+		}
+		if ( ! empty( $filters["changed_field"] ) ) {
+			$where[] = $wpdb->prepare( " changed_data_field = %s ", $filters["changed_field"] );
+		}
+
+		$q = $filters["query"] ?? "";
+		if ( "" !== $q ) {
+			$parts = array();
+
+			if ( intval( $q ) . "" === $q ) {
+				$id      = intval( $q );
+				$parts[] = " p.active_user = $id ";
+				$parts[] = " i.active_user = $id ";
+				$parts[] = " i.affected_post = $id ";
+				$parts[] = " i.affected_term = $id ";
+				$parts[] = " i.affected_user = $id ";
+				$parts[] = " i.affected_comment = $id ";
+			}
+
+			$like    = "%" . $wpdb->esc_like( $q ) . "%";
+			$columns = array(
+				"location_url",
+				"referer_url",
+				"hostname",
+				"event_type",
+				"note",
+				"message",
+				"comment",
+				"severity",
+				"link_url",
+				"location_path",
+				"changed_data_field",
+				"changed_data_value_old",
+				"changed_data_value_new",
+				"variables",
+			);
+			foreach ( $columns as $column ) {
+				$parts[] = $wpdb->prepare( " $column LIKE %s ", $like );
+			}
+
+			$where[] = " ( " . join( " OR ", $parts ) . " ) ";
+		}
+
+		return count( $where ) > 0 ? "WHERE " . implode( " AND ", $where ) : "";
+	}
+
+	/**
+	 * @param string $where from processFilterWhere()
+	 *
+	 * @return string
+	 */
+	private function processWhereIn( $where ) {
+		if ( empty( $where ) ) {
+			return "";
+		}
+		return "WHERE id IN( SELECT p.id FROM $this->tableLogs as p LEFT JOIN $this->tableLogItems as i ON ( p.id = i.process_id ) $where )";
+	}
+
+	/**
 	 * @param int $page
 	 * @param int $count
 	 *
-	 * @param string $where
+	 * @param string $where from processFilterWhere()
+	 *
+	 * @param string $order ASC or DESC
 	 *
 	 * @return array
 	 */
-	public function getProcessList( $page = 1, $count = 50, $where = "" ) {
+	public function getProcessList( $page = 1, $count = 50, $where = "", $order = "DESC" ) {
 
-		$tableProcesses = $this->tableLogs;
-		$tableItems = $this->tableLogItems;
-		$offset    = $count * ( $page - 1 );
+		$offset = $count * ( $page - 1 );
+		$order  = ( "ASC" === $order ) ? "ASC" : "DESC";
 
-		$where_in = "";
-		if(!empty($where)){
-			$where_in = "WHERE id IN( SELECT p.id FROM $tableProcesses as p LEFT JOIN $tableItems as i ON ( p.id = i.process_id ) $where )";
-		}
-
-		$query = "SELECT id, active_user, created, location_url, hostname FROM $tableProcesses $where_in ORDER BY id DESC LIMIT %d OFFSET %d";
+		$query = "SELECT id, active_user, created, location_url, referer_url, hostname FROM $this->tableLogs " . $this->processWhereIn( $where ) . " ORDER BY id $order LIMIT %d OFFSET %d";
 
 		return $this->wpdb->get_results(
 			$this->wpdb->prepare( $query, $count, $offset )
+		);
+	}
+
+	/**
+	 * @param string $where from processFilterWhere()
+	 *
+	 * @return int
+	 */
+	public function countProcesses( $where = "" ) {
+		return (int) $this->wpdb->get_var(
+			"SELECT COUNT(id) FROM $this->tableLogs " . $this->processWhereIn( $where )
+		);
+	}
+
+	/**
+	 * @param int $process_id
+	 *
+	 * @return object|null
+	 */
+	public function getProcess( $process_id ) {
+		return $this->wpdb->get_row(
+			$this->wpdb->prepare(
+				"SELECT * FROM $this->tableLogs WHERE id = %d",
+				$process_id
+			)
 		);
 	}
 
@@ -147,7 +247,7 @@ class Database extends Component\Database {
 	public function getProcessLogs( $pid ) {
 		return $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT * FROM $this->tableLogItems WHERE process_id = %d",
+				"SELECT * FROM $this->tableLogItems WHERE process_id = %d ORDER BY id",
 				$pid
 			)
 		);

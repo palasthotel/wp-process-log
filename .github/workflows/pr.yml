@@ -49,13 +49,15 @@ jobs:
         run: |
           test -f build/process-log/plugin.php
           test -f build/process-log/public-functions.php
+          test -f build/process-log/uninstall.php
           test -f build/process-log/readme.txt
           test -f build/process-log/LICENSE
           test -f build/process-log/vendor/autoload.php
-          test -f build/process-log/classes/Ajax.php
-          test -f build/process-log/js/menu-page.js
-          test -f build/process-log/js/api.js
+          test -f build/process-log/classes/MenuPage.php
+          test -f build/process-log/classes/View/ProcessesListTable.php
+          test -f build/process-log/classes/View/LogEntriesListTable.php
           test -f build/process-log/css/menu-page.css
+          test -f build/process-log/languages/process-log.pot
           test -f build/process-log/languages/process-log-de_DE.mo
           test ! -e build/process-log/composer.json
           test ! -e build/process-log/composer.lock

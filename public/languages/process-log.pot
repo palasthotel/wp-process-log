@@ -1,30 +1,23 @@
-#
+# Copyright (C) 2026 Palasthotel <edward.bock@palasthotel.de>
+# This file is distributed under the GPL-3.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Process Log\n"
+"Project-Id-Version: Process Log 1.3.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/public\n"
-"POT-Creation-Date: 2026-10-01T12:11:58+00:00\n"
-"PO-Revision-Date: 2021-06-02 07:01+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: de_DE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-WPHeader: plugin.php\n"
+"POT-Creation-Date: 2026-10-01T12:11:58+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: process-log\n"
 
 #. Plugin Name of the plugin
 #: plugin.php
 msgid "Process Log"
-msgstr "Process Log"
+msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
@@ -35,266 +28,271 @@ msgstr ""
 #. Description of the plugin
 #: plugin.php
 msgid "Have a look what's going on with your system."
-msgstr "Behalten Sie im Blick, was in Ihrem System passiert."
+msgstr ""
 
 #. Author of the plugin
 #: plugin.php
 msgid "Palasthotel <edward.bock@palasthotel.de>"
 msgstr ""
 
-#: classes/MenuPage.php:50 classes/MenuPage.php:51 classes/MenuPage.php:154
+#: classes/MenuPage.php:50
+#: classes/MenuPage.php:51
+#: classes/MenuPage.php:154
 msgid "Process Logs"
-msgstr "Prozessmonitor"
+msgstr ""
 
 #: classes/MenuPage.php:72
 msgid "Processes per page"
-msgstr "Prozesse pro Seite"
+msgstr ""
 
 #. translators: %s: search term
 #: classes/MenuPage.php:160
 #, php-format
 msgid "Search results for: %s"
-msgstr "Suchergebnisse für: %s"
+msgstr ""
 
 #: classes/MenuPage.php:169
 msgid "Search logs"
-msgstr "Protokoll durchsuchen"
+msgstr ""
 
 #. translators: %d: process ID
-#: classes/MenuPage.php:187 classes/View/ProcessesListTable.php:103
+#: classes/MenuPage.php:187
+#: classes/View/ProcessesListTable.php:103
 #, php-format
 msgid "Process #%d"
-msgstr "Prozess #%d"
+msgstr ""
 
 #: classes/MenuPage.php:193
 msgid "&larr; Back to Process Logs"
-msgstr "&larr; Zurück zum Prozessmonitor"
+msgstr ""
 
 #: classes/MenuPage.php:200
 msgid "This process does not exist, or it has expired."
-msgstr "Diesen Prozess gibt es nicht, oder er ist bereits abgelaufen."
+msgstr ""
 
-#: classes/MenuPage.php:207 classes/View/CommentMetaBoxView.php:50
+#: classes/MenuPage.php:207
+#: classes/View/CommentMetaBoxView.php:50
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
-#: classes/MenuPage.php:208 classes/View/CommentMetaBoxView.php:51
+#: classes/MenuPage.php:208
+#: classes/View/CommentMetaBoxView.php:51
 msgid "User"
-msgstr "Benutzer"
+msgstr ""
 
 #: classes/MenuPage.php:209
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: classes/MenuPage.php:210
 msgid "Referrer"
-msgstr "Referrer"
+msgstr ""
 
 #: classes/MenuPage.php:211
 msgid "Host"
-msgstr "Host"
+msgstr ""
 
 #: classes/MenuPage.php:225
 msgid "Entries"
-msgstr "Einträge"
+msgstr ""
 
 #: classes/View/CommentMetaBoxView.php:21
 msgid "Process logs"
-msgstr "Prozesseinträge"
+msgstr ""
 
 #: classes/View/CommentMetaBoxView.php:41
 msgid "Nothing has been logged for this comment."
-msgstr "Zu diesem Kommentar wurde nichts protokolliert."
+msgstr ""
 
 #: classes/View/CommentMetaBoxView.php:52
 msgid "Event"
-msgstr "Ereignis"
+msgstr ""
 
 #: classes/View/CommentMetaBoxView.php:53
 #: classes/View/ProcessesListTable.php:202
 msgid "Changed field"
-msgstr "Geändertes Feld"
+msgstr ""
 
 #: classes/View/CommentMetaBoxView.php:54
 msgid "Before"
-msgstr "Vorher"
+msgstr ""
 
 #: classes/View/CommentMetaBoxView.php:55
 msgid "After"
-msgstr "Nachher"
+msgstr ""
 
 #: classes/View/Format.php:44
 msgid "Not logged in"
-msgstr "Nicht angemeldet"
+msgstr ""
 
 #. translators: %d: user ID
 #: classes/View/Format.php:49
 #, php-format
 msgid "Deleted user #%d"
-msgstr "Gelöschter Benutzer #%d"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:34
 msgctxt "list table"
 msgid "Entry"
-msgstr "Eintrag"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:35
 msgctxt "list table"
 msgid "Event"
-msgstr "Ereignis"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:36
 msgctxt "list table"
 msgid "Changed field"
-msgstr "Geändertes Feld"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:37
 msgctxt "list table"
 msgid "Before"
-msgstr "Vorher"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:38
 msgctxt "list table"
 msgid "After"
-msgstr "Nachher"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:39
 msgctxt "list table"
 msgid "Affected"
-msgstr "Betroffen"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:40
 msgctxt "list table"
 msgid "Deleted"
-msgstr "Löschung"
+msgstr ""
 
 #. translators: %d: entry ID
 #: classes/View/LogEntriesListTable.php:52
 #, php-format
 msgid "Entry #%d"
-msgstr "Eintrag #%d"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:82
 msgid "Open"
-msgstr "Öffnen"
+msgstr ""
 
 #. translators: %s: post title
 #: classes/View/LogEntriesListTable.php:117
 #, php-format
 msgid "Post: %s"
-msgstr "Beitrag: %s"
+msgstr ""
 
 #. translators: %d: post ID
 #: classes/View/LogEntriesListTable.php:120
 #, php-format
 msgid "Post #%d"
-msgstr "Beitrag #%d"
+msgstr ""
 
 #. translators: %s: user name, already linked
 #: classes/View/LogEntriesListTable.php:129
 #, php-format
 msgid "User: %s"
-msgstr "Benutzer: %s"
+msgstr ""
 
 #. translators: %d: comment ID
 #: classes/View/LogEntriesListTable.php:134
 #, php-format
 msgid "Comment #%d"
-msgstr "Kommentar #%d"
+msgstr ""
 
 #. translators: %d: term ID
 #: classes/View/LogEntriesListTable.php:141
 #, php-format
 msgid "Term #%d"
-msgstr "Term #%d"
+msgstr ""
 
 #. translators: %s: time span, e.g. "13 days"
 #: classes/View/LogEntriesListTable.php:157
 #, php-format
 msgid "in %s"
-msgstr "in %s"
+msgstr ""
 
 #: classes/View/LogEntriesListTable.php:162
 msgid "This process has no entries."
-msgstr "Dieser Prozess hat keine Einträge."
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:50
 msgctxt "list table"
 msgid "Process"
-msgstr "Prozess"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:51
 msgctxt "list table"
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:52
 msgctxt "list table"
 msgid "User"
-msgstr "Benutzer"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:53
 msgctxt "list table"
 msgid "Entries"
-msgstr "Einträge"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:54
 msgctxt "list table"
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:119
 msgid "View entries"
-msgstr "Einträge ansehen"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:150
 msgid "No processes found."
-msgstr "Keine Prozesse gefunden."
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:164
 msgid "Filter by affected content"
-msgstr "Nach betroffenem Inhalt filtern"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:166
 msgid "All content"
-msgstr "Alle Inhalte"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:169
 msgid "Posts"
-msgstr "Beiträge"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:170
 msgid "Users"
-msgstr "Benutzer"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:171
 msgid "Terms"
-msgstr "Terms"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:172
 msgid "Comments"
-msgstr "Kommentare"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:178
 msgid "Filter by event type"
-msgstr "Nach Ereignis filtern"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:180
 msgid "All event types"
-msgstr "Alle Ereignisse"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:187
 msgid "Filter by severity"
-msgstr "Nach Schweregrad filtern"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:189
 msgid "All severities"
-msgstr "Alle Schweregrade"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:196
 msgid "Filter by changed field"
-msgstr "Nach geändertem Feld filtern"
+msgstr ""
 
 #: classes/View/ProcessesListTable.php:205
 msgid "Filter"
-msgstr "Filtern"
+msgstr ""

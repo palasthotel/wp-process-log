@@ -32,9 +32,16 @@ class OptionsWatcher {
 		return apply_filters( Plugin::FILTER_IS_OPTION_WATCHER_ACTIVE, true );
 	}
 
+	/**
+	 * Transients are caches, and "cron" is rewritten by WordPress twice for every event
+	 * it runs - logging it stored the whole schedule, before and after, hundreds of times
+	 * a day. Both stay switchable through the filter.
+	 */
 	public function ignore($option_name):bool {
-		$isTransient = strpos($option_name, "_transient") === 0 || strpos($option_name, "_site_transient") === 0;
-		return apply_filters(Plugin::FILTER_IGNORE_OPTION, $isTransient, $option_name);
+		$ignore = strpos($option_name, "_transient") === 0
+			|| strpos($option_name, "_site_transient") === 0
+			|| "cron" === $option_name;
+		return apply_filters(Plugin::FILTER_IGNORE_OPTION, $ignore, $option_name);
 	}
 
 	public function added($option, $value){

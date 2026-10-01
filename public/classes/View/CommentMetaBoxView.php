@@ -5,8 +5,10 @@ namespace Palasthotel\ProcessLog\View;
 
 
 use Palasthotel\ProcessLog\Component\Component;
+use Palasthotel\ProcessLog\MenuPage;
 use Palasthotel\ProcessLog\Model\QueryArgs;
-use Palasthotel\ProcessLog\Plugin;
+
+defined( 'ABSPATH' ) || exit;
 
 #[\AllowDynamicProperties]
 class CommentMetaBoxView extends Component {
@@ -16,7 +18,7 @@ class CommentMetaBoxView extends Component {
 			if("comment" === $post_type){
 				add_meta_box(
 					"process-logs",
-					__("Process logs", Plugin::DOMAIN),
+					__( 'Process logs', 'process-log' ),
 					[$this, 'render'],
 					"comment",
 					"normal"
@@ -25,70 +27,62 @@ class CommentMetaBoxView extends Component {
 		});
 	}
 
-
+	/**
+	 * The entries of this comment, in the table markup core uses for its own lists.
+	 *
+	 * @param \WP_Comment $comment
+	 */
 	function render($comment){
-		?>
-		<style>
-			.process-log__processes + .process-log__processes{
-				border-top: 1px solid black;
-			}
-            .process-log__processes {
-	            padding: 10px 0;
-            }
-            .process-log__processes--header{
-                background: #efefef;
-                padding: 8px;
-            }
-            .process-log__logs{
-                padding: 8px;
-                border: 1px solid #efefef;
-            }
-            .process-log__changes td:nth-child(2){
-                width: 40px;
-                text-align: center;
-            }
-		</style>
-		<?php
-
 		$args = new QueryArgs();
-		$args->affectedComment = $comment->comment_ID;
+		$args->affectedComment = intval( $comment->comment_ID );
 		$processes = $this->plugin->database->queryLogs($args);
 
-		echo "<ul class='process-log__processes'>";
-		foreach ($processes as $process){
-			echo "<li>";
-			echo "<div class='process-log__processes--header'>";
-			echo esc_html($process[0]->created);
-			echo " by user ";
-			$user_id = $process[0]->active_user;
-			$user = get_userdata($user_id);
-			if($user instanceof \WP_User){
-				$url = get_edit_profile_url($user_id);
-				echo "<a href='".esc_url($url)."'>".esc_html($user->display_name)."</a>";
-			} else {
-			    echo "(cannot find user ".esc_html($user_id).")";
-			}
-
-			echo "</div>";
-			echo "<ul class='process-log__logs'>";
-			foreach ($process as $log){
-				echo "<li>";
-				echo "<div><strong>".esc_html($log->event_type).":</strong> ".esc_html($log->changed_data_field)."</div>";
-				?>
-                <table class="process-log__changes">
-                    <tr>
-                        <td><?php echo esc_html($log->changed_data_value_old); ?></td>
-                        <td>→</td>
-                        <td><?php echo esc_html($log->changed_data_value_new); ?></td>
-                    </tr>
-                </table>
-                <?php
-				echo "</li>";
-			}
-			echo "</ul>";
-			echo "</li>";
+		if ( empty( $processes ) ) {
+			echo '<p>' . esc_html__( 'Nothing has been logged for this comment.', 'process-log' ) . '</p>';
+			return;
 		}
-		echo "</ul>";
 
+		$canSeeLog = current_user_can( MenuPage::CAPABILITY );
+		?>
+		<table class="widefat striped">
+			<thead>
+			<tr>
+				<th scope="col"><?php esc_html_e( 'Date', 'process-log' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'User', 'process-log' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Event', 'process-log' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Changed field', 'process-log' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Before', 'process-log' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'After', 'process-log' ); ?></th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php foreach ( $processes as $process ) : ?>
+				<?php foreach ( $process as $log ) : ?>
+					<tr>
+						<td>
+							<?php
+							$date = Format::date( $log->created );
+							if ( $canSeeLog ) {
+								printf(
+									'<a href="%s">%s</a>',
+									esc_url( add_query_arg( array( 'page' => MenuPage::SLUG, 'process' => (int) $log->process_id ), admin_url( 'tools.php' ) ) ),
+									$date // escaped by Format::date()
+								);
+							} else {
+								echo $date; // escaped by Format::date()
+							}
+							?>
+						</td>
+						<td><?php echo Format::user( $log->active_user ); // escaped by Format::user() ?></td>
+						<td><?php echo esc_html( $log->event_type ); ?></td>
+						<td><?php echo empty( $log->changed_data_field ) ? '' : '<code>' . esc_html( $log->changed_data_field ) . '</code>'; ?></td>
+						<td><?php echo empty( $log->changed_data_field ) ? '' : Format::value( $log->changed_data_value_old ); // escaped by Format::value() ?></td>
+						<td><?php echo empty( $log->changed_data_field ) ? '' : Format::value( $log->changed_data_value_new ); // escaped by Format::value() ?></td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php
 	}
 }
