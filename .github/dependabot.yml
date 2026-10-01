@@ -1,0 +1,50 @@
+---
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    assignees:
+      - "JanaME"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    cooldown:
+      default-days: 7
+    directory: "/"
+    open-pull-requests-limit: 10
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Europe/Berlin"
+    # A dependency lands in the first group it matches, so order matters.
+    # Major updates match no group on purpose and keep arriving as single PRs.
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      npm-security:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    assignees:
+      - "JanaME"
+    cooldown:
+      default-days: 7
+    directory: "/.github/"
+    open-pull-requests-limit: 10
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:00"
+      timezone: "Europe/Berlin"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
