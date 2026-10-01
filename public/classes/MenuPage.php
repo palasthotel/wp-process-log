@@ -8,8 +8,16 @@
 
 namespace Palasthotel\ProcessLog;
 
+use Palasthotel\ProcessLog\View\Format;
+use Palasthotel\ProcessLog\View\LogEntriesListTable;
+use Palasthotel\ProcessLog\View\ProcessesListTable;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
+ * Tools > Process Logs. Server-rendered with core's list tables and admin markup; the
+ * only stylesheet is the little core has no class for.
+ *
  * @property Database database
  * @property Plugin plugin
  */
@@ -18,26 +26,84 @@ class MenuPage {
 
 	const SLUG = "process_logs";
 
-	const API_HANDLE = "process-log-api";
+	const STYLE_HANDLE = "process-log-admin";
 
-	const APP_HANDLE = "process-log-app";
+	const CAPABILITY = "manage_options";
 
-	const STYLE_HANDLE = "process-log-app-style";
-
+	/**
+	 * @var ProcessesListTable|LogEntriesListTable|null
+	 */
+	private $table = null;
 
 	public function __construct( Plugin $plugin ) {
 		$this->plugin = $plugin;
 		$this->database = $plugin->database;
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_filter( 'set_screen_option_' . ProcessesListTable::PER_PAGE_OPTION, array( $this, 'save_per_page' ), 10, 3 );
+		// before WordPress 5.4.2 only this generic filter existed
+		add_filter( 'set-screen-option', array( $this, 'save_per_page' ), 10, 3 );
 	}
 
 	public function admin_menu() {
-		add_management_page(
-			__("Process Logs", Plugin::DOMAIN),
-			__("Process Logs", Plugin::DOMAIN),
-			"manage_options",
+		$hook = add_management_page(
+			__( 'Process Logs', 'process-log' ),
+			__( 'Process Logs', 'process-log' ),
+			self::CAPABILITY,
 			self::SLUG,
 			array( $this, 'render' )
+		);
+		if ( $hook ) {
+			add_action( "load-$hook", array( $this, 'load' ) );
+		}
+	}
+
+	/**
+	 * Before any output: core reads a screen's column headers once, while it renders the
+	 * admin header and Screen Options, and keeps them. A list table created later, in
+	 * render(), would find that cache empty and print rows without cells.
+	 */
+	public function load() {
+		if ( $this->processId() > 0 ) {
+			$this->table = new LogEntriesListTable( $this->database, $this->processId() );
+			return;
+		}
+		add_screen_option( 'per_page', array(
+			'label'   => __( 'Processes per page', 'process-log' ),
+			'default' => 50,
+			'option'  => ProcessesListTable::PER_PAGE_OPTION,
+		) );
+		$this->table = new ProcessesListTable( $this->database, self::SLUG );
+	}
+
+	/**
+	 * @param mixed $screen_option
+	 * @param string $option
+	 * @param int $value
+	 *
+	 * @return int
+	 */
+	public function save_per_page( $screen_option, $option, $value ) {
+		if ( ProcessesListTable::PER_PAGE_OPTION !== $option ) {
+			return $screen_option;
+		}
+		return max( 1, min( 999, (int) $value ) );
+	}
+
+	/**
+	 * The stylesheet serves the log screen and the comment meta box.
+	 *
+	 * @param string $hook_suffix
+	 */
+	public function enqueue( $hook_suffix ) {
+		if ( 'tools_page_' . self::SLUG !== $hook_suffix && 'comment.php' !== $hook_suffix ) {
+			return;
+		}
+		wp_enqueue_style(
+			self::STYLE_HANDLE,
+			$this->plugin->url . "css/menu-page.css",
+			array(),
+			$this->assetVersion( "css/menu-page.css" )
 		);
 	}
 
@@ -54,142 +120,114 @@ class MenuPage {
 		return file_exists( $path ) ? (string) filemtime( $path ) : false;
 	}
 
+	/**
+	 * @return int
+	 */
+	private function processId() {
+		return isset( $_GET['process'] ) ? absint( $_GET['process'] ) : 0;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function overviewUrl() {
+		return add_query_arg( array( 'page' => self::SLUG ), admin_url( 'tools.php' ) );
+	}
+
 	public function render() {
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			return;
+		}
+		if ( $this->processId() > 0 ) {
+			$this->renderProcess( $this->processId() );
+			return;
+		}
+		$this->renderOverview();
+	}
 
-		wp_enqueue_script(
-			self::API_HANDLE,
-			$this->plugin->url . "/js/api.js",
-			array(),
-			$this->assetVersion( "js/api.js" ),
-			true
-		);
-		wp_localize_script(
-			self::API_HANDLE,
-			"ProcessLogAPI",
-			array(
-				'ajaxurl' => $this->plugin->ajax->ajaxurl,
-				'nonce'   => wp_create_nonce( Ajax::NONCE_ACTION ),
-			)
-		);
-		wp_enqueue_script(
-			self::APP_HANDLE,
-			$this->plugin->url . "/js/menu-page.js",
-			array( self::API_HANDLE ),
-			$this->assetVersion( "js/menu-page.js" ),
-			true
-		);
-		wp_localize_script(
-			self::APP_HANDLE,
-			"ProcessLogApp",
-			array(
-				'base_url' => admin_url("tools.php?page=process_logs"),
-				'selectors' => array(
-					"root" => "#process-log-table-body",
-					"button_load_more" => "#process-log-load-more",
-					"filters_form" => "#process-filters",
-				),
-				'i18n'    => array(
-					"affected_user" => __( "Affected user", Plugin::DOMAIN ),
-					"affected_post" => __( "Affected post", Plugin::DOMAIN ),
-					"affected_term" => __( "Affected term", Plugin::DOMAIN ),
-					"affected_comment" => __( "Affected comment", Plugin::DOMAIN ),
-					"load_more_loading" => __("Loading more logs", Plugin::DOMAIN),
-					"load_more_loading_again" => __("Give me a second... I'm on it", Plugin::DOMAIN),
-					"load_more_done" => __("No more logs to load 🏖", Plugin::DOMAIN),
-				),
-			)
-		);
-		wp_enqueue_style(
-			self::STYLE_HANDLE,
-			$this->plugin->url . "/css/menu-page.css",
-			array(),
-			$this->assetVersion( "css/menu-page.css" )
-		);
-
+	private function renderOverview() {
+		$table = ( $this->table instanceof ProcessesListTable ) ? $this->table : new ProcessesListTable( $this->database, self::SLUG );
+		$table->prepare_items();
+		$search = $table->search_term();
 		?>
-		<div class="wrap process-log">
-			<h2><?php _e("Process logs", Plugin::DOMAIN); ?></h2>
+		<div class="wrap">
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'Process Logs', 'process-log' ); ?></h1>
+			<?php
+			if ( '' !== $search ) {
+				printf(
+					'<span class="subtitle">%s</span>',
+					/* translators: %s: search term */
+					esc_html( sprintf( __( 'Search results for: %s', 'process-log' ), $search ) )
+				);
+			}
+			?>
+			<hr class="wp-header-end" />
 
-			<form id="process-filters" method="GET">
-				<label>
-					<?php _e("Effected content", Plugin::DOMAIN) ?>
-					<select name="process_content_type">
-						<option value=""><?php _ex("All", "select content", Plugin::DOMAIN); ?></option>
-						<?php
-						$_type = (isset($_GET["process_content_type"]))? sanitize_text_field($_GET["process_content_type"]) : "";
-						foreach (array("post", "user", "term", "comment") as $type){
-							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
-						}
-						?>
-					</select>
-				</label>
-				<label>
-					<?php _e("Event type", Plugin::DOMAIN); ?>
-					<select name="process_event_type">
-						<option value=""><?php _ex("All", "select event type filter", Plugin::DOMAIN) ?></option>
-						<?php
-						$_type = (isset($_GET["process_event_type"]))? sanitize_text_field($_GET["process_event_type"]): "";
-						foreach ($this->database->getEventTypes() as $type){
-							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
-						}
-						?>
-					</select>
-				</label>
-				<label>
-					<?php _e("Changed field", Plugin::DOMAIN); ?>
-					<input
-							name="process_changed_data_field"
-							type="text"
-							value="<?php echo (isset($_GET["process_changed_data_field"]))? esc_attr(sanitize_text_field($_GET["process_changed_data_field"])): ""; ?>"
-					/>
-				</label>
-				<label>
-					<?php _e("Severity", Plugin::DOMAIN) ?>
-					<select name="process_severity">
-						<option value=""><?php _ex("All", "select severity", Plugin::DOMAIN); ?></option>
-						<?php
-						$_type = (isset($_GET["process_severity"]))? sanitize_text_field($_GET["process_severity"]): "";
-						foreach ($this->database->getSeverities() as $type){
-							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
-						}
-						?>
-					</select>
-				</label>
-				<label>
-					<?php _e("Query", Plugin::DOMAIN) ?> <input name="process_event_query" value="<?php
-					echo (isset($_GET["process_event_query"]))? esc_attr(sanitize_text_field($_GET["process_event_query"])) : "";
-					?>" />
-				</label>
-
-				<button class="button-primary"><?php _e("Filter", Plugin::DOMAIN) ?></button>
+			<form method="get" action="<?php echo esc_url( admin_url( 'tools.php' ) ); ?>">
+				<input type="hidden" name="page" value="<?php echo esc_attr( self::SLUG ); ?>" />
+				<?php
+				$table->search_box( __( 'Search logs', 'process-log' ), 'process-log' );
+				$table->display();
+				?>
 			</form>
+		</div>
+		<?php
+	}
 
-			<table class="widefat">
-				<thead>
-				<tr>
-					<th scope="col" title="Process ID">
-						<?php _e("PID", Plugin::DOMAIN); ?>
-					</th>
-					<th scope="col">
-						<?php _e( 'Created', Plugin::DOMAIN ); ?>
-					</th>
-					<th scope="col">
-						<?php _e("Active User", Plugin::DOMAIN); ?>
-					</th>
-					<th scope="col"><?php
-						_e("Logs", Plugin::DOMAIN); ?>
-					</th>
-					<th scope="col">
-						<?php _e( 'URL', Plugin::DOMAIN ); ?>
-					</th>
-				</tr>
-				</thead>
-				<tbody id="process-log-table-body"></tbody>
+	/**
+	 * @param int $process_id
+	 */
+	private function renderProcess( $process_id ) {
+		$process = $this->database->getProcess( $process_id );
+		?>
+		<div class="wrap">
+			<h1 class="wp-heading-inline">
+				<?php
+				/* translators: %d: process ID */
+				echo esc_html( sprintf( __( 'Process #%d', 'process-log' ), $process_id ) );
+				?>
+			</h1>
+			<hr class="wp-header-end" />
+			<p>
+				<a href="<?php echo esc_url( $this->overviewUrl() ); ?>">
+					<?php esc_html_e( '&larr; Back to Process Logs', 'process-log' ); ?>
+				</a>
+			</p>
+			<?php
+			if ( ! $process ) {
+				printf(
+					'<div class="notice notice-error"><p>%s</p></div>',
+					esc_html__( 'This process does not exist, or it has expired.', 'process-log' )
+				);
+				echo '</div>';
+				return;
+			}
+
+			$details = array(
+				__( 'Date', 'process-log' )     => Format::date( $process->created ),
+				__( 'User', 'process-log' )     => Format::user( $process->active_user ),
+				__( 'URL', 'process-log' )      => esc_html( (string) $process->location_url ),
+				__( 'Referrer', 'process-log' ) => esc_html( (string) $process->referer_url ),
+				__( 'Host', 'process-log' )     => esc_html( (string) $process->hostname ),
+			);
+			?>
+			<table class="widefat striped process-log-details" role="presentation">
+				<tbody>
+				<?php foreach ( $details as $label => $value ) : ?>
+					<tr>
+						<th scope="row"><?php echo esc_html( $label ); ?></th>
+						<td><?php echo $value; // escaped above ?></td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
 			</table>
-			<button id="process-log-load-more" class="button button-primary"><?php _e("Load more", Plugin::DOMAIN); ?></button>
+
+			<h2><?php esc_html_e( 'Entries', 'process-log' ); ?></h2>
+			<?php
+			$entries = ( $this->table instanceof LogEntriesListTable ) ? $this->table : new LogEntriesListTable( $this->database, $process_id );
+			$entries->prepare_items();
+			$entries->display();
+			?>
 		</div>
 		<?php
 	}

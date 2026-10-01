@@ -6,6 +6,14 @@ errors. Terms are not logged yet (`TaxonomyWatcher` is a stub). Every request th
 *log entry* within it, with the old and the new value. Administrators browse them under
 **Tools → Process Logs**; the comment edit screen shows the entries for that comment.
 
+The screens are server-rendered with core's own admin markup: the overview and a
+process' entries are `WP_List_Table`s (`public/classes/View/`), so search, filters,
+pagination, sorting, row actions and Screen Options behave as on Posts or Users. The
+only stylesheet covers what core has no class for - line breaks in logged values and
+column widths. `WP_List_Table` is marked private by core; reimplementing it would mean
+reimplementing all of that and still not matching it, which is why plugins use it as it
+is.
+
 The plugin is available on [WordPress.org](https://wordpress.org/plugins/process-log/)
 (slug `process-log`; this repository is `wp-process-log`).
 

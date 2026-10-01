@@ -25,7 +25,7 @@ Logged out of the box:
 * Fatal errors
 * Relations of the Content User Relations plugin
 
-Administrators browse the log under Tools > Process Logs and filter it by content type, event type, changed field, severity or a free-text query. The comment edit screen lists the entries for that comment.
+Administrators browse the log under Tools > Process Logs, in the same kind of table WordPress uses for posts and users: searchable, filterable by content type, event type, severity and changed field, with the number of rows per page under Screen Options. Each process opens on its own screen with all of its entries and their values before and after. The comment edit screen lists the entries for that comment.
 
 Entries expire after 14 days. Password hashes, password reset keys and session tokens are logged as changed, without their values.
 
