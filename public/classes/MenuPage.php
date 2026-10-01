@@ -41,13 +41,26 @@ class MenuPage {
 		);
 	}
 
+	/**
+	 * The assets were enqueued with version 1 forever, so browsers kept serving a cached
+	 * copy after an update. The file's modification time changes with every release.
+	 *
+	 * @param string $file path relative to the plugin directory
+	 *
+	 * @return string|false
+	 */
+	private function assetVersion( $file ) {
+		$path = $this->plugin->path . $file;
+		return file_exists( $path ) ? (string) filemtime( $path ) : false;
+	}
+
 	public function render() {
 
 		wp_enqueue_script(
 			self::API_HANDLE,
 			$this->plugin->url . "/js/api.js",
 			array( "jquery" ),
-			1,
+			$this->assetVersion( "js/api.js" ),
 			true
 		);
 		wp_localize_script(
@@ -62,7 +75,7 @@ class MenuPage {
 			self::APP_HANDLE,
 			$this->plugin->url . "/js/menu-page.js",
 			array( self::API_HANDLE, "jquery" ),
-			1,
+			$this->assetVersion( "js/menu-page.js" ),
 			true
 		);
 		wp_localize_script(
@@ -88,7 +101,9 @@ class MenuPage {
 		);
 		wp_enqueue_style(
 			self::STYLE_HANDLE,
-			$this->plugin->url . "/css/menu-page.css"
+			$this->plugin->url . "/css/menu-page.css",
+			array(),
+			$this->assetVersion( "css/menu-page.css" )
 		);
 
 		?>
