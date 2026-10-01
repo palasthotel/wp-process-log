@@ -5,7 +5,7 @@ Tags: log, activity log, audit, debug
 Requires at least: 5.0
 Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 1.3.4
+Stable tag: 1.4.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,6 +44,23 @@ Developers can write their own entries with `process_log_write()` and switch ind
 
 
 == Changelog ==
+
+= 1.4.0 =
+**Features**
+* rebuild Tools > Process Logs with WordPress' own list tables (907ecc7)
+* show a comment's log entries as a core table (fb87232)
+
+**Bug Fixes**
+* let process_log_is_mail_watcher_active switch off mail logging (e134807)
+* load the updated log page scripts instead of a cached copy (46ad0f9)
+* make the severity filter on the log page work (63315d6)
+* no longer store password hashes and reset keys in the log (ba830ed)
+* remove the log tables when the plugin is deleted (0d93d4d)
+* restrict the process log to administrators and escape logged values (f5fa231)
+* silence the PHP 8.2 deprecation notices and run on PHP 7.4 again (28c9099)
+* stop logging every rewrite of the cron option (005fead)
+* stop the fatal error on sites set to a UTC offset (cf9c0e9)
+* translate the log screens (a2c7d58)
 
 = 1.3.4 =
  Bugfix: constraint table name fix

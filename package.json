@@ -1,6 +1,6 @@
 {
 	"name": "@palasthotel/process-log",
-	"version": "1.3.4",
+	"version": "1.4.0",
 	"private": true,
 	"description": "Logs what changes in a WordPress site - posts, users, terms, comments, options and sent mails.",
 	"license": "GPL-3.0-or-later",
