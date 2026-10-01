@@ -33,7 +33,6 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property Database database
  * @property Watcher $watcher
  * @property MenuPage menuPage
- * @property Ajax ajax
  * @property Schedule schedule
  * @property Views views
  * @property Updates updates
@@ -94,7 +93,6 @@ class Plugin extends Component\Plugin {
 		$this->watcher  = new Watcher( $this );
 		$this->views    = new Views( $this );
 		$this->menuPage = new MenuPage( $this );
-		$this->ajax     = new Ajax( $this );
 		$this->schedule = new Schedule( $this );
 
 		new Updates();
