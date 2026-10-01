@@ -1,0 +1,91 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  php-lint:
+    name: PHP syntax check (${{ matrix.php-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ["7.4", "8.2", "8.3", "8.4"]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: Lint PHP files
+        run: |
+          find . -name '*.php' -not -path './build/*' -not -path './node_modules/*' -print0 \
+            | xargs -0 -r -n1 php -l
+
+  pack:
+    name: Pack plugin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+          tools: composer
+
+      - name: Pack
+        run: bash bin/pack.sh
+
+      # The payload is what wordpress.org serves, so assert both what has to be in it
+      # and what must not.
+      - name: Assert the payload is clean
+        run: |
+          test -f build/process-log/plugin.php
+          test -f build/process-log/public-functions.php
+          test -f build/process-log/readme.txt
+          test -f build/process-log/LICENSE
+          test -f build/process-log/vendor/autoload.php
+          test -f build/process-log/classes/Ajax.php
+          test -f build/process-log/js/menu-page.js
+          test -f build/process-log/js/api.js
+          test -f build/process-log/css/menu-page.css
+          test -f build/process-log/languages/process-log-de_DE.mo
+          test ! -e build/process-log/composer.json
+          test ! -e build/process-log/composer.lock
+          test ! -e build/process-log/bin
+          test ! -e build/process-log/.github
+          test ! -e build/process-log/CONTRIBUTING.md
+          test ! -e build/process-log/package.json
+
+      # The development wrapper in the repository root carries a plugin header, so
+      # shipping it would put a second "Process logs - DEV" entry in the plugin list.
+      - name: Assert the dev wrapper is not shipped
+        run: |
+          if grep -rq 'Process logs - DEV' build/process-log/; then
+            echo "::error::the payload contains the development wrapper"
+            exit 1
+          fi
+
+  versions:
+    name: Version carriers agree
+    # Not on the release PR: it arrives with only package.json bumped and gets its other
+    # carriers in a second push from update-plugin-version.yml, so checking its first
+    # commit would fail every time. The release job runs the same script anyway.
+    if: ${{ ! startsWith(github.head_ref, 'release-please--') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.x
+
+      - name: Check version numbers
+        run: VERSION="$(node -p "require('./package.json').version")" bash bin/version-checker.sh
