@@ -72,6 +72,7 @@ fi
 # Convert Markdown to WordPress readme format:
 #   - "### Bug Fixes"                 → "**Bug Fixes**", preceded by one blank line
 #   - "* item ([abc1234](https://…))" → "* item (abc1234)"
+#   - "&gt;", "&lt;", "&quot;", "&#39;", "&amp;" → the characters they stand for
 #   - collapse the blank line runs release-please emits
 WP_LINES=""
 while IFS= read -r line; do
@@ -83,6 +84,9 @@ while IFS= read -r line; do
   # Skip blank lines — the headings above provide the only spacing we want
   [[ -z "${line//[[:space:]]/}" ]] && continue
   line=$(printf '%s' "$line" | sed 's/\[\([^]]*\)\]([^)]*)/\1/g')
+  # release-please HTML-escapes the commit subjects ("Tools &gt; Process Logs");
+  # readme.txt is Markdown, where the entity would show as written. &amp; last.
+  line=$(printf '%s' "$line" | sed -e 's/&gt;/>/g' -e 's/&lt;/</g' -e 's/&quot;/"/g' -e "s/&#39;/'/g" -e 's/&amp;/\&/g')
   WP_LINES+="$line"$'\n'
 done <<< "$SECTION"
 
