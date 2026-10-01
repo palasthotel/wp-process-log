@@ -38,6 +38,9 @@ class WPMailWatcher {
 	}
 
 	public function pre_wp_mail($attrs){
+		if ( ! $this->isActive() ) {
+			return $attrs;
+		}
 		$log = ProcessLog::build()
 		          ->setEventType(Plugin::EVENT_WP_MAIL)
 		          ->setMessage(json_encode($attrs));
