@@ -4,12 +4,12 @@
  * Plugin URI: https://palasthotel.de
  * Description: Have a look what's going on with your system.
  * Version: 1.3.4
- * Author: Palasthotel <edward.bock@palasthotel.de>
+ * Author: Palasthotel <webmaster@palasthotel.de>
  * Author URI: https://palasthotel.de
  * Text Domain: process-log
  * Domain Path: /languages
  * Requires at least: 5.0
- * Tested up to: 7.0.2
+ * Tested up to: 7.1.2
  * Requires PHP: 7.4
  * License: GPL-3.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
