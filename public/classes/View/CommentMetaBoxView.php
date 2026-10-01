@@ -8,6 +8,7 @@ use Palasthotel\ProcessLog\Component\Component;
 use Palasthotel\ProcessLog\Model\QueryArgs;
 use Palasthotel\ProcessLog\Plugin;
 
+#[\AllowDynamicProperties]
 class CommentMetaBoxView extends Component {
 
 	function onCreate() {

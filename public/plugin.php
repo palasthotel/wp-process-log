@@ -37,6 +37,7 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property Views views
  * @property Updates updates
  */
+#[\AllowDynamicProperties]
 class Plugin extends Component\Plugin {
 
 	const DOMAIN = "process-log";

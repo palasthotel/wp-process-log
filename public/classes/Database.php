@@ -16,6 +16,7 @@ use Palasthotel\ProcessLog\Model\QueryArgs;
  * @property string $tableLogs
  * @property string $tableLogItems
  */
+#[\AllowDynamicProperties]
 class Database extends Component\Database {
 
 	public function init() {

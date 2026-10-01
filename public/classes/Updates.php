@@ -4,6 +4,7 @@ namespace Palasthotel\ProcessLog;
 
 use Palasthotel\ProcessLog\Component\Update;
 
+#[\AllowDynamicProperties]
 class Updates extends Update {
 
 	public function __construct() {

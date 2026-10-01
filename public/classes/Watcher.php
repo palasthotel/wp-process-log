@@ -22,6 +22,7 @@ use Palasthotel\ProcessLog\Watcher\WPMailWatcher;
  * @property OptionsWatcher options
  * @property WPMailWatcher $wpMail
  */
+#[\AllowDynamicProperties]
 class Watcher {
 
 	public function __construct( Plugin $plugin ) {

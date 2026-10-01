@@ -15,6 +15,7 @@ use Palasthotel\ProcessLog\Writer;
 /**
  * @property Writer writer
  */
+#[\AllowDynamicProperties]
 class ContentUserRelationWatcher {
 
 	/**

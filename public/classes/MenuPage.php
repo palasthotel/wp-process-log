@@ -13,6 +13,7 @@ namespace Palasthotel\ProcessLog;
  * @property Database database
  * @property Plugin plugin
  */
+#[\AllowDynamicProperties]
 class MenuPage {
 
 	const SLUG = "process_logs";

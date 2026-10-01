@@ -7,6 +7,7 @@ namespace Palasthotel\ProcessLog;
 /**
  * @property Plugin plugin
  */
+#[\AllowDynamicProperties]
 class Schedule {
 
 	public function __construct(Plugin $plugin) {

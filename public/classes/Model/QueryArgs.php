@@ -4,6 +4,7 @@
 namespace Palasthotel\ProcessLog\Model;
 
 
+#[\AllowDynamicProperties]
 class QueryArgs {
 
 	/**

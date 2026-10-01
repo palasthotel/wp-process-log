@@ -13,6 +13,7 @@ namespace Palasthotel\ProcessLog;
  * @property string ajaxurl
  * @property Plugin plugin
  */
+#[\AllowDynamicProperties]
 class Ajax {
 	const AJAX_ACTION = "process_logs";
 	const NONCE_ACTION = "process_logs";

@@ -16,6 +16,7 @@ use Palasthotel\ProcessLog\Writer;
 /**
  * @property Writer writer
  */
+#[\AllowDynamicProperties]
 class CommentWatcher {
 
 	public function __construct(Plugin $plugin) {

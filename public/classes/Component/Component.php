@@ -8,6 +8,7 @@ namespace Palasthotel\ProcessLog\Component;
  *
  * @property \Palasthotel\ProcessLog\Plugin plugin
  */
+#[\AllowDynamicProperties]
 abstract class Component {
 	/**
 	 * _Component constructor.

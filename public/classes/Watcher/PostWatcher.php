@@ -20,6 +20,7 @@ const BLACKLIST_POST_METAS = array(
 /**
  * @property Writer writer
  */
+#[\AllowDynamicProperties]
 class PostWatcher {
 
 	/**
