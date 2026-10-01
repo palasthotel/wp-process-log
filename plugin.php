@@ -9,7 +9,7 @@
  * Tested up to:      X.X.X
  * Author:            PALASTHOTEL by Edward
  * Author URI:        http://www.palasthotel.de
- * Domain Path:       /plugin/languages
+ * Domain Path:       /public/languages
  */
 
 use Palasthotel\ProcessLog\Plugin;

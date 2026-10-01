@@ -1,30 +1,41 @@
 === Process Log ===
-Contributors: palasthotel, edwardbock
+Contributors: palasthotel, edwardbock, janaeggebrecht
 Donate link: http://palasthotel.de/
-Tags: debug, log
+Tags: log, activity log, audit, debug
 Requires at least: 5.0
-Tested up to: 6.2.0
+Tested up to: 7.0.2
+Requires PHP: 7.4
 Stable tag: 1.3.4
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Logging system.
+Logs what changes in your site, who changed it, and the value before and after.
 
 == Description ==
 
-Logging system.
+Process Log records changes as they happen. Every request that changes something becomes a process, every single change a log entry within it - with the old and the new value, the user who made it and the URL it came from.
 
-* WP_Post metas
-* WP_User profiles
-* Taxonomies
+Logged out of the box:
+
+* Post fields and post meta
+* User profiles and user meta
 * Comments
-* Content User Relations
+* Options
+* Mails sent through wp_mail()
+* Fatal errors
+* Relations of the Content User Relations plugin
+
+Administrators browse the log under Tools > Process Logs and filter it by content type, event type, changed field, severity or a free-text query. The comment edit screen lists the entries for that comment.
+
+Entries expire after 14 days. Password hashes, password reset keys and session tokens are logged as changed, without their values.
+
+Developers can write their own entries with `process_log_write()` and switch individual watchers off with filters - see the [GitHub repository](https://github.com/palasthotel/wp-process-log).
 
 == Installation ==
 
-1. Upload `process-log.zip` to the `/wp-content/plugins/` directory
-1. Extract the Plugin to a `process-log` Folder
-1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Install the plugin from Plugins > Add New, or upload `process-log.zip` there
+1. Activate it
+1. Open Tools > Process Logs
 
 == Frequently Asked Questions ==
 
