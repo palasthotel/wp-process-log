@@ -54,8 +54,8 @@ class Ajax {
 			$type = sanitize_text_field(wp_unslash($_REQUEST["process_event_type"]));
 			$where[] = $wpdb->prepare(" event_type = %s ", $type);
 		}
-		if(isset($_REQUEST["process_severity_type"]) && !empty($_REQUEST["process_severity_type"]) ){
-			$type = sanitize_text_field(wp_unslash($_REQUEST["process_severity_type"]));
+		if(isset($_REQUEST["process_severity"]) && !empty($_REQUEST["process_severity"]) ){
+			$type = sanitize_text_field(wp_unslash($_REQUEST["process_severity"]));
 			$where[] = $wpdb->prepare(" severity = %s ", $type);
 		}
 
