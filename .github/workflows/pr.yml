@@ -49,6 +49,7 @@ jobs:
         run: |
           test -f build/process-log/plugin.php
           test -f build/process-log/public-functions.php
+          test -f build/process-log/uninstall.php
           test -f build/process-log/readme.txt
           test -f build/process-log/LICENSE
           test -f build/process-log/vendor/autoload.php

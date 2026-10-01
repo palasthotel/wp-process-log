@@ -27,7 +27,7 @@ Logged out of the box:
 
 Administrators browse the log under Tools > Process Logs and filter it by content type, event type, changed field, severity or a free-text query. The comment edit screen lists the entries for that comment.
 
-Entries expire after 14 days. Password hashes, password reset keys and session tokens are logged as changed, without their values.
+Entries expire after 14 days and are cleaned up hourly; WordPress' own cron schedule and transients are not logged. Deleting the plugin removes its tables. Password hashes, password reset keys and session tokens are logged as changed, without their values.
 
 Developers can write their own entries with `process_log_write()` and switch individual watchers off with filters - see the [GitHub repository](https://github.com/palasthotel/wp-process-log).
 
