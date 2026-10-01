@@ -28,9 +28,9 @@ class DatabaseItem {
 	}
 
 	public function getTimestamp(){
-		$now = new \DateTime();
-		$now->setTimezone( new \DateTimeZone( get_option("timezone_string") ) );
-		return $now->format('Y-m-d H:i:s');
+		// current_time() also covers sites configured with a UTC offset instead of a
+		// named timezone, where timezone_string is empty and DateTimeZone("") throws.
+		return current_time( 'mysql' );
 	}
 
 	public function isArg($key){
