@@ -64,12 +64,6 @@ jobs:
           php-version: "8.1"
           tools: composer
 
-      - name: Install node modules
-        run: npm ci
-
-      - name: Build stylesheet
-        run: npm run build
-
       - name: Pack plugin
         id: pack_plugin
         run: bash bin/pack.sh

@@ -17,12 +17,6 @@ if [ ! -f "$PROJECT_PATH/public/plugin.php" ]; then
   exit 1
 fi
 
-# public/css/ is compiled from src/styles/ and is not in the repository.
-if [ ! -f "$PROJECT_PATH/public/css/menu-page.css" ]; then
-  echo "public/css/ is missing - run \"npm ci && npm run build\" first." >&2
-  exit 1
-fi
-
 echo "Generating build directory..."
 rm -rf "$BUILD_PATH"
 mkdir -p "$DEST_PATH"

@@ -51,11 +51,9 @@ repository-only.
 | `public/plugin.php` | plugin header and bootstrap |
 | `public/classes/` | the plugin's PHP, autoloaded via `public/vendor/` |
 | `public/classes/Watcher/` | one watcher per thing that gets logged |
-| `public/js/` | hand-written admin JS, not compiled |
-| `public/css/` | compiled from `src/styles/`, not in the repository |
+| `public/js/`, `public/css/` | admin JS and CSS, plain files without a build step |
 | `public/public-functions.php` | the public API (`process_log_write()`) |
 | `public/readme.txt` | the wordpress.org listing |
-| `src/styles/` | SCSS source of the admin stylesheet |
 | `plugin.php` | development wrapper, loads `public/`; never deployed |
 | `bin/` | release helper scripts |
 
@@ -67,13 +65,11 @@ deactivates the plugin on every site at the next update.
 
 ```sh
 npm ci
-npm run build                 # compiles public/css/menu-page.css
 npm run wp-env:start          # http://localhost:8890, admin / password
 ```
 
 `npm run pack` stages the payload in `build/process-log/` and zips it to
-`process-log.zip` — the same payload the release deploys. It needs `composer` and aborts
-if the stylesheet has not been built.
+`process-log.zip` — the same payload the release deploys. It needs `composer`.
 
 ## Versions
 
@@ -86,6 +82,5 @@ by hand; just leave `Stable tag:` and the `== Changelog ==` entries alone.
 
 ## Checks
 
-Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, builds the stylesheet, packs the
-plugin so a broken `bin/pack.sh` surfaces in the pull request, and checks the version
+Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, packs the plugin so a broken `bin/pack.sh` surfaces in the pull request, and checks the version
 carriers agree.

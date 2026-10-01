@@ -25,19 +25,19 @@ Push to main
     │    On PR to main
     └──▶ [pr.yml]
              php -l on 7.4 / 8.2 / 8.3 / 8.4
-             build the stylesheet, pack + "is the payload clean?"
+             pack + "is the payload clean?"
              "do the version carriers agree?"
 
 
 Merge release PR  →  release-please pushes tag v1.3.5 + creates GitHub Release
     │
     └── v*  ──▶ [wordpress-svn-release.yml]
-                    version check → build → pack → upload zip to the Release
+                    version check → pack → upload zip to the Release
                     → deploy to WordPress.org SVN (trunk + tags/1.3.5)
 ```
 
-The only build step is the admin stylesheet: `npm run build` compiles
-`src/styles/menu-page.scss` to `public/css/menu-page.css`, which is not in the repository.
+There is no build step: the admin JS and CSS in `public/` are plain files, shipped as
+written.
 
 ---
 
@@ -46,7 +46,7 @@ The only build step is the admin stylesheet: `npm run build` compiles
 Three jobs:
 
 - **php-lint** — `php -l` over every PHP file, on PHP 7.4, 8.2, 8.3 and 8.4.
-- **pack** — builds the stylesheet, asserts it was produced, runs `bin/pack.sh` and asserts
+- **pack** — runs `bin/pack.sh` and asserts
   the staged payload contains the plugin file, the classes, the autoloader, the admin JS
   and CSS, the readme, the licence and the translations, and none of the repository-only
   files. It also fails if the payload contains "Process logs - DEV", the development

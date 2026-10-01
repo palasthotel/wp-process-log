@@ -14,15 +14,13 @@
 		"url": "https://github.com/palasthotel/wp-process-log/issues"
 	},
 	"scripts": {
-		"build": "sass --no-source-map --style=compressed src/styles/menu-page.scss public/css/menu-page.css",
 		"pack": "./bin/pack.sh",
 		"wp-env": "wp-env",
 		"wp-env:start": "wp-env start",
 		"wp-env:stop": "wp-env stop"
 	},
 	"devDependencies": {
-		"@wordpress/env": "^11.16.0",
-		"sass": "^1.105.1"
+		"@wordpress/env": "^11.16.0"
 	},
 	"engines": {
 		"node": ">=24",

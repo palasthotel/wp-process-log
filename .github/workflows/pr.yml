@@ -35,23 +35,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.x
-
       - uses: shivammathur/setup-php@v2
         with:
           php-version: "8.1"
           tools: composer
-
-      - run: npm ci
-
-      - run: npm run build
-
-      # The menu page enqueues css/menu-page.css, so a renamed or dropped output
-      # surfaces here rather than as an unstyled log page in wp-admin.
-      - name: Assert the build produced the stylesheet
-        run: test -s public/css/menu-page.css
 
       - name: Pack
         run: bash bin/pack.sh
@@ -68,12 +55,11 @@ jobs:
           test -f build/process-log/classes/Ajax.php
           test -f build/process-log/js/menu-page.js
           test -f build/process-log/js/api.js
-          test -s build/process-log/css/menu-page.css
+          test -f build/process-log/css/menu-page.css
           test -f build/process-log/languages/process-log-de_DE.mo
           test ! -e build/process-log/composer.json
           test ! -e build/process-log/composer.lock
           test ! -e build/process-log/bin
-          test ! -e build/process-log/src
           test ! -e build/process-log/.github
           test ! -e build/process-log/CONTRIBUTING.md
           test ! -e build/process-log/package.json
