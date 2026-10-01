@@ -15,6 +15,8 @@ namespace Palasthotel\ProcessLog;
  */
 class Ajax {
 	const AJAX_ACTION = "process_logs";
+	const NONCE_ACTION = "process_logs";
+	const CAPABILITY = "manage_options";
 	public function __construct(Plugin $plugin) {
 		$this->plugin = $plugin;
 		$this->ajaxurl = admin_url( 'admin-ajax.php' );
@@ -22,8 +24,23 @@ class Ajax {
 		add_action('wp_ajax_process_logs', array($this, 'process_logs'));
 	}
 
+	/**
+	 * wp_ajax_* is open to every logged-in user, so both handlers check the same
+	 * capability as the menu page and a nonce against CSRF.
+	 */
+	private function authorize(){
+		check_ajax_referer( self::NONCE_ACTION );
+		if ( ! current_user_can( self::CAPABILITY ) ) {
+			wp_send_json_error( null, 403 );
+		}
+	}
+
 	public function processes_list(){
-		$page = (isset($_REQUEST["page"]))? intval($_REQUEST["page"]): 1;
+		$this->authorize();
+
+		global $wpdb;
+
+		$page = (isset($_REQUEST["page"]))? max(1, intval($_REQUEST["page"])): 1;
 
 		$where = array();
 
@@ -34,50 +51,55 @@ class Ajax {
 			}
 		}
 		if(isset($_REQUEST["process_event_type"]) && !empty($_REQUEST["process_event_type"]) ){
-			$type = sanitize_text_field($_REQUEST["process_event_type"]);
-			$where[] = " event_type = '$type' ";
+			$type = sanitize_text_field(wp_unslash($_REQUEST["process_event_type"]));
+			$where[] = $wpdb->prepare(" event_type = %s ", $type);
 		}
 		if(isset($_REQUEST["process_severity_type"]) && !empty($_REQUEST["process_severity_type"]) ){
-			$type = sanitize_text_field($_REQUEST["process_severity_type"]);
-			$where[] = " severity = '$type' ";
+			$type = sanitize_text_field(wp_unslash($_REQUEST["process_severity_type"]));
+			$where[] = $wpdb->prepare(" severity = %s ", $type);
 		}
 
 		if(isset($_REQUEST["process_changed_data_field"]) && !empty($_REQUEST["process_changed_data_field"])){
-			$field = sanitize_text_field($_REQUEST["process_changed_data_field"]);
-			$where[] = " changed_data_field = '$field' ";
+			$field = sanitize_text_field(wp_unslash($_REQUEST["process_changed_data_field"]));
+			$where[] = $wpdb->prepare(" changed_data_field = %s ", $field);
 		}
 
 		if(isset($_REQUEST["process_event_query"]) && !empty($_REQUEST["process_event_query"]) ){
-			$q = sanitize_text_field($_REQUEST["process_event_query"]);
+			$q = sanitize_text_field(wp_unslash($_REQUEST["process_event_query"]));
 
 			$parts = array();
 
 			if(intval($q)."" === $q){
-				$parts[] = " p.active_user = $q ";
-				$parts[] = " i.active_user = $q ";
-				$parts[] = " i.affected_post = $q ";
-				$parts[] = " i.affected_term = $q ";
-				$parts[] = " i.affected_user = $q ";
-				$parts[] = " i.affected_comment = $q ";
+				$id = intval($q);
+				$parts[] = " p.active_user = $id ";
+				$parts[] = " i.active_user = $id ";
+				$parts[] = " i.affected_post = $id ";
+				$parts[] = " i.affected_term = $id ";
+				$parts[] = " i.affected_user = $id ";
+				$parts[] = " i.affected_comment = $id ";
 
 			}
 
-			$parts[] = " location_url LIKE '%$q%' ";
-			$parts[] = " referer_url LIKE '%$q%' ";
-			$parts[] = " hostname LIKE '%$q%' ";
-			$parts[] = " event_type LIKE '%$q%' ";
-			$parts[] = " note LIKE '%$q%' ";
-			$parts[] = " event_type LIKE '%$q%' ";
-			$parts[] = " message LIKE '%$q%' ";
-			$parts[] = " comment LIKE '%$q%' ";
-			$parts[] = " severity LIKE '%$q%' ";
-			$parts[] = " message LIKE '%$q%' ";
-			$parts[] = " link_url LIKE '%$q%' ";
-			$parts[] = " location_path LIKE '%$q%' ";
-			$parts[] = " changed_data_field LIKE '%$q%' ";
-			$parts[] = " changed_data_value_old LIKE '%$q%' ";
-			$parts[] = " changed_data_value_new LIKE '%$q%' ";
-			$parts[] = " variables LIKE '%$q%' ";
+			$like = "%".$wpdb->esc_like($q)."%";
+			$columns = array(
+				"location_url",
+				"referer_url",
+				"hostname",
+				"event_type",
+				"note",
+				"message",
+				"comment",
+				"severity",
+				"link_url",
+				"location_path",
+				"changed_data_field",
+				"changed_data_value_old",
+				"changed_data_value_new",
+				"variables",
+			);
+			foreach ($columns as $column){
+				$parts[] = $wpdb->prepare(" $column LIKE %s ", $like);
+			}
 
 			$where[] = " ( ".join(" OR ", $parts )." ) ";
 
@@ -104,7 +126,9 @@ class Ajax {
 	}
 
 	public function process_logs(){
-		$pid = intval($_REQUEST["pid"]);
+		$this->authorize();
+
+		$pid = (isset($_REQUEST["pid"]))? intval($_REQUEST["pid"]): 0;
 		$logs = $this->plugin->database->getProcessLogs($pid);
 		foreach ($logs as $i => $log){
 			foreach ($log as $key => $value){

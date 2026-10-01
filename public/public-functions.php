@@ -1,5 +1,7 @@
 <?php
 
+defined( 'ABSPATH' ) || exit;
+
 use Palasthotel\ProcessLog\Model\ProcessLog;
 use Palasthotel\ProcessLog\Plugin;
 

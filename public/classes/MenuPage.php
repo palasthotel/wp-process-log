@@ -54,6 +54,7 @@ class MenuPage {
 			"ProcessLogAPI",
 			array(
 				'ajaxurl' => $this->plugin->ajax->ajaxurl,
+				'nonce'   => wp_create_nonce( Ajax::NONCE_ACTION ),
 			)
 		);
 		wp_enqueue_script(
@@ -102,7 +103,7 @@ class MenuPage {
 						$_type = (isset($_GET["process_content_type"]))? sanitize_text_field($_GET["process_content_type"]) : "";
 						foreach (array("post", "user", "term", "comment") as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
 						}
 						?>
 					</select>
@@ -115,7 +116,7 @@ class MenuPage {
 						$_type = (isset($_GET["process_event_type"]))? sanitize_text_field($_GET["process_event_type"]): "";
 						foreach ($this->database->getEventTypes() as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
 						}
 						?>
 					</select>
@@ -136,7 +137,7 @@ class MenuPage {
 						$_type = (isset($_GET["process_severity"]))? sanitize_text_field($_GET["process_severity"]): "";
 						foreach ($this->database->getSeverities() as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
 						}
 						?>
 					</select>

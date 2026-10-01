@@ -19,6 +19,8 @@
 
 namespace Palasthotel\ProcessLog;
 
+defined( 'ABSPATH' ) || exit;
+
 require_once dirname( __FILE__ ) . "/vendor/autoload.php";
 
 define( "PROCESS_LOG_DIR", dirname( __FILE__ ) );
