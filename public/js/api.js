@@ -15,7 +15,7 @@
 		return new Promise((resolve, reject)=>{
 			$.ajax(url+"?action="+action,{
 				method: 'POST',
-				data,
+				data: { _ajax_nonce: api.nonce, ...data },
 				success: resolve,
 				error: reject,
 			})

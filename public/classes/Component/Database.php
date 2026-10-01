@@ -9,6 +9,7 @@ use wpdb;
  * @version 0.1.0
  * @property wpdb wpdb
  */
+#[\AllowDynamicProperties]
 abstract class Database {
 
 	public function __construct() {

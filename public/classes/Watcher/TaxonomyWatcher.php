@@ -11,6 +11,7 @@ namespace Palasthotel\ProcessLog\Watcher;
 
 use Palasthotel\ProcessLog\Plugin;
 
+#[\AllowDynamicProperties]
 class TaxonomyWatcher {
 	public function __construct(Plugin $plugin) {
 		// TODO: create, save, delete taxonomy

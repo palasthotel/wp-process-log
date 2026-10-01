@@ -16,6 +16,7 @@ use Palasthotel\ProcessLog\Writer;
 /**
  * @property Writer writer
  */
+#[\AllowDynamicProperties]
 class OptionsWatcher {
 	public function __construct(Plugin $plugin) {
 		$this->writer = $plugin->writer;
@@ -32,7 +33,7 @@ class OptionsWatcher {
 	}
 
 	public function ignore($option_name):bool {
-		$isTransient = str_starts_with($option_name, "_transient") || str_starts_with($option_name, "_site_transient");
+		$isTransient = strpos($option_name, "_transient") === 0 || strpos($option_name, "_site_transient") === 0;
 		return apply_filters(Plugin::FILTER_IGNORE_OPTION, $isTransient, $option_name);
 	}
 

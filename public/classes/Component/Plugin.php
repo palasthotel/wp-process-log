@@ -11,6 +11,7 @@ use ReflectionException;
  * @property string basename
  * @version 0.1.3
  */
+#[\AllowDynamicProperties]
 abstract class Plugin {
 
 	/**

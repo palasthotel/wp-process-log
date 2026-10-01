@@ -3,6 +3,7 @@
 namespace Palasthotel\ProcessLog\Component;
 
 
+#[\AllowDynamicProperties]
 abstract class Update {
 
 	/**

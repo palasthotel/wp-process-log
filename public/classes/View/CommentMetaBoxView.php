@@ -8,6 +8,7 @@ use Palasthotel\ProcessLog\Component\Component;
 use Palasthotel\ProcessLog\Model\QueryArgs;
 use Palasthotel\ProcessLog\Plugin;
 
+#[\AllowDynamicProperties]
 class CommentMetaBoxView extends Component {
 
 	function onCreate() {
@@ -57,28 +58,28 @@ class CommentMetaBoxView extends Component {
 		foreach ($processes as $process){
 			echo "<li>";
 			echo "<div class='process-log__processes--header'>";
-			echo $process[0]->created;
+			echo esc_html($process[0]->created);
 			echo " by user ";
 			$user_id = $process[0]->active_user;
 			$user = get_userdata($user_id);
 			if($user instanceof \WP_User){
 				$url = get_edit_profile_url($user_id);
-				echo "<a href='$url'>$user->display_name</a>";
+				echo "<a href='".esc_url($url)."'>".esc_html($user->display_name)."</a>";
 			} else {
-			    echo "(cannot find user $user_id)";
+			    echo "(cannot find user ".esc_html($user_id).")";
 			}
 
 			echo "</div>";
 			echo "<ul class='process-log__logs'>";
 			foreach ($process as $log){
 				echo "<li>";
-				echo "<div><strong>$log->event_type:</strong> $log->changed_data_field</div>";
+				echo "<div><strong>".esc_html($log->event_type).":</strong> ".esc_html($log->changed_data_field)."</div>";
 				?>
                 <table class="process-log__changes">
                     <tr>
-                        <td><?php echo $log->changed_data_value_old; ?></td>
+                        <td><?php echo esc_html($log->changed_data_value_old); ?></td>
                         <td>→</td>
-                        <td><?php echo $log->changed_data_value_new; ?></td>
+                        <td><?php echo esc_html($log->changed_data_value_new); ?></td>
                     </tr>
                 </table>
                 <?php

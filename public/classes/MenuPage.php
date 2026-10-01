@@ -13,6 +13,7 @@ namespace Palasthotel\ProcessLog;
  * @property Database database
  * @property Plugin plugin
  */
+#[\AllowDynamicProperties]
 class MenuPage {
 
 	const SLUG = "process_logs";
@@ -40,13 +41,26 @@ class MenuPage {
 		);
 	}
 
+	/**
+	 * The assets were enqueued with version 1 forever, so browsers kept serving a cached
+	 * copy after an update. The file's modification time changes with every release.
+	 *
+	 * @param string $file path relative to the plugin directory
+	 *
+	 * @return string|false
+	 */
+	private function assetVersion( $file ) {
+		$path = $this->plugin->path . $file;
+		return file_exists( $path ) ? (string) filemtime( $path ) : false;
+	}
+
 	public function render() {
 
 		wp_enqueue_script(
 			self::API_HANDLE,
 			$this->plugin->url . "/js/api.js",
 			array( "jquery" ),
-			1,
+			$this->assetVersion( "js/api.js" ),
 			true
 		);
 		wp_localize_script(
@@ -54,13 +68,14 @@ class MenuPage {
 			"ProcessLogAPI",
 			array(
 				'ajaxurl' => $this->plugin->ajax->ajaxurl,
+				'nonce'   => wp_create_nonce( Ajax::NONCE_ACTION ),
 			)
 		);
 		wp_enqueue_script(
 			self::APP_HANDLE,
 			$this->plugin->url . "/js/menu-page.js",
 			array( self::API_HANDLE, "jquery" ),
-			1,
+			$this->assetVersion( "js/menu-page.js" ),
 			true
 		);
 		wp_localize_script(
@@ -86,7 +101,9 @@ class MenuPage {
 		);
 		wp_enqueue_style(
 			self::STYLE_HANDLE,
-			$this->plugin->url . "/css/menu-page.css"
+			$this->plugin->url . "/css/menu-page.css",
+			array(),
+			$this->assetVersion( "css/menu-page.css" )
 		);
 
 		?>
@@ -102,7 +119,7 @@ class MenuPage {
 						$_type = (isset($_GET["process_content_type"]))? sanitize_text_field($_GET["process_content_type"]) : "";
 						foreach (array("post", "user", "term", "comment") as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
 						}
 						?>
 					</select>
@@ -115,7 +132,7 @@ class MenuPage {
 						$_type = (isset($_GET["process_event_type"]))? sanitize_text_field($_GET["process_event_type"]): "";
 						foreach ($this->database->getEventTypes() as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
 						}
 						?>
 					</select>
@@ -136,7 +153,7 @@ class MenuPage {
 						$_type = (isset($_GET["process_severity"]))? sanitize_text_field($_GET["process_severity"]): "";
 						foreach ($this->database->getSeverities() as $type){
 							$selected = ($_type === $type)? "selected":"";
-							echo "<option value='".esc_attr($type)."' $selected>$type</option>";
+							echo "<option value='".esc_attr($type)."' $selected>".esc_html($type)."</option>";
 						}
 						?>
 					</select>

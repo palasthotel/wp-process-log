@@ -14,6 +14,7 @@ use Palasthotel\ProcessLog\Model\ProcessLog;
 /**
  * @property Plugin plugin
  */
+#[\AllowDynamicProperties]
 class Writer {
 
 	/**

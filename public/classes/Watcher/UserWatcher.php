@@ -16,7 +16,18 @@ use Palasthotel\ProcessLog\Writer;
 /**
  * @property Writer writer
  */
+#[\AllowDynamicProperties]
 class UserWatcher {
+
+	/**
+	 * Fields whose change is logged without the values: password hashes, reset keys
+	 * and session tokens have no business in a log that outlives them.
+	 */
+	const SECRET_FIELDS = array(
+		"user_pass",
+		"user_activation_key",
+		"session_tokens",
+	);
 
 	/**
 	 * User constructor.
@@ -87,8 +98,8 @@ class UserWatcher {
 					          ->setAffectedUser( $user_id )
 					          ->setLinkUrl( \get_edit_user_link( $user_id ) )
 					          ->setChangedDataField( $prop )
-					          ->setChangedDataValueOld( $oldData->{$prop} )
-					          ->setChangedDataValueNew( $userData->{$prop} )
+					          ->setChangedDataValueOld( $this->loggable( $prop, $oldData->{$prop} ) )
+					          ->setChangedDataValueNew( $this->loggable( $prop, $userData->{$prop} ) )
 				);
 			}
 		}
@@ -122,11 +133,24 @@ class UserWatcher {
 			          ->setAffectedUser( $user_id )
 			          ->setLinkUrl( \get_edit_user_link( $user_id ) )
 			          ->setChangedDataField( $meta_key )
-			          ->setChangedDataValueOld( ( is_array( $old_value ) || is_object( $old_value ) ) ?
-				          json_encode( $old_value ) : $old_value )
-			          ->setChangedDataValueNew( ( is_array( $meta_value ) || is_object( $meta_value ) ) ?
-				          json_encode( $meta_value ) : $meta_value )
+			          ->setChangedDataValueOld( $this->loggable( $meta_key, ( is_array( $old_value ) || is_object( $old_value ) ) ?
+				          json_encode( $old_value ) : $old_value ) )
+			          ->setChangedDataValueNew( $this->loggable( $meta_key, ( is_array( $meta_value ) || is_object( $meta_value ) ) ?
+				          json_encode( $meta_value ) : $meta_value ) )
 		);
+	}
+
+	/**
+	 * @param string $field
+	 * @param mixed $value
+	 *
+	 * @return mixed the value, or a placeholder for secret fields
+	 */
+	private function loggable( $field, $value ) {
+		if ( in_array( $field, self::SECRET_FIELDS, true ) ) {
+			return ( $value === null || $value === "" ) ? $value : "[redacted]";
+		}
+		return $value;
 	}
 
 	/**

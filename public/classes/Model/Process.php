@@ -8,6 +8,7 @@
 
 namespace Palasthotel\ProcessLog\Model;
 
+#[\AllowDynamicProperties]
 class Process extends DatabaseItem {
 
 	var $id = NULL;

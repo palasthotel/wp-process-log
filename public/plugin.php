@@ -20,6 +20,8 @@
 
 namespace Palasthotel\ProcessLog;
 
+defined( 'ABSPATH' ) || exit;
+
 require_once dirname( __FILE__ ) . "/vendor/autoload.php";
 
 define( "PROCESS_LOG_DIR", dirname( __FILE__ ) );
@@ -36,6 +38,7 @@ define( "PROCESS_LOG_HANDLERS_DIR", dirname( __FILE__ ) . "/classes/Process/" );
  * @property Views views
  * @property Updates updates
  */
+#[\AllowDynamicProperties]
 class Plugin extends Component\Plugin {
 
 	const DOMAIN = "process-log";

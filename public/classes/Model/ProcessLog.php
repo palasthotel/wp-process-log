@@ -11,6 +11,7 @@ namespace Palasthotel\ProcessLog\Model;
 
 use Palasthotel\ProcessLog\Plugin;
 
+#[\AllowDynamicProperties]
 class ProcessLog extends DatabaseItem {
 
 	var $id = NULL;

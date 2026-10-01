@@ -60,6 +60,27 @@
 	// ----------------------------
 
 	/**
+	 * Every logged value can come from a request - the location url is the raw
+	 * REQUEST_URI of whoever triggered the log - so nothing goes into markup unescaped.
+	 * @param {*} value
+	 * @return {string}
+	 */
+	const esc = (value) => String(value ?? '')
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#039;');
+
+	/**
+	 * Edit links arrive in WordPress' display context, already carrying &amp; - undo that
+	 * so esc() does not encode it twice.
+	 * @param {string} url
+	 * @return {string} the url if it is http(s), otherwise an empty string
+	 */
+	const safeUrl = (url) => (typeof url === 'string' && /^https?:\/\//i.test(url)) ? url.replace(/&amp;/g, '&') : '';
+
+	/**
 	 *
 	 * @param item
 	 * @return {jQuery|HTMLElement}
@@ -75,20 +96,20 @@
 			location_url_text = location_url_text.substr(0, 84) + '…';
 		}
 		const row = `<tr class="process-log__row--process">
-			<td title="Process ID" id="process-${item.process_id}">
+			<td title="Process ID" id="process-${esc(item.id)}">
 				<a class="process-log__process-id more"
-				data-pid="${item.id}"
-				href="#process-${item.id}"
-				>${item.id}</a>
+				data-pid="${esc(item.id)}"
+				href="#process-${esc(item.id)}"
+				>${esc(item.id)}</a>
 			</td>
 			<td>
-				${item.created}
+				${esc(item.created)}
 			</td>
 			<td>${username}</td>
-			<td>${item.logs_count} / <small>${item.event_types.join(", ")}</small></td>
+			<td>${esc(item.logs_count)} / <small>${esc(item.event_types.join(", "))}</small></td>
 			<td>
-				<a target="_blank" title="${item.location_url}" href="${item.location_url}">
-					${location_url_text}
+				<a target="_blank" rel="noopener noreferrer" title="${esc(item.location_url)}" href="${esc(safeUrl(item.location_url))}">
+					${esc(location_url_text)}
 				</a>
 			</td>
 		</tr>`;
@@ -132,19 +153,19 @@
 			const $change = $('<div></div>')
 				.addClass('log__changed-data')
 				.append(
-					$(`<span><span class="label">Changed:</span><span class="value">${log.changed_data_field}</span></span>`)
+					$(`<span><span class="label">Changed:</span><span class="value">${esc(log.changed_data_field)}</span></span>`)
 						.addClass('log__changed-data--field'),
 				);
 			if (log.changed_data_value_old) {
 				$change.append(
-					$(`<span><span class="label">From:</span><span class="value">${log.changed_data_value_old}</span></span>`)
+					$(`<span><span class="label">From:</span><span class="value">${esc(log.changed_data_value_old)}</span></span>`)
 						.addClass(
 							'log__changed-data--value log__changed-data--value-old'),
 				);
 			}
 			if (log.changed_data_value_new) {
 				$change.append(
-					$(`<span><span class="label">To:</span><span class="value">${log.changed_data_value_new}</span></span>`)
+					$(`<span><span class="label">To:</span><span class="value">${esc(log.changed_data_value_new)}</span></span>`)
 						.addClass(
 							'log__changed-data--value log__changed-data--value-new'),
 				);
@@ -158,34 +179,34 @@
 		const $second_line = $('<div></div>')
 			.addClass('process-log__second-line');
 
-		$(`<span>Event type: ${log.event_type}</span>`)
+		$(`<span>Event type: ${esc(log.event_type)}</span>`)
 			.addClass('log__type')
 			.appendTo($second_line);
 
 		if (log.affected_user) {
 			const user = users[log.affected_user];
-			$(`<span>${i18n.affected_user}: ${user.display_name}</span>`)
+			$(`<span>${esc(i18n.affected_user)}: ${esc(user.display_name)}</span>`)
 				.addClass('log__affected-user')
 				.appendTo($second_line);
 		}
 
 		if (log.affected_post) {
 			const post = posts[log.affected_post];
-			$(`<span>${i18n.affected_post}: ${getMaybeLinkedTitle(
+			$(`<span>${esc(i18n.affected_post)}: ${getMaybeLinkedTitle(
 				post.post_title, post.edit_link)}</span>`)
 				.addClass('log__affected-post')
 				.appendTo($second_line);
 		}
 
 		if (log.affected_term) {
-			$(`<span>${i18n.affected_term}: ${log.affected_term}</span>`)
+			$(`<span>${esc(i18n.affected_term)}: ${esc(log.affected_term)}</span>`)
 				.addClass('log__affected-term')
 				.appendTo($second_line);
 		}
 		if (log.affected_comment) {
 			const comment = comments[log.affected_comment];
 
-			$(`<span>${i18n.affected_comment}: ${getMaybeLinkedComment(comment.ID, comment.edit_link)}</span>`)
+			$(`<span>${esc(i18n.affected_comment)}: ${getMaybeLinkedComment(comment.ID, comment.edit_link)}</span>`)
 				.addClass('log__affected-comment')
 				.appendTo($second_line);
 		}
@@ -341,12 +362,14 @@
 	};
 
 	const getMaybeLinkedTitle = (title, link) => {
+		link = safeUrl(link);
 		return `${(link) ?
-			`<a href="${link}" target="_blank">` :
-			''}${title}${(link) ? '</a>' : ''}`;
+			`<a href="${esc(link)}" target="_blank">` :
+			''}${esc(title)}${(link) ? '</a>' : ''}`;
 	};
 	const getMaybeLinkedComment = (comment_id, link) => {
-		return link ? `<a href='${link}'>${comment_id}</a>` : comment_id;
+		link = safeUrl(link);
+		return link ? `<a href="${esc(link)}">${esc(comment_id)}</a>` : esc(comment_id);
 	}
 
 	// ----------------------------
