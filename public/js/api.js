@@ -1,24 +1,22 @@
 'use strict';
-;(function($, api){
+;(function(api){
 
-	const url = new URL(api.ajaxurl);
-
-	const apiFetch = (action, data = {})=>{
-		url.search = new URLSearchParams({
-			action,
-			...data
-		});
-		return fetch(url).then(res => res.json());
-	};
-
+	/**
+	 * POSTs form-encoded to admin-ajax.php, the way the handlers read $_REQUEST.
+	 * @param {string} action
+	 * @param {object} data
+	 * @return {Promise<object>}
+	 */
 	const apiPost = (action, data = {}) =>{
-		return new Promise((resolve, reject)=>{
-			$.ajax(url+"?action="+action,{
-				method: 'POST',
-				data: { _ajax_nonce: api.nonce, ...data },
-				success: resolve,
-				error: reject,
-			})
+		return fetch(api.ajaxurl, {
+			method: 'POST',
+			credentials: 'same-origin',
+			body: new URLSearchParams({ action, _ajax_nonce: api.nonce, ...data }),
+		}).then(res => {
+			if (!res.ok) {
+				throw new Error(`${action} failed with status ${res.status}`);
+			}
+			return res.json();
 		});
 	};
 
@@ -29,4 +27,4 @@
 		return apiPost("process_logs",{pid});
 	}
 
-})(jQuery, ProcessLogAPI);
+})(ProcessLogAPI);
