@@ -46,7 +46,7 @@ class MenuPage {
 		wp_enqueue_script(
 			self::API_HANDLE,
 			$this->plugin->url . "/js/api.js",
-			array( "jquery" ),
+			array(),
 			1,
 			true
 		);
@@ -61,7 +61,7 @@ class MenuPage {
 		wp_enqueue_script(
 			self::APP_HANDLE,
 			$this->plugin->url . "/js/menu-page.js",
-			array( self::API_HANDLE, "jquery" ),
+			array( self::API_HANDLE ),
 			1,
 			true
 		);
