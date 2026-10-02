@@ -27,7 +27,7 @@ Logged out of the box:
 
 Administrators browse the log under Tools > Process Logs, in the same kind of table WordPress uses for posts and users: searchable, filterable by content type, event type, severity and changed field, with the number of rows per page under Screen Options. Each process opens on its own screen with all of its entries and their values before and after. The comment edit screen lists the entries for that comment.
 
-Entries expire after 14 days and are cleaned up hourly; WordPress' own cron schedule and transients are not logged. Deleting the plugin removes its tables. Password hashes, password reset keys and session tokens are logged as changed, without their values.
+Entries expire after 14 days and are cleaned up hourly; WordPress' own cron schedule and transients are not logged. Deleting the plugin removes its tables. Password hashes, password reset keys and session tokens are logged as changed, without their values, and the keys in the links of password reset, activation and confirmation mails are replaced with [redacted] in the log.
 
 Developers can write their own entries with `process_log_write()` and switch individual watchers off with filters - see the [GitHub repository](https://github.com/palasthotel/wp-process-log).
 

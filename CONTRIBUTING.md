@@ -57,7 +57,6 @@ repository-only.
 | `public/public-functions.php` | the public API (`process_log_write()`) |
 | `public/readme.txt` | the wordpress.org listing |
 | `plugin.php` | development wrapper, loads `public/`; never deployed |
-| `bin/` | release helper scripts |
 
 The main file `public/plugin.php` must keep its name. WordPress identifies an installed
 plugin by `<directory>/<main file>` and stores that pair in `active_plugins`; renaming it
@@ -65,13 +64,17 @@ deactivates the plugin on every site at the next update.
 
 ## Local setup
 
+There is nothing to build or install. wp-env runs without a configuration file and
+mounts the repository as the plugin:
+
 ```sh
-npm ci
-npm run wp-env:start          # http://localhost:8890, admin / password
+npx @wordpress/env start      # http://localhost:8888, admin / password
 ```
 
 `npm run pack` stages the payload in `build/process-log/` and zips it to
-`process-log.zip` — the same payload the release deploys. It needs `composer`.
+`process-log.zip` — the same payload the release deploys. It runs the shared script from
+[palasthotel/github-workflows](https://github.com/palasthotel/github-workflows), which has
+to be checked out next to this repository, and needs `composer`.
 
 ## Versions
 
@@ -84,5 +87,5 @@ by hand; just leave `Stable tag:` and the `== Changelog ==` entries alone.
 
 ## Checks
 
-Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, packs the plugin so a broken `bin/pack.sh` surfaces in the pull request, and checks the version
-carriers agree.
+Every PR runs `php -l` against PHP 7.4, 8.2, 8.3 and 8.4, packs the plugin and checks the payload, and checks
+the version carriers agree.

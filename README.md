@@ -24,7 +24,9 @@ The plugin is available on [WordPress.org](https://wordpress.org/plugins/process
 repository can be symlinked into `wp-content/plugins` during development.
 
 Releases are cut by release-please from conventional commits and deployed to the
-wordpress.org SVN by GitHub Actions — see [.github/WORKFLOWS.md](.github/WORKFLOWS.md).
+wordpress.org SVN by the shared workflows in
+[palasthotel/github-workflows](https://github.com/palasthotel/github-workflows) — see
+[.github/WORKFLOWS.md](.github/WORKFLOWS.md).
 Contribution rules and the local setup are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Storage and retention
@@ -45,7 +47,9 @@ the plugin's option, cron job and Screen Options setting.
 
 The log holds whatever was changed — post content, option values, the full text of sent
 mails. Password hashes, password reset keys and session tokens are recorded as changed
-but not with their values.
+but not with their values. In logged mails the one-time keys of the links core sends -
+password reset, signup activation, personal data requests, e-mail change confirmation -
+are replaced with `[redacted]`; the mail itself goes out unchanged.
 
 ## Writing your own log entries
 
