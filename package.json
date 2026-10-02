@@ -14,6 +14,6 @@
 		"url": "https://github.com/palasthotel/wp-process-log/issues"
 	},
 	"scripts": {
-		"pack": "./bin/pack.sh"
+		"pack": "SLUG=process-log bash ../github-workflows/wp-plugin/bin/pack.sh"
 	}
 }
