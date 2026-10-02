@@ -6,7 +6,7 @@
 	"license": "GPL-3.0-or-later",
 	"author": {
 		"name": "Palasthotel",
-		"email": "rezeption@palasthotel.de",
+		"email": "webmaster@palasthotel.de",
 		"url": "https://palasthotel.de"
 	},
 	"repository": "git+https://github.com/palasthotel/wp-process-log.git",
@@ -14,6 +14,6 @@
 		"url": "https://github.com/palasthotel/wp-process-log/issues"
 	},
 	"scripts": {
-		"pack": "./bin/pack.sh"
+		"pack": "SLUG=process-log bash ../github-workflows/wp-plugin/bin/pack.sh"
 	}
 }

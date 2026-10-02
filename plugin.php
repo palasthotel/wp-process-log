@@ -1,16 +1,17 @@
 <?php
 
-
 /**
  * Plugin Name:       Process logs - DEV
  * Description:       Dev inc file
  * Version:           X.X.X
  * Requires at least: X.X
  * Tested up to:      X.X.X
- * Author:            PALASTHOTEL by Edward
- * Author URI:        http://www.palasthotel.de
+ * Author:            Palasthotel <webmaster@palasthotel.de>
+ * Author URI:        https://palasthotel.de
  * Domain Path:       /public/languages
  */
+
+defined( 'ABSPATH' ) || exit;
 
 use Palasthotel\ProcessLog\Plugin;
 

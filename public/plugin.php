@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Process Log
- * Plugin URI: https://palasthotel.de
+ * Plugin URI: https://github.com/palasthotel/wp-process-log
  * Description: Have a look what's going on with your system.
  * Version: 1.4.0
  * Author: Palasthotel <webmaster@palasthotel.de>
