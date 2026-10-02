@@ -8,6 +8,13 @@ on the file is maintained by
 The plugin's user-facing history lives in `public/readme.txt`, which is what shows on the
 wordpress.org plugin page.
 
+## [1.4.1](https://github.com/palasthotel/wp-process-log/compare/v1.4.0...v1.4.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* keep the one-time keys of core mails out of the mail log ([74522b8](https://github.com/palasthotel/wp-process-log/commit/74522b8e375f73981ab4bbf31e161ca3e1128b3d))
+
 ## [1.4.0](https://github.com/palasthotel/wp-process-log/compare/v1.3.4...v1.4.0) (2026-10-01)
 
 
