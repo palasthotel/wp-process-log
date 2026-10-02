@@ -5,7 +5,7 @@ Tags: log, activity log, audit, debug
 Requires at least: 5.0
 Tested up to: 7.1.2
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,6 +44,10 @@ Developers can write their own entries with `process_log_write()` and switch ind
 
 
 == Changelog ==
+
+= 1.4.1 =
+**Bug Fixes**
+* keep the one-time keys of core mails out of the mail log (74522b8)
 
 = 1.4.0 =
 **Features**
